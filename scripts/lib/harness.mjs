@@ -92,8 +92,16 @@ export async function settle(page) {
       await new Promise((r) => setTimeout(r, 60));
     }
     window.scrollTo(0, 0);
+    // Reveal-on-scroll elements fade in over 0.9s; checks must see their final state, not a frame mid-fade
+    // (content-visibility can delay the observer until the last scroll step).
+    document.querySelectorAll("[data-reveal]").forEach((el) => el.classList.add("is-revealed"));
+    // Below-the-fold sections use content-visibility: auto, which skips their layout while off-screen; axe can't
+    // compute colours/backgrounds for skipped content, so render everything for the checks.
+    const style = document.createElement("style");
+    style.textContent = ".cv-auto{content-visibility:visible!important}";
+    document.head.appendChild(style);
   });
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(1200);
   await page.waitForLoadState("networkidle").catch(() => {});
   await page.evaluate(() =>
     Promise.all(

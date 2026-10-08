@@ -68,3 +68,5 @@
 14. **The name on older documents.** Older CVs use a different first name. The site and résumé use Nico Agustin, as the brief says, and every certificate is issued to Nico Agustin, so it appears nowhere. Should it appear anywhere (for example, so old references can find you)?
 15. **Campaign ad creative.** May the campaign's ad creative be shown on the case study? It is not shown now. If yes, it will carry the caption "Ad creative by Ehjay Lorenzo".
 16. **Testimonial.** Is there a client or colleague quote you can share, with permission and the name and title to print? None is on the site yet.
+17. **Agora Data Driven: full-time?** No source says whether the role was full-time. The site and résumé say "as a fullstack developer at Agora Data Driven" (one year, Sept 2025 – Sept 2026) until you confirm.
+18. **On-screen wording.** Two quotes from client sites are paraphrased rather than quoted (the Rooming House Expert closing call to action and HydRate Medbar's menu). Say if you want them verbatim.
