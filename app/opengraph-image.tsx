@@ -6,11 +6,11 @@ export const alt = `${profile.name}, ${profile.title}`;
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
 
-export default function Image() {
+export default async function Image() {
   return renderOgCard({
     eyebrow: "Portfolio",
     title: profile.name,
     lines: [profile.title, "Websites · CRMs · Dashboards · Marketing data"],
-    footer: "nicoagustin",
+    footer: "nicoagustin.vercel.app",
   });
 }

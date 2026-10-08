@@ -2,17 +2,14 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import Lenis from "lenis";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type Lenis from "lenis";
 
 /*
- * Smooth scrolling (Lenis driven by the GSAP ticker, synced with ScrollTrigger), accessible in-page hash links,
- * and the [data-reveal] reveal-on-scroll system. Renders nothing.
- * Under prefers-reduced-motion Lenis is not started: native scrolling, instant jumps, everything visible.
+ * Smooth scrolling (Lenis, its own rAF loop), accessible in-page hash links, and the [data-reveal] reveal-on-scroll
+ * system. Renders nothing. Lenis is downloaded only after the page has loaded and the browser is idle, so it never
+ * competes with first paint. Under prefers-reduced-motion it is not started: native scrolling, instant jumps,
+ * everything visible.
  */
-
-if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
 let lenisInstance: Lenis | null = null;
 
@@ -39,26 +36,38 @@ export function SmoothScroll() {
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     let lenis: Lenis | null = null;
-    let tick: ((time: number) => void) | null = null;
+    let loading = false;
+    let disposed = false;
 
     const start = () => {
-      if (lenis || reduce.matches) return;
-      lenis = new Lenis({ lerp: 0.1, autoRaf: false });
-      setLenis(lenis);
-      lenis.on("scroll", ScrollTrigger.update);
-      const l = lenis;
-      tick = (time: number) => l.raf(time * 1000);
-      gsap.ticker.add(tick);
-      gsap.ticker.lagSmoothing(0);
+      if (lenis || loading || disposed || reduce.matches) return;
+      loading = true;
+      import("lenis")
+        .then(({ default: LenisCtor }) => {
+          loading = false;
+          if (lenis || disposed || reduce.matches) return;
+          lenis = new LenisCtor({ lerp: 0.1, autoRaf: true });
+          setLenis(lenis);
+        })
+        .catch(() => {
+          loading = false; // offline or a new deploy: native scrolling is fine
+        });
     };
 
     const stop = () => {
-      if (tick) gsap.ticker.remove(tick);
-      tick = null;
       lenis?.destroy();
       lenis = null;
       setLenis(null);
     };
+
+    // Start after load + idle (never during first paint).
+    let idleId = 0;
+    const schedule = () => {
+      const ric = (window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+      idleId = ric ? ric(start, { timeout: 2000 }) : window.setTimeout(start, 1200);
+    };
+    if (document.readyState === "complete") schedule();
+    else window.addEventListener("load", schedule, { once: true });
 
     const onMotionChange = () => (reduce.matches ? stop() : start());
 
@@ -88,12 +97,16 @@ export function SmoothScroll() {
       }
     };
 
-    start();
     reduce.addEventListener("change", onMotionChange);
     // window (bubble) runs after React's own handlers, so components that preventDefault (e.g. ContactLink) win.
     window.addEventListener("click", onClick);
 
     return () => {
+      disposed = true;
+      window.removeEventListener("load", schedule);
+      const cic = (window as Window & { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback;
+      if (cic) cic(idleId);
+      else window.clearTimeout(idleId);
       reduce.removeEventListener("change", onMotionChange);
       window.removeEventListener("click", onClick);
       stop();
@@ -122,18 +135,12 @@ export function SmoothScroll() {
       { threshold: 0.15, rootMargin: "0px 0px -10% 0px" },
     );
 
-    const vh = window.innerHeight;
-    for (const el of els) {
-      const r = el.getBoundingClientRect();
-      // Already in view (or above the fold after a hash jump): reveal immediately.
-      if (r.top < vh * 0.9 && r.bottom > 0) el.classList.add("is-revealed");
-      else if (r.bottom <= 0) el.classList.add("is-revealed");
-      else io.observe(el);
-    }
+    // No layout reads here: the observer's first callback reports what is already in view, so revealing never
+    // forces a synchronous layout per element (that cost ~1 s of main thread on a throttled phone).
+    for (const el of els) io.observe(el);
 
-    // Lenis/ScrollTrigger need fresh measurements after a route change.
+    // Lenis needs fresh measurements after a route change.
     getLenis()?.resize();
-    ScrollTrigger.refresh();
 
     return () => io.disconnect();
   }, [pathname]);

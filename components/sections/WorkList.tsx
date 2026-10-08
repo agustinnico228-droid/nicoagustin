@@ -1,6 +1,5 @@
 "use client";
 
-import gsap from "gsap";
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
@@ -34,7 +33,7 @@ function subscribePreview(onChange: () => void) {
   return () => mq.removeEventListener("change", onChange);
 }
 
-type Mover = { x: (v: number) => void; y: (v: number) => void };
+type Mover = { x: (v: number) => void; y: (v: number) => void; place: (x: number, y: number) => void };
 
 export function WorkList({ items }: { items: WorkItem[] }) {
   const selected = useSelectedTech();
@@ -58,19 +57,29 @@ export function WorkList({ items }: { items: WorkItem[] }) {
   useEffect(() => {
     const el = cardRef.current;
     if (!canPreview || !el) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      moverRef.current = { x: (v) => gsap.set(el, { x: v }), y: (v) => gsap.set(el, { y: v }) };
-    } else {
-      moverRef.current = {
-        x: gsap.quickTo(el, "x", { duration: 0.4, ease: "power3.out" }),
-        y: gsap.quickTo(el, "y", { duration: 0.4, ease: "power3.out" }),
-      };
-    }
+    // GSAP is only needed for the cursor-following preview, so it loads only on wide screens with a mouse.
+    let cancelled = false;
+    let kill: (() => void) | null = null;
+    import("gsap")
+      .then(({ gsap }) => {
+        if (cancelled) return;
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const place = (x: number, y: number) => gsap.set(el, { x, y });
+        moverRef.current = reduce
+          ? { x: (v) => gsap.set(el, { x: v }), y: (v) => gsap.set(el, { y: v }), place }
+          : {
+              x: gsap.quickTo(el, "x", { duration: 0.4, ease: "power3.out" }),
+              y: gsap.quickTo(el, "y", { duration: 0.4, ease: "power3.out" }),
+              place,
+            };
+        kill = () => gsap.killTweensOf(el);
+      })
+      .catch(() => {});
     return () => {
+      cancelled = true;
       moverRef.current = null;
       placedRef.current = false;
-      gsap.killTweensOf(el);
+      kill?.();
     };
   }, [canPreview]);
 
@@ -88,7 +97,7 @@ export function WorkList({ items }: { items: WorkItem[] }) {
     const x = e.clientX + gap + w < vw - 8 ? e.clientX + gap : e.clientX - gap - w;
     const y = Math.min(Math.max(e.clientY - h / 2, 8), Math.max(8, vh - h - 8));
     if (!placedRef.current) {
-      gsap.set(el, { x, y });
+      mover.place(x, y);
       placedRef.current = true;
     }
     mover.x(x);

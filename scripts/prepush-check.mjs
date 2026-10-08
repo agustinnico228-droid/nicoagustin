@@ -55,11 +55,11 @@ const BRAND = new RegExp(["ago", "ra"].join("") + "[\\s\\u00b7·._-]*" + ["atr",
 
 // Phones. Philippine mobiles: +63 9xx xxx xxxx, 63 9xx…, 09xx xxx xxxx (spaces, dots or dashes optional).
 const PH_MOBILE = /(?<![\w.\/#-])(?:\+63|\b63|\b0)[\s.-]?\(?9\d{2}\)?[\s.-]?\d{3}[\s.-]?\d{4}(?![\w.-]*\d)/;
-// Philippine landlines written with the area code: (02) 8123 4567, (044) 123 4567.
+// Philippine landlines written with the area code: (0N) NNNN NNNN, (0NN) NNN NNNN.
 const PH_LANDLINE = /\(0\d{1,3}\)\s?\d{3,4}[\s.-]?\d{4}\b/;
-// International numbers written with a leading +: +1 415 555 0100, +44 20 7946 0958, +639171234567.
+// International numbers written with a leading +: +C NNN NNN NNNN (any grouping).
 const INTERNATIONAL = /(?<![\w)\]+])\+\d{1,3}(?:[\s.-]?\(?\d{1,4}\)?){2,5}(?![\w.-]*\d)/;
-// Generic formatted numbers (content, docs and demo pages only): 0917-123-4567, 555 123 4567.
+// Generic formatted numbers (content, docs and demo pages only): NNNN-NNN-NNNN, NNN NNN NNNN.
 const FORMATTED = /(?<![\w.#/:=-])(?:\(\d{2,4}\)\s?|\d{3,4}[\s.-])\d{3,4}[\s.-]\d{4}(?![\w.:-])/;
 
 /** Numbers that look like phones but aren't: dates, times, ISO stamps, versions, ids in URLs. */

@@ -188,7 +188,7 @@ export function createSkyline(scene: THREE.Scene, camera: THREE.Camera): Skyline
     root.rotation.x = rotX;
     camera.position.x = Math.sin(t * 0.07) * 0.8;
     camera.position.y = 5.6 + Math.sin(t * 0.11) * 0.25;
-    camera.lookAt(0, 1.2, 0);
+    camera.lookAt(0, -1.6, 0); // aimed below the floor so the skyline sits high in the frame, clear of the stat strip
 
     // Particles rise slowly and wrap.
     const rise = dt * 0.12;

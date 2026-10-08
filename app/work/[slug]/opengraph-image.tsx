@@ -22,6 +22,6 @@ export default async function Image({ params }: { params: Promise<{ slug: string
     eyebrow: `${project.index} / Selected work`,
     title: project.title,
     lines: [project.kind],
-    footer: "nicoagustin",
+    footer: "nicoagustin.vercel.app",
   });
 }

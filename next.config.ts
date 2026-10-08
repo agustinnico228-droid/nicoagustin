@@ -53,6 +53,11 @@ const nextConfig: NextConfig = {
           // The demos run in a sandboxed iframe (an opaque origin), so their self-hosted fonts are cross-origin
           // requests. These are public static files.
           { key: "Access-Control-Allow-Origin", value: "*" },
+          // Only this site may frame them (the case studies embed them); no fetch directives, so their self-hosted
+          // fonts and images keep loading inside the sandboxed iframe.
+          { key: "Content-Security-Policy", value: "frame-ancestors 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },

@@ -26,7 +26,7 @@ export function Hero() {
       {/* Visual box: top-right band on phones (faint), right 62% from 768px. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute right-0 top-0 -z-10 h-[46%] w-full opacity-35 [mask-image:linear-gradient(to_bottom,black_40%,transparent)] md:inset-y-0 md:h-full md:w-[64%] md:opacity-100 md:[mask-image:linear-gradient(to_right,transparent,black_30%,black_85%,transparent)]"
+        className="hero-visual-mask pointer-events-none absolute right-0 top-0 -z-10 h-[46%] w-full opacity-35 md:inset-y-0 md:h-full md:w-[64%] md:opacity-100"
       >
         <HeroVisual>
           <div className="absolute inset-0 flex items-center justify-center p-[6%] md:pb-[14%]">

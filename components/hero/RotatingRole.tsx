@@ -69,9 +69,10 @@ export function RotatingRole({ roles }: { roles: readonly string[] }) {
         <button
           type="button"
           onClick={() => setPaused((p) => !p)}
-          aria-label={paused ? "Play role animation" : "Pause role animation"}
+          aria-label="Pause the role animation"
           aria-pressed={paused}
-          className="inline-flex size-11 shrink-0 items-center justify-center rounded-full text-muted transition-colors hover:text-accent"
+          title={paused ? "Play" : "Pause"}
+          className="inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-accent hover:text-accent"
         >
           {paused ? (
             <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">

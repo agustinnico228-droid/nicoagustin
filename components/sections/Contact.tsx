@@ -52,7 +52,7 @@ export function Contact() {
           </p>
         </div>
 
-        <div data-reveal className="rounded-3xl border border-line-strong bg-surface p-5 shadow-[var(--shadow)] sm:p-8">
+        <div data-reveal className="self-start rounded-3xl border border-line-strong bg-surface p-5 shadow-[var(--shadow)] sm:p-8">
           <ContactForm />
         </div>
       </div>

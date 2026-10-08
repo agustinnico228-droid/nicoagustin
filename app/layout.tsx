@@ -10,8 +10,8 @@ import { getContactConfig } from "@/lib/contact/config";
 import { profile, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
-// Display face: the hero name is the LCP element, so only Sora is preloaded.
-const sora = Sora({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-sora", display: "swap" });
+// Display face: the hero name is the LCP element, so only Sora is preloaded. Variable font: one file for every weight.
+const sora = Sora({ subsets: ["latin"], variable: "--font-sora", display: "swap" });
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap", preload: false });
 const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-plex-mono", display: "swap", preload: false });
 

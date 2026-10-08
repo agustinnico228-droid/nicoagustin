@@ -12,6 +12,10 @@ All three are licensed under the **SIL Open Font License 1.1** and are self-host
 | DM Sans | body text | SIL Open Font License 1.1 |
 | IBM Plex Mono | labels, eyebrows, keycap legends | SIL Open Font License 1.1 |
 
+The Open Graph share images are set in static cuts of Sora (700, 800) and DM Sans (400, 500), committed in
+`assets/og-fonts/` with their licence texts (`OFL-Sora.txt`: Copyright 2019 The Sora Project Authors;
+`OFL-DMSans.txt`: Copyright 2014 The DM Sans Project Authors).
+
 ## Libraries
 | Library | Licence |
 |---|---|

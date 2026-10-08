@@ -1,10 +1,15 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 /*
  * Open Graph cards (1200×630 PNG), generated at build time by the opengraph-image routes.
- * Midnight navy, a faint blueprint grid, electric blue + cyan accents. ImageResponse's built-in font only:
- * nothing is fetched. Hex values mirror the dark theme tokens in app/globals.css (CSS variables don't exist here).
+ * Midnight navy, a faint blueprint grid, electric blue + cyan accents. Set in the site's own fonts, Sora and DM Sans
+ * (static TTF cuts, SIL OFL, in assets/og-fonts with their licences; next/og's built-in default font is not used).
+ * Nothing is fetched. Hex values mirror the dark theme tokens in app/globals.css (CSS variables don't exist here).
  */
+
+const fontFile = (name: string) => readFile(join(process.cwd(), "assets", "og-fonts", name));
 
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_CONTENT_TYPE = "image/png";
@@ -43,7 +48,13 @@ export type OgCardInput = {
   footer: string;
 };
 
-export function renderOgCard({ eyebrow, title, lines = [], footer }: OgCardInput) {
+export async function renderOgCard({ eyebrow, title, lines = [], footer }: OgCardInput) {
+  const [sora700, sora800, dm400, dm500] = await Promise.all([
+    fontFile("Sora-700.ttf"),
+    fontFile("Sora-800.ttf"),
+    fontFile("DMSans-400.ttf"),
+    fontFile("DMSans-500.ttf"),
+  ]);
   const cols = Math.floor(W / CELL);
   const rows = Math.floor(H / CELL);
   return new ImageResponse(
@@ -59,6 +70,7 @@ export function renderOgCard({ eyebrow, title, lines = [], footer }: OgCardInput
           backgroundColor: C.bg,
           position: "relative",
           color: C.text,
+          fontFamily: "DM Sans",
         }}
       >
         {Array.from({ length: cols }, (_, i) => (
@@ -85,7 +97,7 @@ export function renderOgCard({ eyebrow, title, lines = [], footer }: OgCardInput
           }}
         />
 
-        <div style={{ display: "flex", alignItems: "center", fontSize: 26, letterSpacing: 4, color: C.accent2 }}>
+        <div style={{ display: "flex", alignItems: "center", fontSize: 26, fontWeight: 500, letterSpacing: 4, color: C.accent2 }}>
           <div style={{ display: "flex", width: 14, height: 14, borderRadius: 7, backgroundColor: C.accent2, marginRight: 18 }} />
           <div style={{ display: "flex", textTransform: "uppercase" }}>{eyebrow}</div>
         </div>
@@ -94,8 +106,9 @@ export function renderOgCard({ eyebrow, title, lines = [], footer }: OgCardInput
           <div
             style={{
               display: "flex",
+              fontFamily: "Sora",
               fontSize: titleSize(title),
-              fontWeight: 700,
+              fontWeight: 800,
               lineHeight: 1.04,
               letterSpacing: -2,
               color: C.text,
@@ -136,6 +149,14 @@ export function renderOgCard({ eyebrow, title, lines = [], footer }: OgCardInput
         </div>
       </div>
     ),
-    { ...OG_SIZE },
+    {
+      ...OG_SIZE,
+      fonts: [
+        { name: "Sora", data: sora700, weight: 700, style: "normal" },
+        { name: "Sora", data: sora800, weight: 800, style: "normal" },
+        { name: "DM Sans", data: dm400, weight: 400, style: "normal" },
+        { name: "DM Sans", data: dm500, weight: 500, style: "normal" },
+      ],
+    },
   );
 }
