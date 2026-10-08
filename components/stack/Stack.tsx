@@ -39,7 +39,7 @@ function groupsData(): StackGroup[] {
 
 export function Stack() {
   return (
-    <section id="stack" aria-labelledby="stack-title" className="section relative">
+    <section id="stack" aria-labelledby="stack-title" className="section cv-auto relative [contain-intrinsic-size:auto_1500px]">
       <style>{layerStyles}</style>
       <div className="container-x">
         <div data-reveal>

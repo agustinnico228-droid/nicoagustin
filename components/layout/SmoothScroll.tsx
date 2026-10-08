@@ -88,7 +88,16 @@ export function SmoothScroll() {
       }
       // Lenis honours the html scroll-padding-top (5.5rem) for element targets.
       if (lenis) {
-        lenis.scrollTo(target, { onComplete: () => focusTarget(target) });
+        const l = lenis;
+        l.scrollTo(target, {
+          onComplete: () => {
+            // Sections below the fold use content-visibility: their real height is known only once rendered, so
+            // re-aim if the first scroll landed off target.
+            const offset = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+            if (Math.abs(target.getBoundingClientRect().top - offset) > 6) l.scrollTo(target, { immediate: true });
+            focusTarget(target);
+          },
+        });
         // Move focus right away too so keyboard users continue from the target even if the scroll is interrupted.
         focusTarget(target);
       } else {

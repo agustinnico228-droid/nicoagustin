@@ -4,7 +4,7 @@ import { certificates } from "@/lib/site";
 
 export function Certificates() {
   return (
-    <section id="certificates" aria-labelledby="certificates-title" className="section">
+    <section id="certificates" aria-labelledby="certificates-title" className="section cv-auto [contain-intrinsic-size:auto_1400px]">
       <div className="container-x">
         <header data-reveal className="mb-12 sm:mb-16">
           <p className="eyebrow">Certificates</p>

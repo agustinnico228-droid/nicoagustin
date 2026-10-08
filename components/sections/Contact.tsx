@@ -12,7 +12,7 @@ const direct: Direct[] = [
 
 export function Contact() {
   return (
-    <section id="contact" aria-labelledby="contact-title" className="section relative">
+    <section id="contact" aria-labelledby="contact-title" className="section cv-auto relative [contain-intrinsic-size:auto_1000px]">
       <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" />
       <div className="container-x relative grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-20">
         <div>

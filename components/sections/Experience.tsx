@@ -5,7 +5,7 @@ export function Experience() {
   const earlier = experience.filter((e) => e.kind === "earlier");
 
   return (
-    <section id="experience" aria-labelledby="experience-title" className="section">
+    <section id="experience" aria-labelledby="experience-title" className="section cv-auto [contain-intrinsic-size:auto_1200px]">
       <div className="container-x">
         <header data-reveal className="mb-12 sm:mb-16">
           <p className="eyebrow">Experience</p>
