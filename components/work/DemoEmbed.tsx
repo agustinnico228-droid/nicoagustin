@@ -36,7 +36,10 @@ function DemoCard({ demo }: { demo: Demo }) {
           />
         )}
         {!live && (
-          <span aria-hidden="true" className="absolute left-3 top-3 rounded-full border border-line-strong bg-bg/90 px-3 py-1 font-mono text-[0.7rem] uppercase tracking-[0.12em] text-text">
+          <span
+            aria-hidden="true"
+            className="absolute bottom-3 right-3 rounded-full border border-line-strong bg-bg/90 px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-[0.12em] text-text sm:px-3 sm:py-1 sm:text-[0.7rem]"
+          >
             Demo — sample data
           </span>
         )}
@@ -50,6 +53,7 @@ function DemoCard({ demo }: { demo: Demo }) {
         <div className="flex flex-wrap gap-3">
           <button
             type="button"
+            data-js-only=""
             className="btn btn-primary hidden lg:inline-flex"
             onClick={() => setLive((v) => !v)}
           >

@@ -245,13 +245,13 @@ html.lenis body {
   }
 }
 
-/* Hero visual box: a soft fade at the bottom on phones; on wider screens fade the left edge (behind the name),
+/* Hero visual box: a soft fade at the bottom on phones and tablets; from 1024px fade the left edge (behind the name),
  * the right edge and the bottom, so the 3D bars never run under the stat strip. Unlayered on purpose. */
 .hero-visual-mask {
   -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent);
   mask-image: linear-gradient(to bottom, #000 40%, transparent);
 }
-@media (min-width: 48rem) {
+@media (min-width: 64rem) {
   .hero-visual-mask {
     -webkit-mask-image: linear-gradient(to right, transparent, #000 30%, #000 85%, transparent),
       linear-gradient(to bottom, #000 52%, transparent 76%);
@@ -260,6 +260,21 @@ html.lenis body {
       linear-gradient(to bottom, #000 52%, transparent 76%);
     mask-composite: intersect;
   }
+}
+
+/* Hero poster: one pre-rendered SVG per theme (dark is the default theme). Unlayered on purpose. */
+.hero-poster-light,
+[data-theme="light"] .hero-poster-dark {
+  display: none;
+}
+[data-theme="light"] .hero-poster-light {
+  display: block;
+}
+
+/* Without JavaScript: hide controls that only work with it (the mobile Menu button has a <noscript> stand-in). */
+html:not(.js) [aria-controls="mobile-menu"],
+html:not(.js) [data-js-only] {
+  display: none;
 }
 
 /*

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { ContactLink } from "@/components/contact/ContactLink";
 import type { Project } from "@/content/types";
 import { DemoEmbed } from "./DemoEmbed";
@@ -11,7 +11,8 @@ import { VideoPlayer } from "./VideoPlayer";
 
 /*
  * One case study. Every block renders only when the project has content for it: no placeholders, no empty headings.
- * Order: header, facts, problem, role, stack, architecture, extra sections, media, learned, small print, nav, CTA.
+ * Order: header, facts (role, client, stack, links), problem, architecture, extra sections, media, learned, small print,
+ * nav, CTA. Role and stack live only in the header facts, so the body never repeats them.
  */
 
 const has = <T,>(list: T[] | undefined): list is T[] => !!list && list.length > 0;
@@ -73,13 +74,18 @@ const externalLink =
   "inline-flex min-h-11 items-center gap-1.5 font-medium text-accent underline decoration-line-strong underline-offset-4 transition-colors hover:decoration-accent";
 
 export function CaseStudy({ project, prev, next }: { project: Project; prev?: Project; next?: Project }) {
-  const meta = [project.kind, project.year, project.context].filter((v): v is string => !!v);
+  // Drop the context when the kind already names it (e.g. "Omdena AI Innovation Challenge · Bhutan" + "Omdena").
+  const context = project.context && !project.kind.includes(project.context) ? project.context : undefined;
+  // Each part is its own no-wrap span, so a line never breaks inside "2025–2026" or starts with "·".
+  const meta = [project.kind, project.year, context]
+    .filter((v): v is string => !!v)
+    .flatMap((m) => m.split(" · "));
   const arch = project.architecture;
   const hasArch = !!arch && (!!arch.diagram || has(arch.body) || has(arch.bullets));
   const videos = project.videos ?? [];
 
   return (
-    <article className="pb-24 pt-28 sm:pt-32">
+    <article className="pb-24 pt-12 sm:pt-16">
       {/* ── Header ── */}
       <header className="relative overflow-hidden border-b border-line">
         <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
@@ -93,7 +99,17 @@ export function CaseStudy({ project, prev, next }: { project: Project; prev?: Pr
 
           <div className="mt-8 flex flex-wrap items-baseline gap-x-4 gap-y-2">
             <span className="font-mono text-sm text-accent-2">{project.index}</span>
-            <p className="eyebrow">{meta.join(" · ")}</p>
+            <p className="eyebrow">
+              {meta.map((m, i) => (
+                <Fragment key={`${i}-${m}`}>
+                  {i > 0 ? " " : ""}
+                  <span className="whitespace-nowrap">
+                    {m}
+                    {i < meta.length - 1 ? " ·" : ""}
+                  </span>
+                </Fragment>
+              ))}
+            </p>
           </div>
           <h1
             className="mt-4 max-w-5xl font-display text-[clamp(2.4rem,7vw,5.5rem)] font-bold leading-[0.98] tracking-[-0.035em] text-text [overflow-wrap:anywhere]"
@@ -105,12 +121,12 @@ export function CaseStudy({ project, prev, next }: { project: Project; prev?: Pr
           </p>
 
           {/* ── Facts: known fields only ── */}
-          <dl className="mt-12 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4" data-reveal>
+          <dl className="mt-12 grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(15rem,1fr))]" data-reveal>
             {project.role && <Fact term="Role">{project.role}</Fact>}
             {project.client && (
               <Fact term="Client">
                 {project.client.url ? (
-                  <a href={project.client.url} target="_blank" rel="noopener" className={externalLink}>
+                  <a href={project.client.url} target="_blank" rel="noopener noreferrer" className={externalLink}>
                     {project.client.name}
                     <span aria-hidden="true">↗</span>
                     <span className="sr-only"> (opens in a new tab)</span>
@@ -133,7 +149,7 @@ export function CaseStudy({ project, prev, next }: { project: Project; prev?: Pr
             )}
             {project.live && (
               <Fact term="Live">
-                <a href={project.live.href} target="_blank" rel="noopener" className={externalLink}>
+                <a href={project.live.href} target="_blank" rel="noopener noreferrer" className={externalLink}>
                   {project.live.label}
                   <span aria-hidden="true">↗</span>
                   <span className="sr-only"> (opens in a new tab)</span>
@@ -142,7 +158,7 @@ export function CaseStudy({ project, prev, next }: { project: Project; prev?: Pr
             )}
             {project.verify && (
               <Fact term="Verify">
-                <a href={project.verify.href} target="_blank" rel="noopener" className={externalLink}>
+                <a href={project.verify.href} target="_blank" rel="noopener noreferrer" className={externalLink}>
                   {project.verify.label}
                   <span aria-hidden="true">↗</span>
                   <span className="sr-only"> (opens in a new tab)</span>
@@ -158,27 +174,6 @@ export function CaseStudy({ project, prev, next }: { project: Project; prev?: Pr
         {has(project.problem) && (
           <Block id="the-problem" title="The problem">
             <Paragraphs items={project.problem} />
-          </Block>
-        )}
-
-        {project.role && (
-          <Block id="my-role" title="My role">
-            <p className="max-w-prose text-lg text-text-2">{project.role}</p>
-          </Block>
-        )}
-
-        {has(project.stack) && (
-          <Block id="stack" title="Stack">
-            <ul className="grid max-w-3xl gap-x-8 gap-y-2 text-text-2 sm:grid-cols-2">
-              {project.stack.map((s) => (
-                <li key={s} className="flex gap-3 border-b border-line py-2">
-                  <span aria-hidden="true" className="font-mono text-xs leading-7 text-accent">
-                    ▸
-                  </span>
-                  <span>{s}</span>
-                </li>
-              ))}
-            </ul>
           </Block>
         )}
 

@@ -6,6 +6,14 @@ import { layerClass } from "./layer-styles";
 
 export type StackGroup = { id: Layer; label: string; techs: { id: TechId; label: string }[] };
 
+/* Below 1024px the Used in panel sits above the list (often off-screen), so a pick scrolls it into view. */
+function select(id: TechId) {
+  selectTech(id);
+  if (window.matchMedia("(min-width: 1024px)").matches) return;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.getElementById("used-in")?.scrollIntoView({ block: "nearest", behavior: reduce ? "auto" : "smooth" });
+}
+
 /**
  * The plain stack list, grouped by layer: the accessible and mobile path to the same selection as the 3D keyboard.
  * Each tech is a toggle button styled as a small keycap.
@@ -29,7 +37,7 @@ export function StackList({ groups }: { groups: StackGroup[] }) {
                   <button
                     type="button"
                     aria-pressed={pressed}
-                    onClick={() => selectTech(tech.id)}
+                    onClick={() => select(tech.id)}
                     className="inline-flex min-h-11 cursor-pointer items-center rounded-lg border border-line-strong bg-surface px-3.5 font-mono text-[0.8rem] text-text-2 shadow-[inset_0_-3px_0_var(--line-strong)] transition-[transform,background-color,color,border-color,box-shadow] duration-200 hover:-translate-y-0.5 hover:border-accent hover:text-text active:translate-y-px active:shadow-none aria-pressed:border-accent-2 aria-pressed:bg-accent-2 aria-pressed:text-btn-fg aria-pressed:shadow-[0_0_0_4px_var(--glow)]"
                   >
                     {tech.label}

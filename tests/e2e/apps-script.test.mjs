@@ -1,6 +1,7 @@
 // Runs docs/contact/apps-script.gs against mocked Apps Script services (no Google account needed).
 //   node tests/e2e/apps-script.test.mjs
-// There are no SpreadsheetApp, LockService or Session mocks on purpose: the script must not use them.
+// There are no SpreadsheetApp or Session mocks on purpose: the script must not use them. LockService and
+// CacheService are mocked for the sending limits (a script lock, and a cache with expiry on a fake clock).
 
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
@@ -38,12 +39,55 @@ function formatDate(date, timeZone, pattern) {
   return pattern.replace(/yyyy|MM|dd|HH|mm|ss/g, (t) => tokens[t]);
 }
 
-function load({ secret = SECRET, mailError = null, source = SOURCE } = {}) {
+/** CacheService.getScriptCache(): string values with a lifetime in seconds, on the given clock. */
+function makeCache(clock) {
+  const store = new Map();
+  return {
+    store,
+    get: (key) => {
+      const item = store.get(key);
+      if (!item) return null;
+      if (clock.now >= item.expires) {
+        store.delete(key);
+        return null;
+      }
+      return item.value;
+    },
+    put: (key, value, seconds = 600) => {
+      if (typeof value !== "string") throw new TypeError("cache values are strings");
+      store.set(key, { value, expires: clock.now + Math.min(seconds, 21600) * 1000 });
+    },
+  };
+}
+
+/**
+ * `clock` ({ now } in ms) fixes the script's Date.now, so the hour-bucket tests never straddle an hour boundary;
+ * `cache` lets several loads (separate executions) share one script cache; `lockFree: false` makes tryLock fail.
+ */
+function load({ secret = SECRET, mailError = null, source = SOURCE, quota = 98, clock = null, cache = null, lockFree = true } = {}) {
   const sent = [];
   const logs = [];
   let quotaCalls = 0;
+  const lock = { tries: 0, held: 0 };
+  const time = clock ?? { now: Date.now() };
+  const scriptCache = cache ?? makeCache(time);
   const log = (...a) => logs.push(a.join(" "));
   const context = {
+    LockService: {
+      getScriptLock: () => ({
+        tryLock: (ms) => {
+          if (typeof ms !== "number" || ms <= 0 || ms >= 10_000) throw new Error("tryLock needs a wait under the website's 10 s timeout");
+          lock.tries++;
+          if (!lockFree) return false;
+          lock.held++;
+          return true;
+        },
+        releaseLock: () => {
+          lock.held = Math.max(0, lock.held - 1);
+        },
+      }),
+    },
+    CacheService: { getScriptCache: () => scriptCache },
     PropertiesService: { getScriptProperties: () => ({ getProperty: (k) => (k === "CONTACT_SECRET" ? secret : null) }) },
     ContentService: {
       MimeType: { JSON: "application/json" },
@@ -61,7 +105,7 @@ function load({ secret = SECRET, mailError = null, source = SOURCE } = {}) {
         if (mailError) throw mailError;
         sent.push(options);
       },
-      getRemainingDailyQuota: () => (quotaCalls++, 98),
+      getRemainingDailyQuota: () => (quotaCalls++, quota),
     },
     Utilities: {
       DigestAlgorithm: { SHA_256: "sha256" },
@@ -73,11 +117,15 @@ function load({ secret = SECRET, mailError = null, source = SOURCE } = {}) {
     console: { log, info: log, warn: log, error: log },
   };
   vm.createContext(context);
+  if (clock) {
+    context.__clock = time;
+    vm.runInContext("Date.now = () => __clock.now;", context);
+  }
   vm.runInContext(source, context);
   const call = (out) => ({ ...JSON.parse(out.text), mimeType: out.mimeType });
   const post = (body) =>
     call(context.doPost(body === undefined ? undefined : { postData: { contents: typeof body === "string" ? body : JSON.stringify(body) } }));
-  return { context, sent, logs, post, quotaCalls: () => quotaCalls, doGet: () => call(context.doGet()) };
+  return { context, sent, logs, post, lock, cache: scriptCache, quotaCalls: () => quotaCalls, doGet: () => call(context.doGet()) };
 }
 
 const valid = {
@@ -107,8 +155,8 @@ console.log("Apps Script (mocked services):");
 
 // Standalone and email only, to Nico only
 {
-  const leftovers = ["SpreadsheetApp", "LockService", "getActiveSpreadsheet", "OnlyCurrentDoc", "Session."].filter((s) => SOURCE.includes(s));
-  check("the source has no Sheet, lock or session code", leftovers.length === 0, leftovers.join(", "));
+  const leftovers = ["SpreadsheetApp", "getActiveSpreadsheet", "OnlyCurrentDoc", "Session."].filter((s) => SOURCE.includes(s));
+  check("the source has no Sheet or session code", leftovers.length === 0, leftovers.join(", "));
   // Comments removed; then no `cc:` / `bcc:` option and no `.cc =` / `.bcc =` assignment anywhere in the code.
   const code = SOURCE.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "");
   check("the code sets no cc or bcc", !/\b(cc|bcc)\s*:/i.test(code) && !/\.(cc|bcc)\s*=/i.test(code));
@@ -305,6 +353,97 @@ console.log("Apps Script (mocked services):");
     logs.every((l) => !l.includes("Hello Nico") && !l.includes("ana@example.com") && !l.includes(SECRET)),
     logs.join(" | "),
   );
+}
+
+// Sending limits
+{
+  // 10:15 UTC: well inside one clock hour, so all of these share one hour bucket.
+  const clock = { now: Date.UTC(2026, 9, 8, 10, 15, 0) };
+  const cache = makeCache(clock);
+  const answers = [];
+  let sentCount = 0;
+  let unreleased = 0;
+  for (let i = 1; i <= 20; i++) {
+    const env = load({ clock, cache }); // a fresh execution each time, sharing the script cache
+    answers.push(env.post({ ...valid, message: `Message number ${i}` }));
+    sentCount += env.sent.length;
+    unreleased += env.lock.held;
+  }
+  check(
+    "under the limit: 20 messages in one hour are all sent",
+    answers.every((r) => r.ok === true) && sentCount === 20 && unreleased === 0,
+    JSON.stringify(answers.filter((r) => r.ok !== true)),
+  );
+  const env21 = load({ clock, cache });
+  const res21 = env21.post({ ...valid, message: "Message number 21" });
+  check("the 21st in the same hour → rate_limited, no email", res21.ok === false && res21.error === "rate_limited" && env21.sent.length === 0, JSON.stringify(res21));
+  check("…and the lock is released", env21.lock.held === 0 && env21.lock.tries === 1);
+  clock.now = Date.UTC(2026, 9, 8, 11, 0, 5);
+  const next = load({ clock, cache });
+  check("the next hour sends again", next.post({ ...valid, message: "A new hour" }).ok === true && next.sent.length === 1);
+  const stored = [...cache.store.entries()].map(([k, v]) => `${k}=${v.value}`).join(" ");
+  check(
+    "the cache holds only counters and hashes, never the address or the words",
+    !stored.includes("ana@example.com") && !stored.includes("Message number") && !stored.includes("A new hour") && !stored.includes(SECRET),
+    stored,
+  );
+  const hourly = [...cache.store.entries()].filter(([k]) => k.startsWith("sent:"));
+  check("the hour counter expires about an hour after it is written", hourly.length > 0 && hourly.every(([, v]) => v.expires - clock.now <= 3_660_000));
+}
+{
+  const low = load({ quota: 9 });
+  const res = low.post(valid);
+  check("fewer than 10 emails of daily quota left → rate_limited, no email", res.error === "rate_limited" && low.sent.length === 0 && low.quotaCalls() === 1, JSON.stringify(res));
+  check("…and the lock is released", low.lock.held === 0);
+  const edge = load({ quota: 10 });
+  check("exactly 10 left still sends", edge.post(valid).ok === true && edge.sent.length === 1);
+}
+{
+  const clock = { now: Date.UTC(2026, 9, 8, 10, 15, 0) };
+  const cache = makeCache(clock);
+  const first = load({ clock, cache });
+  check("a first message sends", first.post(valid).ok === true && first.sent.length === 1);
+  const again = load({ clock, cache });
+  const dup = again.post({ ...valid, name: "Ana C.", email: "ANA@example.com", timestamp: "2026-10-08T06:31:00.000Z" });
+  check("the same address and message again → duplicate, no email", dup.ok === false && dup.error === "duplicate" && again.sent.length === 0, JSON.stringify(dup));
+  check("…and the lock is released", again.lock.held === 0);
+  const other = load({ clock, cache });
+  check("the same address with a different message sends", other.post({ ...valid, message: "A different question." }).ok === true);
+  const otherSender = load({ clock, cache });
+  check("the same message from another address sends", otherSender.post({ ...valid, email: "ben@example.com" }).ok === true);
+  clock.now += 10 * 60 * 1000 + 1000;
+  const later = load({ clock, cache });
+  check("the same message after 10 minutes sends", later.post(valid).ok === true && later.sent.length === 1);
+}
+{
+  const error = new Error("Service invoked too many times");
+  error.name = "Exception";
+  const clock = { now: Date.UTC(2026, 9, 8, 10, 15, 0) };
+  const cache = makeCache(clock);
+  const failing = load({ clock, cache, mailError: error });
+  check("a failed send → mail_failed, lock released", failing.post(valid).error === "mail_failed" && failing.lock.held === 0);
+  check("…it counts for nothing, so a retry isn't a duplicate", cache.store.size === 0 && load({ clock, cache }).post(valid).ok === true);
+}
+{
+  const busy = load({ lockFree: false });
+  const res = busy.post(valid);
+  check("the lock not free within the wait → rate_limited, no email", res.error === "rate_limited" && busy.sent.length === 0 && busy.quotaCalls() === 0, JSON.stringify(res));
+}
+{
+  // The secret is checked before any limit: a wrong secret takes no lock, reads no quota and counts for nothing.
+  const clock = { now: Date.UTC(2026, 9, 8, 10, 15, 0) };
+  const cache = makeCache(clock);
+  for (let i = 0; i < 25; i++) load({ clock, cache }).post({ ...valid, secret: "a-different-secret-of-some-length", message: `Spam ${i}` });
+  const wrong = load({ clock, cache, quota: 0 });
+  const res = wrong.post({ ...valid, secret: "a-different-secret-of-some-length" });
+  check(
+    "the secret is still checked first: wrong secret → unauthorized, even with no quota left",
+    res.error === "unauthorized" && wrong.lock.tries === 0 && wrong.quotaCalls() === 0 && wrong.sent.length === 0,
+    JSON.stringify(res),
+  );
+  check("…and wrong-secret requests use up none of the hourly limit", cache.store.size === 0 && load({ clock, cache }).post(valid).ok === true);
+  const invalid = load({ clock, cache });
+  check("invalid fields are refused before the limits too", invalid.post({ ...valid, email: "nope" }).error === "invalid" && invalid.lock.tries === 0);
 }
 
 // doGet

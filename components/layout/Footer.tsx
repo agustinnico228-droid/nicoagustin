@@ -14,7 +14,7 @@ export function Footer() {
     <footer className="cv-auto relative border-t border-line bg-bg-2 [contain-intrinsic-size:auto_640px]">
       <div className="container-x pb-10 pt-[clamp(4rem,10vw,7rem)]">
         <p className="eyebrow">{profile.availability}</p>
-        <h2 className="mt-5 max-w-[16ch] font-display text-[clamp(2.2rem,7vw,5.5rem)] font-bold leading-[0.98] tracking-[-0.04em] text-text">
+        <h2 className="mt-5 max-w-[16ch] text-balance font-display text-[clamp(2.2rem,7vw,5.5rem)] font-bold leading-[0.98] tracking-[-0.04em] text-text">
           Have a project or a role in mind?
         </h2>
         <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">

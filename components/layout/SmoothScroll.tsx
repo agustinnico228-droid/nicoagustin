@@ -8,7 +8,8 @@ import type Lenis from "lenis";
  * Smooth scrolling (Lenis, its own rAF loop), accessible in-page hash links, and the [data-reveal] reveal-on-scroll
  * system. Renders nothing. Lenis is downloaded only after the page has loaded and the browser is idle, so it never
  * competes with first paint. Under prefers-reduced-motion it is not started: native scrolling, instant jumps,
- * everything visible.
+ * everything visible. On touch-only devices it is not started either: Lenis does not smooth touch scrolling, so it
+ * would only cost a download and a per-frame loop.
  */
 
 let lenisInstance: Lenis | null = null;
@@ -35,17 +36,18 @@ export function SmoothScroll() {
   // Lenis + hash links (mounted once).
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const touchOnly = window.matchMedia("(hover: none) and (pointer: coarse)");
     let lenis: Lenis | null = null;
     let loading = false;
     let disposed = false;
 
     const start = () => {
-      if (lenis || loading || disposed || reduce.matches) return;
+      if (lenis || loading || disposed || reduce.matches || touchOnly.matches) return;
       loading = true;
       import("lenis")
         .then(({ default: LenisCtor }) => {
           loading = false;
-          if (lenis || disposed || reduce.matches) return;
+          if (lenis || disposed || reduce.matches || touchOnly.matches) return;
           lenis = new LenisCtor({ lerp: 0.1, autoRaf: true });
           setLenis(lenis);
         })
@@ -69,7 +71,7 @@ export function SmoothScroll() {
     if (document.readyState === "complete") schedule();
     else window.addEventListener("load", schedule, { once: true });
 
-    const onMotionChange = () => (reduce.matches ? stop() : start());
+    const onMotionChange = () => (reduce.matches || touchOnly.matches ? stop() : start());
 
     const onClick = (e: MouseEvent) => {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
@@ -107,6 +109,7 @@ export function SmoothScroll() {
     };
 
     reduce.addEventListener("change", onMotionChange);
+    touchOnly.addEventListener("change", onMotionChange);
     // window (bubble) runs after React's own handlers, so components that preventDefault (e.g. ContactLink) win.
     window.addEventListener("click", onClick);
 
@@ -117,6 +120,7 @@ export function SmoothScroll() {
       if (cic) cic(idleId);
       else window.clearTimeout(idleId);
       reduce.removeEventListener("change", onMotionChange);
+      touchOnly.removeEventListener("change", onMotionChange);
       window.removeEventListener("click", onClick);
       stop();
     };

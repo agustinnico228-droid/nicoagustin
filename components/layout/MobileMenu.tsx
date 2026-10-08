@@ -13,6 +13,8 @@ type Props = {
 /**
  * Below 1024px: a Menu button that opens a full-screen native <dialog>. showModal() makes the page behind inert
  * (focus stays inside), Esc closes it, and focus returns to the Menu button.
+ * Without JavaScript the button is hidden by CSS (html:not(.js)) and a <noscript> <details> menu with the same
+ * links takes its place, so the control is never dead.
  */
 export function MobileMenu({ links, resume, name }: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -64,6 +66,33 @@ export function MobileMenu({ links, resume, name }: Props) {
         </svg>
         Menu
       </button>
+
+      <noscript>
+        <details className="relative lg:hidden">
+          <summary className="inline-flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-full border border-line-strong px-4 font-mono text-[0.78rem] uppercase tracking-[0.12em] text-text transition-colors hover:border-accent hover:text-accent [&::-webkit-details-marker]:hidden">
+            Menu
+          </summary>
+          <nav
+            aria-label="Mobile"
+            className="absolute right-0 top-full z-50 mt-2 w-[min(18rem,calc(100vw-2rem))] rounded-2xl border border-line-strong bg-bg p-2 shadow-[var(--shadow)]"
+          >
+            <ul>
+              {links.map((l) => (
+                <li key={l.href}>
+                  <a href={l.href} className="flex min-h-11 items-center rounded-xl px-3 text-text no-underline hover:text-accent">
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <a href={resume} download className="flex min-h-11 items-center rounded-xl px-3 text-text no-underline hover:text-accent">
+                  Résumé (PDF)
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </details>
+      </noscript>
 
       <dialog
         ref={dialogRef}

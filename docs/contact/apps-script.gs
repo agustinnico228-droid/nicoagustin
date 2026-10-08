@@ -3,7 +3,7 @@
  *
  * A standalone Apps Script project (created at script.google.com, not attached to any file), owned by
  * agustinnico228@gmail.com and deployed as a web app. The website posts each message here; the script checks it and
- * emails it to Nico. Nobody else gets a copy (no CC, no BCC). It stores nothing.
+ * emails it to Nico. Nobody else gets a copy (no CC, no BCC). It stores nothing but short-lived counters and hashes.
  * Setup: docs/CONTACT-SETUP.md in the website's repository.
  *
  * Needs one script property (Project Settings → Script properties):
@@ -13,8 +13,11 @@
  * What it does with each POST from the website:
  *   1. parses the JSON body and checks the shared secret (constant-time comparison);
  *   2. validates and length-limits every field and strips control characters;
- *   3. sends one plain-text email: To Nico only, Reply-To the visitor;
- *   4. answers {"ok":true}, or {"ok":false,"error":"…"} ("mail_failed" when the email couldn't be sent).
+ *   3. applies the sending limits (one at a time, under a script lock): at most 20 emails per clock hour, none when
+ *      fewer than 10 of today's Gmail quota are left ("rate_limited"), and no second copy of the same message from
+ *      the same address within 10 minutes ("duplicate"). Only counters and a SHA-256 hash are cached, never the text;
+ *   4. sends one plain-text email: To Nico only, Reply-To the visitor;
+ *   5. answers {"ok":true}, or {"ok":false,"error":"…"} ("mail_failed" when the email couldn't be sent).
  * It never logs what a visitor wrote, and the website never logs the secret.
  */
 
@@ -27,6 +30,13 @@ const LIMITS = { name: 100, email: 254, company: 120, inquiryType: 40, message: 
 const MAX_SUBJECT_LENGTH = 200;
 const MIN_SECRET_LENGTH = 16;
 const MAX_BODY_LENGTH = 30000;
+/** Sending limits: they keep a script that replays the form from using up the day's Gmail quota. */
+const MAX_PER_HOUR = 20;
+const MIN_DAILY_QUOTA = 10;
+const DUPLICATE_WINDOW_SECONDS = 600;
+const HOUR_MS = 3600000;
+/** How long a request waits for another one to finish sending (the website gives up after 10 seconds). */
+const LOCK_WAIT_MS = 5000;
 const EMAIL_PATTERN = /^[^\s@<>()",;:]+@[^\s@<>()",;:]+\.[A-Za-z]{2,}$/;
 // C0/C1 control characters and the bidi override/isolate controls.
 const CONTROL_CHARS = /[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F\u202A-\u202E\u2066-\u2069]/g;
@@ -54,20 +64,38 @@ function doPost(e) {
     const entry = cleanEntry_(body);
     if (!entry) return reply_({ ok: false, error: 'invalid' });
 
-    // Email is the only delivery: if it fails, say so, and the website offers Nico's address instead.
+    // One request at a time, so two at once can't both pass the limits below.
+    const lock = LockService.getScriptLock();
+    if (!lock.tryLock(LOCK_WAIT_MS)) return reply_({ ok: false, error: 'rate_limited' });
     try {
-      MailApp.sendEmail({
-        to: TO,
-        replyTo: entry.email,
-        name: SENDER_NAME,
-        subject: subject_(entry),
-        body: emailBody_(entry),
-      });
-    } catch (err) {
-      console.error('Sending the email failed: ' + errorName_(err)); // the name only: the error text can quote the visitor
-      return reply_({ ok: false, error: 'mail_failed' });
+      const cache = CacheService.getScriptCache();
+      const hourKey = 'sent:' + Math.floor(Date.now() / HOUR_MS);
+      const duplicateKey = 'dup:' + messageHash_(entry);
+      if (cache.get(duplicateKey)) return reply_({ ok: false, error: 'duplicate' });
+      const sentThisHour = Number(cache.get(hourKey)) || 0;
+      if (sentThisHour >= MAX_PER_HOUR) return reply_({ ok: false, error: 'rate_limited' });
+      if (MailApp.getRemainingDailyQuota() < MIN_DAILY_QUOTA) return reply_({ ok: false, error: 'rate_limited' });
+
+      // Email is the only delivery: if it fails, say so, and the website offers Nico's address instead.
+      try {
+        MailApp.sendEmail({
+          to: TO,
+          replyTo: entry.email,
+          name: SENDER_NAME,
+          subject: subject_(entry),
+          body: emailBody_(entry),
+        });
+      } catch (err) {
+        console.error('Sending the email failed: ' + errorName_(err)); // the name only: the error text can quote the visitor
+        return reply_({ ok: false, error: 'mail_failed' });
+      }
+      // Counted only once sent, so a failed send can be retried at once.
+      cache.put(hourKey, String(sentThisHour + 1), HOUR_MS / 1000 + 60);
+      cache.put(duplicateKey, '1', DUPLICATE_WINDOW_SECONDS);
+      return reply_({ ok: true });
+    } finally {
+      lock.releaseLock();
     }
-    return reply_({ ok: true });
   } catch (err) {
     console.error('doPost failed: ' + errorName_(err)); // no form contents in the log
     return reply_({ ok: false, error: 'server_error' });
@@ -119,6 +147,18 @@ function sameSecret_(given, expected) {
   let diff = 0;
   for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
   return diff === 0;
+}
+
+/** SHA-256 (hex) of the visitor's address and message: the duplicate check caches this, never the text itself. */
+function messageHash_(entry) {
+  const bytes = Utilities.computeDigest(
+    Utilities.DigestAlgorithm.SHA_256,
+    entry.email.toLowerCase() + ' ' + entry.message, // the address never contains a space
+    Utilities.Charset.UTF_8
+  );
+  let hex = '';
+  for (let i = 0; i < bytes.length; i++) hex += ((bytes[i] & 0xff) + 0x100).toString(16).slice(1);
+  return hex;
 }
 
 /** One line of text: no line breaks or control characters, single spaces, at most `max` characters. */

@@ -23,13 +23,13 @@ export function Hero() {
         className="pointer-events-none absolute -right-[20%] -top-[10%] -z-20 aspect-square w-[min(70rem,120vw)] rounded-full bg-[radial-gradient(circle,var(--glow),transparent_62%)]"
       />
 
-      {/* Visual box: top-right band on phones (faint), right 62% from 768px. */}
+      {/* Visual box: faint top band on phones and tablets; full opacity in the right 58% from 1024px, clear of the copy. */}
       <div
         aria-hidden="true"
-        className="hero-visual-mask pointer-events-none absolute right-0 top-0 -z-10 h-[46%] w-full opacity-35 md:inset-y-0 md:h-full md:w-[64%] md:opacity-100"
+        className="hero-visual-mask pointer-events-none absolute right-0 top-0 -z-10 h-[46%] w-full opacity-35 lg:inset-y-0 lg:h-full lg:w-[58%] lg:opacity-100"
       >
         <HeroVisual>
-          <div className="absolute inset-0 flex items-center justify-center p-[6%] md:pb-[14%]">
+          <div className="absolute inset-0 flex items-center justify-center p-[6%] lg:pb-[14%]">
             <HeroPoster />
           </div>
         </HeroVisual>
@@ -52,7 +52,7 @@ export function Hero() {
           <RotatingRole roles={profile.roles} />
         </div>
 
-        <p className="mt-4 max-w-[40rem] text-[clamp(1.02rem,1.6vw,1.2rem)] leading-relaxed text-text-2">{profile.positioning}</p>
+        <p className="mt-4 max-w-[40rem] text-[clamp(1.02rem,1.6vw,1.2rem)] leading-relaxed text-text-2 lg:max-w-[34rem]">{profile.positioning}</p>
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <ContactLink inquiry="freelance" className="btn btn-primary">

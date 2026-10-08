@@ -22,14 +22,14 @@ function hasWebGL(): boolean {
 
 /*
  * Holds the server-rendered poster (children) and, when allowed, swaps in the WebGL canvas:
- * after first paint + idle, only at ≥ 768px, without reduced motion, and with WebGL available.
+ * after first paint + idle, only at ≥ 1024px, without reduced motion, and with WebGL available.
  */
 export function HeroVisual({ children }: { children: React.ReactNode }) {
   const [allowed, setAllowed] = useState(false);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const wide = window.matchMedia("(min-width: 768px)");
+    const wide = window.matchMedia("(min-width: 1024px)");
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     let idleId: number | undefined;
     let timeoutId: number | undefined;

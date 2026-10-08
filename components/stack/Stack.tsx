@@ -47,7 +47,11 @@ export function Stack() {
           <h2 id="stack-title" className="section-title mt-4 font-display text-text">
             The stack
           </h2>
-          <p className="mt-5 max-w-xl text-lg text-text-2">Press a key to see where I&apos;ve used it.</p>
+          {/* Below 768px the keyboard is a static picture, so the copy points at the list instead. */}
+          <p className="mt-5 max-w-xl text-lg text-text-2">
+            <span className="hidden md:inline">Press a key to see where I&apos;ve used it.</span>
+            <span className="md:hidden">Tap a name below to see where I&apos;ve used it.</span>
+          </p>
         </div>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] lg:items-stretch">
@@ -57,7 +61,7 @@ export function Stack() {
 
         <div className="mt-16 border-t border-line pt-10">
           <p className="mb-8 max-w-xl text-sm text-text-2">
-            The same keys as a list. Pick one to light it up and see where it&apos;s used.
+            <span className="hidden md:inline">The same keys as a list. </span>Pick one to light it up and see where it&apos;s used.
           </p>
           <StackList groups={groupsData()} />
         </div>

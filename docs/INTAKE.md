@@ -65,6 +65,6 @@
 11. **LinkedIn URL.** The brief wrote `linkedin.com/in/nicoagustin-02a64b2b1`, but LinkedIn's own PDF export prints `linkedin.com/in/nico-agustin-02a64b2b1`. The site uses the PDF version until you confirm which is right.
 12. **Years for projects 03–06.** When was each of Sabbath, Rooming House Expert, HydRate Medbar and Latte with Lata built? Hidden until known.
 13. **Omdena prototype: tech stack and your contribution.** What was the prototype actually built with, and what did you personally work on as Fullstack Engineer? The page shows only the challenge's brief and your role title.
-14. **The name "Nicole T. Agustin".** Older documents use it. The site and résumé use Nico Agustin, as the brief says, and every certificate is issued to Nico Agustin, so it appears nowhere. Should it appear anywhere (for example, so old references can find you)?
+14. **The name on older documents.** Older CVs use a different first name. The site and résumé use Nico Agustin, as the brief says, and every certificate is issued to Nico Agustin, so it appears nowhere. Should it appear anywhere (for example, so old references can find you)?
 15. **Campaign ad creative.** May the campaign's ad creative be shown on the case study? It is not shown now. If yes, it will carry the caption "Ad creative by Ehjay Lorenzo".
 16. **Testimonial.** Is there a client or colleague quote you can share, with permission and the name and title to print? None is on the site yet.

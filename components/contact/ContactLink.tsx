@@ -37,6 +37,8 @@ export function ContactLink({ className, children, inquiry = DEFAULT_INQUIRY, re
   return (
     <Link
       href={contactHref(usePathname())}
+      // The click opens the pop-up (or jumps to a hash), so prefetching the home page's RSC payload is wasted work.
+      prefetch={false}
       className={className}
       aria-haspopup={enhanced ? "dialog" : undefined}
       data-contact-link=""

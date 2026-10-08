@@ -2,7 +2,6 @@
 
 /* eslint-disable react-hooks/immutability -- three.js objects (materials, textures, meshes) are mutated imperatively by design. */
 
-import { ContactShadows, RoundedBox } from "@react-three/drei";
 import { Canvas, useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import {
   useCallback,
@@ -21,6 +20,7 @@ import {
   MeshBasicMaterial,
   MeshStandardMaterial,
   Path,
+  PerspectiveCamera,
   PlaneGeometry,
   Shape,
   ShapeGeometry,
@@ -41,39 +41,72 @@ import {
   neighbourKey,
   type Direction,
 } from "./keyboard-layout";
-import { cellUv, createLegendAtlas } from "./legend-atlas";
-import { readPalette, type KeyboardPalette } from "./scene-palette";
+import { drawLegendAtlas, planLegendAtlas } from "./legend-atlas";
+import {
+  CAP_BODY_ROUGHNESS,
+  CAP_METALNESS,
+  CAP_TOP_ROUGHNESS,
+  readPalette,
+  type KeyboardPalette,
+} from "./scene-palette";
 
 /*
- * The interactive 3D keyboard (loaded lazily by KeyboardCanvas, browser only). Our own design: a dark rounded deck
- * with sculpted keycaps, one row per stack layer. Renders on demand only (frameloop="demand"): a frame is drawn only
- * while something animates or the visitor interacts, and nothing renders while the keyboard is off-screen.
+ * The interactive 3D keyboard (loaded lazily by KeyboardCanvas, browser only). Our own design: a rounded deck (case +
+ * plate) centred under sculpted keycaps, one row per stack layer. Keys, plate and case share one origin (the centre
+ * of the key block, plate top at y = 0); the camera is fitted to the whole board for any canvas size.
+ * Renders on demand only (frameloop="demand"): a frame is drawn only while something animates or the visitor
+ * interacts, and nothing renders while the keyboard is off-screen.
  */
 
 // ── Dimensions (scene units; 1 = one key pitch) ─────────────────────────────────────────────────────
-const CAP_H = 0.42;
-const CAP_BASE = 0.02;
-const TOP_H = 0.07;
-const TOP_INSET = 0.16;
-const BODY_Y = CAP_BASE + CAP_H / 2;
-const TOP_Y = CAP_BASE + CAP_H + TOP_H / 2 - 0.02;
-const LEGEND_Y = TOP_Y + TOP_H / 2 + 0.004;
-const RING_Y = LEGEND_Y + 0.003;
-const LEGEND_W = 0.62;
-const LEGEND_H = 0.31;
-const DECK_PAD = 0.45;
-const DECK_H = 0.5;
+const KB = keyboardBounds;
+/** Case edge beyond the outermost caps, the same on all four sides. */
+const CASE_MARGIN = 0.35;
+const CASE_W = KB.width + CASE_MARGIN * 2;
+const CASE_D = KB.depth + CASE_MARGIN * 2;
+const CASE_H = 0.42;
+const CASE_TOP = -0.04;
+const PLATE_INSET = 0.12;
+const PLATE_H = 0.05;
+/** Plate top is the reference height: y = 0. */
+const PLATE_TOP = 0;
+/** Visible gap between a resting cap and the plate. */
+const SEAT_GAP = 0.035;
+const BODY_H = 0.36;
+const BODY_R = 0.07;
+const DISH_INSET = 0.1;
+const DISH_H = 0.06;
+const DISH_R = 0.025;
+const DISH_EMBED = 0.02;
+const BODY_Y = PLATE_TOP + SEAT_GAP + BODY_H / 2;
+const DISH_Y = PLATE_TOP + SEAT_GAP + BODY_H - DISH_EMBED + DISH_H / 2;
+const CAP_TOP = DISH_Y + DISH_H / 2;
+const LEGEND_Y = CAP_TOP + 0.002;
+const RING_Y = CAP_TOP + 0.004;
+/** Flat (unrounded) part of a cap top, where the legend lives. */
+const FLAT_D = CAP_DEPTH - DISH_INSET - DISH_R * 2;
+const flatWidth = (capWidth: number) => capWidth - DISH_INSET - DISH_R * 2;
+const SHADOW_PAD = 0.7;
 
 // ── Motion ────────────────────────────────────────────────────────────────────────────────────────────
-const DROP = 1.8;
-const INTRO_DUR = 0.6;
+const DROP = 1.2;
+const INTRO_DUR = 0.55;
 const PRESS_DOWN = 0.06;
 const PRESS_TOTAL = 0.18;
-const PRESS_DEPTH = 0.14;
-const HOVER_LIFT = 0.07;
-const SELECTED_SINK = -0.035;
-const MAX_TILT_Y = 0.12;
-const MAX_TILT_X = 0.07;
+const PRESS_DEPTH = 0.1;
+const HOVER_LIFT = 0.06;
+const SELECTED_SINK = -0.03;
+const MAX_TILT_Y = 0.06;
+const MAX_TILT_X = 0.035;
+
+// ── Camera: calm three-quarter view from the front, fitted to the board ─────────────────────────────
+/** Narrow lens from further away: less perspective shrink on the back row (the densest legends). */
+const FOV = 20;
+const ELEVATION = (38 * Math.PI) / 180;
+const AZIMUTH = (-5 * Math.PI) / 180;
+/** Share of the canvas width / height the board may fill (the rest is padding). */
+const FILL_X = 0.9;
+const FILL_Y = 0.78;
 
 const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
 const easeOutBack = (t: number) => {
@@ -84,9 +117,77 @@ const easeOutBack = (t: number) => {
 const noRaycast: Mesh["raycast"] = () => undefined;
 
 const introDelays = keys.map(
-  (k) => k.row * 0.07 + ((k.x - keyboardBounds.minX) / keyboardBounds.width) * 0.28,
+  (k) => k.row * 0.06 + (KB.width > 0 ? ((k.x - KB.minX) / KB.width) * 0.25 : 0),
 );
-const INTRO_END = Math.max(...introDelays) + INTRO_DUR;
+const INTRO_END = Math.max(0, ...introDelays) + INTRO_DUR;
+
+/** Corners of the board at rest (world space, the board is centred on the origin). */
+const FRAME_POINTS: readonly (readonly [number, number, number])[] = (() => {
+  const pts: [number, number, number][] = [];
+  for (const x of [-CASE_W / 2, CASE_W / 2]) {
+    for (const y of [CASE_TOP - CASE_H, CAP_TOP + HOVER_LIFT]) {
+      for (const z of [-CASE_D / 2, CASE_D / 2]) pts.push([x, y, z]);
+    }
+  }
+  return pts;
+})();
+
+/** Places the camera so the whole board is centred in the canvas with even padding, for any aspect ratio. */
+function frameCamera(camera: PerspectiveCamera, aspect: number) {
+  const ce = Math.cos(ELEVATION);
+  const se = Math.sin(ELEVATION);
+  const sa = Math.sin(AZIMUTH);
+  const ca = Math.cos(AZIMUTH);
+  // d: from the target towards the camera; r / u: the camera's right / up axes.
+  const d = [sa * ce, se, ca * ce] as const;
+  const r = [ca, 0, -sa] as const;
+  const u = [-sa * se, ce, -ca * se] as const;
+  const tanV = Math.tan((FOV * Math.PI) / 360);
+  const tanH = tanV * aspect;
+
+  const t = [0, (CASE_TOP - CASE_H + CAP_TOP) / 2, 0];
+  let dist = 10;
+  for (let iter = 0; iter < 8; iter++) {
+    dist = 0;
+    for (const p of FRAME_POINTS) {
+      const qx = p[0] - t[0]!;
+      const qy = p[1] - t[1]!;
+      const qz = p[2] - t[2]!;
+      const x = qx * r[0] + qy * r[1] + qz * r[2];
+      const y = qx * u[0] + qy * u[1] + qz * u[2];
+      const a = qx * d[0] + qy * d[1] + qz * d[2];
+      dist = Math.max(dist, a + Math.abs(x) / (FILL_X * tanH), a + Math.abs(y) / (FILL_Y * tanV));
+    }
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+    for (const p of FRAME_POINTS) {
+      const qx = p[0] - t[0]!;
+      const qy = p[1] - t[1]!;
+      const qz = p[2] - t[2]!;
+      const depth = dist - (qx * d[0] + qy * d[1] + qz * d[2]);
+      const nx = (qx * r[0] + qy * r[1] + qz * r[2]) / (depth * tanH);
+      const ny = (qx * u[0] + qy * u[1] + qz * u[2]) / (depth * tanV);
+      minX = Math.min(minX, nx);
+      maxX = Math.max(maxX, nx);
+      minY = Math.min(minY, ny);
+      maxY = Math.max(maxY, ny);
+    }
+    const sx = ((minX + maxX) / 2) * dist * tanH;
+    const sy = ((minY + maxY) / 2) * dist * tanV;
+    for (let i = 0; i < 3; i++) t[i] = t[i]! + r[i]! * sx + u[i]! * sy;
+  }
+
+  camera.fov = FOV;
+  camera.aspect = aspect;
+  camera.near = Math.max(0.1, dist - 10);
+  camera.far = dist + 14;
+  camera.up.set(0, 1, 0);
+  camera.position.set(t[0]! + d[0] * dist, t[1]! + d[1] * dist, t[2]! + d[2] * dist);
+  camera.lookAt(t[0]!, t[1]!, t[2]!);
+  camera.updateProjectionMatrix();
+}
 
 type Control = {
   /** Pointer position over the keyboard, -1..1 (targets for the damped tilt). */
@@ -113,9 +214,42 @@ function roundedRect<T extends Path>(path: T, w: number, h: number, r: number): 
 
 /** A flat rounded-rectangle frame (the keyboard focus ring). */
 function frameGeometry(w: number, d: number, thickness: number): ShapeGeometry {
-  const outer = roundedRect(new Shape(), w, d, 0.09);
-  outer.holes.push(roundedRect(new Path(), w - thickness * 2, d - thickness * 2, 0.06));
+  const outer = roundedRect(new Shape(), w, d, 0.1);
+  outer.holes.push(roundedRect(new Path(), w - thickness * 2, d - thickness * 2, 0.07));
   return new ShapeGeometry(outer, 6);
+}
+
+/** Soft baked shadow under the case: a blurred rounded rectangle (white + alpha; the material sets the colour). */
+function shadowTexture(): CanvasTexture {
+  const canvas = document.createElement("canvas");
+  const planeW = CASE_W + SHADOW_PAD * 2;
+  const planeD = CASE_D + SHADOW_PAD * 2;
+  canvas.width = 512;
+  canvas.height = Math.max(64, Math.round((512 * planeD) / planeW));
+  const ctx = canvas.getContext("2d");
+  if (ctx) {
+    const s = canvas.width / planeW;
+    const w = (CASE_W + 0.1) * s;
+    const h = (CASE_D + 0.1) * s;
+    const x = (canvas.width - w) / 2 - canvas.width;
+    const y = (canvas.height - h) / 2;
+    const r = 0.25 * s;
+    ctx.shadowColor = "#ffffff";
+    ctx.shadowBlur = SHADOW_PAD * s * 0.55;
+    ctx.shadowOffsetX = canvas.width;
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+    ctx.fill();
+  }
+  const texture = new CanvasTexture(canvas);
+  texture.colorSpace = SRGBColorSpace;
+  return texture;
 }
 
 type Resources = {
@@ -123,56 +257,107 @@ type Resources = {
   top: Map<number, BufferGeometry>;
   ring: Map<number, BufferGeometry>;
   legend: BufferGeometry[];
+  caseGeo: BufferGeometry;
+  plateGeo: BufferGeometry;
+  shadowGeo: BufferGeometry;
   bodyMats: MeshStandardMaterial[];
   topMats: MeshStandardMaterial[];
-  legendMat: MeshBasicMaterial;
-  legendSelMat: MeshBasicMaterial;
+  inkDarkMat: MeshBasicMaterial;
+  inkLightMat: MeshBasicMaterial;
   deckMat: MeshStandardMaterial;
   plateMat: MeshStandardMaterial;
   ringMat: MeshBasicMaterial;
+  shadowMat: MeshBasicMaterial;
+  shadowTex: CanvasTexture;
+  legendPlan: ReturnType<typeof planLegendAtlas>;
 };
 
-function createResources(): Resources {
+function createResources(pixelRatio: number, maxTextureSize: number): Resources {
   const body = new Map<number, BufferGeometry>();
   const top = new Map<number, BufferGeometry>();
   const ring = new Map<number, BufferGeometry>();
   for (const w of capWidths) {
-    body.set(w, new RoundedBoxGeometry(w, CAP_H, CAP_DEPTH, 3, 0.08));
-    top.set(w, new RoundedBoxGeometry(w - TOP_INSET, TOP_H, CAP_DEPTH - TOP_INSET, 3, 0.03));
-    ring.set(w, frameGeometry(w - TOP_INSET + 0.12, CAP_DEPTH - TOP_INSET + 0.12, 0.045));
+    body.set(w, new RoundedBoxGeometry(w, BODY_H, CAP_DEPTH, 3, BODY_R));
+    top.set(w, new RoundedBoxGeometry(w - DISH_INSET, DISH_H, CAP_DEPTH - DISH_INSET, 3, DISH_R));
+    ring.set(w, frameGeometry(w + 0.08, CAP_DEPTH + 0.08, 0.05));
   }
-  const legend = keys.map((k) => {
-    const g = new PlaneGeometry(LEGEND_W, LEGEND_H);
-    const uv = g.getAttribute("uv");
-    const { u0, u1, v0, v1 } = cellUv(k.index, keys.length);
-    for (let j = 0; j < uv.count; j++) {
-      uv.setXY(j, u0 + uv.getX(j) * (u1 - u0), v0 + uv.getY(j) * (v1 - v0));
+
+  const legendPlan = planLegendAtlas(
+    keys.map((k) => ({ text: k.legend, width: flatWidth(k.width), depth: FLAT_D })),
+    { pixelRatio, maxTextureSize },
+  );
+  const legend = keys.map((_, i) => {
+    const cell = legendPlan.cells[i];
+    const g = new PlaneGeometry(cell?.width ?? 0.5, cell?.height ?? 0.5);
+    if (cell) {
+      const uv = g.getAttribute("uv");
+      for (let j = 0; j < uv.count; j++) {
+        uv.setXY(j, cell.u0 + uv.getX(j) * (cell.u1 - cell.u0), cell.v0 + uv.getY(j) * (cell.v1 - cell.v0));
+      }
+      uv.needsUpdate = true;
     }
-    uv.needsUpdate = true;
+    // Lie flat on the cap top, text reading left to right with its top towards the back of the board.
+    g.rotateX(-Math.PI / 2);
     return g;
   });
-  const cap = () => new MeshStandardMaterial({ roughness: 0.55, metalness: 0.08 });
-  const legendMaterial = () => new MeshBasicMaterial({ transparent: true, depthWrite: false, toneMapped: false });
+
+  const shadowGeo = new PlaneGeometry(CASE_W + SHADOW_PAD * 2, CASE_D + SHADOW_PAD * 2).rotateX(-Math.PI / 2);
+  const shadowTex = shadowTexture();
+  const ink = () =>
+    new MeshBasicMaterial({
+      transparent: true,
+      depthWrite: false,
+      alphaTest: 0.01,
+      toneMapped: false,
+      polygonOffset: true,
+      polygonOffsetFactor: -2,
+      polygonOffsetUnits: -2,
+    });
+
   return {
     body,
     top,
     ring,
     legend,
-    bodyMats: keys.map(cap),
-    topMats: keys.map(() => new MeshStandardMaterial({ roughness: 0.42, metalness: 0.05 })),
-    legendMat: legendMaterial(),
-    legendSelMat: legendMaterial(),
-    deckMat: new MeshStandardMaterial({ roughness: 0.62, metalness: 0.25 }),
-    plateMat: new MeshStandardMaterial({ roughness: 0.8, metalness: 0.1 }),
+    caseGeo: new RoundedBoxGeometry(CASE_W, CASE_H, CASE_D, 4, 0.16),
+    plateGeo: new RoundedBoxGeometry(CASE_W - PLATE_INSET * 2, PLATE_H, CASE_D - PLATE_INSET * 2, 2, 0.03),
+    shadowGeo,
+    bodyMats: keys.map(
+      () => new MeshStandardMaterial({ roughness: CAP_BODY_ROUGHNESS, metalness: CAP_METALNESS }),
+    ),
+    topMats: keys.map(() => new MeshStandardMaterial({ roughness: CAP_TOP_ROUGHNESS, metalness: CAP_METALNESS })),
+    inkDarkMat: ink(),
+    inkLightMat: ink(),
+    deckMat: new MeshStandardMaterial({ roughness: 0.62, metalness: 0.2 }),
+    plateMat: new MeshStandardMaterial({ roughness: 0.85, metalness: 0.08 }),
     ringMat: new MeshBasicMaterial({ toneMapped: false }),
+    shadowMat: new MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false, toneMapped: false }),
+    shadowTex,
+    legendPlan,
   };
 }
 
 function disposeResources(res: Resources) {
-  [...res.body.values(), ...res.top.values(), ...res.ring.values(), ...res.legend].forEach((g) => g.dispose());
-  [...res.bodyMats, ...res.topMats, res.legendMat, res.legendSelMat, res.deckMat, res.plateMat, res.ringMat].forEach(
-    (m) => m.dispose(),
-  );
+  [
+    ...res.body.values(),
+    ...res.top.values(),
+    ...res.ring.values(),
+    ...res.legend,
+    res.caseGeo,
+    res.plateGeo,
+    res.shadowGeo,
+  ].forEach((g) => g.dispose());
+  [
+    ...res.bodyMats,
+    ...res.topMats,
+    res.inkDarkMat,
+    res.inkLightMat,
+    res.deckMat,
+    res.plateMat,
+    res.ringMat,
+    res.shadowMat,
+  ].forEach((m) => m.dispose());
+  res.shadowTex.dispose();
 }
 
 type SceneProps = {
@@ -187,11 +372,13 @@ function Scene({ control, focusIndex, ringVisible, active, onKeyClick }: ScenePr
   const invalidate = useThree((s) => s.invalidate);
   const camera = useThree((s) => s.camera);
   const gl = useThree((s) => s.gl);
+  const width = useThree((s) => s.size.width);
+  const height = useThree((s) => s.size.height);
   const selectedIndex = keyIndexOf(useSelectedTech());
 
   const [palette, setPalette] = useState<KeyboardPalette>(() => readPalette());
   const [atlasReady, setAtlasReady] = useState(false);
-  const res = useMemo(createResources, []);
+  const res = useMemo(() => createResources(gl.getPixelRatio(), gl.capabilities.maxTextureSize), [gl]);
 
   const tiltRef = useRef<Group>(null);
   const ringRef = useRef<Mesh>(null);
@@ -207,13 +394,12 @@ function Scene({ control, focusIndex, ringVisible, active, onKeyClick }: ScenePr
 
   useEffect(() => () => disposeResources(res), [res]);
 
-  // Fixed three-quarter camera.
+  // Fit the camera to the board whenever the canvas is resized.
   useLayoutEffect(() => {
-    camera.position.set(-2.4, 8, 10);
-    camera.lookAt(0, -0.3, 0.3);
-    camera.updateProjectionMatrix();
+    if (width <= 0 || height <= 0 || !(camera instanceof PerspectiveCamera)) return;
+    frameCamera(camera, width / height);
     invalidate();
-  }, [camera, invalidate]);
+  }, [camera, width, height, invalidate]);
 
   // Follow the site theme (data-theme on <html>).
   useEffect(() => {
@@ -222,31 +408,39 @@ function Scene({ control, focusIndex, ringVisible, active, onKeyClick }: ScenePr
     return () => observer.disconnect();
   }, []);
 
-  // Legends: one atlas texture, drawn once the mono font is ready.
+  // Legends: one high-resolution atlas texture, drawn once the mono font is ready.
   useEffect(() => {
     let cancelled = false;
     let texture: CanvasTexture | null = null;
-    createLegendAtlas(keys.map((k) => k.legend)).then((canvas) => {
+    drawLegendAtlas(
+      res.legendPlan,
+      keys.map((k) => k.legend),
+      () => {
+        if (cancelled || !texture) return;
+        texture.needsUpdate = true;
+        invalidate();
+      },
+    ).then((canvas) => {
       if (cancelled) return;
       texture = new CanvasTexture(canvas);
       texture.colorSpace = SRGBColorSpace;
-      texture.anisotropy = Math.min(8, gl.capabilities.getMaxAnisotropy());
-      res.legendMat.map = texture;
-      res.legendSelMat.map = texture;
-      res.legendMat.needsUpdate = true;
-      res.legendSelMat.needsUpdate = true;
+      texture.anisotropy = gl.capabilities.getMaxAnisotropy();
+      res.inkDarkMat.map = texture;
+      res.inkLightMat.map = texture;
+      res.inkDarkMat.needsUpdate = true;
+      res.inkLightMat.needsUpdate = true;
       setAtlasReady(true);
       invalidate();
     });
     return () => {
       cancelled = true;
-      res.legendMat.map = null;
-      res.legendSelMat.map = null;
+      res.inkDarkMat.map = null;
+      res.inkLightMat.map = null;
       texture?.dispose();
     };
   }, [gl, res, invalidate]);
 
-  /** Applies colours and lit/hover/selected states to every material (on change only, never per frame). */
+  /** Applies colours, legend inks and lit/hover/selected states to every material (on change only, never per frame). */
   const paint = useCallback(() => {
     const s = state.current;
     const pal = s.palette;
@@ -255,22 +449,24 @@ function Scene({ control, focusIndex, ringVisible, active, onKeyClick }: ScenePr
       const top = res.topMats[i];
       if (!body || !top) return;
       const selected = i === s.selected;
-      const hot = i === hover.current || (s.ring && i === s.focus);
-      const caps = pal.caps[k.layer];
-      body.color.copy(selected ? pal.selected : caps.body);
-      top.color.copy(selected ? pal.selectedTop : caps.top);
-      body.emissive.copy(selected ? pal.selected : caps.glow);
-      top.emissive.copy(selected ? pal.selected : caps.glow);
-      body.emissiveIntensity = selected ? 0.45 : hot ? 0.2 : 0;
-      top.emissiveIntensity = selected ? 0.55 : hot ? 0.26 : 0;
+      const look = selected ? pal.selected : pal.caps[k.layer];
+      const lit = selected || i === hover.current || (s.ring && i === s.focus);
+      body.color.copy(look.body);
+      top.color.copy(look.top);
+      body.emissive.copy(look.glow);
+      top.emissive.copy(look.glow);
+      body.emissiveIntensity = lit ? look.bodyGlow : 0;
+      top.emissiveIntensity = lit ? look.topGlow : 0;
       const legend = legends.current[i];
-      if (legend) legend.material = selected ? res.legendSelMat : res.legendMat;
+      if (legend) legend.material = look.ink === "dark" ? res.inkDarkMat : res.inkLightMat;
     });
-    res.legendMat.color.copy(pal.legend);
-    res.legendSelMat.color.copy(pal.legendOnSelected);
+    res.inkDarkMat.color.copy(pal.inkDark);
+    res.inkLightMat.color.copy(pal.inkLight);
     res.deckMat.color.copy(pal.deck);
     res.plateMat.color.copy(pal.plate);
     res.ringMat.color.copy(pal.focus);
+    res.shadowMat.color.copy(pal.shadow);
+    res.shadowMat.opacity = pal.shadowOpacity;
     invalidate();
   }, [res, invalidate]);
 
@@ -287,7 +483,7 @@ function Scene({ control, focusIndex, ringVisible, active, onKeyClick }: ScenePr
       ringRef.current.visible = ringVisible && !!k;
     }
     paint();
-  }, [selectedIndex, focusIndex, ringVisible, palette, paint, res]);
+  }, [selectedIndex, focusIndex, ringVisible, palette, paint, res, atlasReady]);
 
   // Start the drop-in the first time the keyboard is on screen; pause rendering while it is off-screen.
   useEffect(() => {
@@ -347,6 +543,7 @@ function Scene({ control, focusIndex, ringVisible, active, onKeyClick }: ScenePr
       const g = groups.current[i];
       if (!g) continue;
 
+      // Drop-in: from DROP above the rest height down to exactly 0 (caps resting on the plate).
       let introY = 0;
       if (intro === -1) introY = DROP;
       else if (intro >= 0) {
@@ -357,6 +554,7 @@ function Scene({ control, focusIndex, ringVisible, active, onKeyClick }: ScenePr
         }
       }
 
+      // Hover lift / selected sink, relative to the rest height.
       const hot = i === hover.current || (s.ring && i === s.focus);
       const target = i === s.selected ? SELECTED_SINK : hot ? HOVER_LIFT : 0;
       const current = lift.current[i] ?? 0;
@@ -406,31 +604,40 @@ function Scene({ control, focusIndex, ringVisible, active, onKeyClick }: ScenePr
     onKeyClick(i);
   };
 
-  const deckW = keyboardBounds.width + DECK_PAD * 2;
-  const deckD = keyboardBounds.depth + DECK_PAD * 2;
-
   return (
     <>
-      <ambientLight color={palette.ambient} intensity={palette.light ? 1.5 : 0.95} />
-      <directionalLight color={palette.keyLight} position={[-4, 9, 6]} intensity={palette.light ? 2.2 : 2.6} />
-      <directionalLight color={palette.rim} position={[3, 3, -7]} intensity={palette.light ? 0.7 : 2.2} />
+      <ambientLight color={palette.ambient.color} intensity={palette.ambient.intensity} />
+      <directionalLight
+        color={palette.keyLight.color}
+        position={palette.keyLight.position}
+        intensity={palette.keyLight.intensity}
+      />
+      <directionalLight
+        color={palette.rimLight.color}
+        position={palette.rimLight.position}
+        intensity={palette.rimLight.intensity}
+      />
 
+      {/* Tilt pivots on the board centre; everything below shares the key block's origin. */}
       <group ref={tiltRef}>
-        <group position={[-keyboardBounds.centerX, 0, 0]}>
-          <RoundedBox
-            args={[deckW, DECK_H, deckD]}
-            radius={0.2}
-            smoothness={4}
-            position={[keyboardBounds.centerX, -DECK_H / 2, 0]}
+        <group position={[-KB.centerX, 0, -KB.centerZ]}>
+          <mesh
+            geometry={res.caseGeo}
             material={res.deckMat}
+            position={[KB.centerX, CASE_TOP - CASE_H / 2, KB.centerZ]}
             raycast={noRaycast}
           />
-          <RoundedBox
-            args={[deckW - DECK_PAD, 0.04, deckD - DECK_PAD]}
-            radius={0.02}
-            smoothness={2}
-            position={[keyboardBounds.centerX, 0, 0]}
+          <mesh
+            geometry={res.plateGeo}
             material={res.plateMat}
+            position={[KB.centerX, PLATE_TOP - PLATE_H / 2, KB.centerZ]}
+            raycast={noRaycast}
+          />
+          <mesh
+            geometry={res.shadowGeo}
+            material={res.shadowMat}
+            position={[KB.centerX, CASE_TOP - CASE_H - 0.004, KB.centerZ]}
+            renderOrder={-1}
             raycast={noRaycast}
           />
 
@@ -453,7 +660,7 @@ function Scene({ control, focusIndex, ringVisible, active, onKeyClick }: ScenePr
               <mesh
                 geometry={res.top.get(k.width)}
                 material={res.topMats[i]}
-                position={[0, TOP_Y, 0]}
+                position={[0, DISH_Y, 0]}
                 raycast={noRaycast}
               />
               <mesh
@@ -461,9 +668,8 @@ function Scene({ control, focusIndex, ringVisible, active, onKeyClick }: ScenePr
                   legends.current[i] = el;
                 }}
                 geometry={res.legend[i]}
-                material={res.legendMat}
+                material={res.inkDarkMat}
                 position={[0, LEGEND_Y, 0]}
-                rotation={[-Math.PI / 2, 0, 0]}
                 visible={atlasReady}
                 raycast={noRaycast}
               />
@@ -471,18 +677,6 @@ function Scene({ control, focusIndex, ringVisible, active, onKeyClick }: ScenePr
           ))}
 
           <mesh ref={ringRef} material={res.ringMat} rotation={[-Math.PI / 2, 0, 0]} raycast={noRaycast} />
-
-          <ContactShadows
-            key={palette.light ? "light" : "dark"}
-            position={[keyboardBounds.centerX, -DECK_H - 0.02, 0]}
-            scale={[deckW + 3, deckD + 3]}
-            far={1.6}
-            blur={2.4}
-            opacity={palette.light ? 0.35 : 0.6}
-            resolution={512}
-            frames={1}
-            color={palette.shadow}
-          />
         </group>
       </group>
     </>
@@ -581,7 +775,7 @@ export default function KeyboardStage({ onReady }: { onReady?: () => void }) {
         frameloop="demand"
         dpr={[1, 1.75]}
         flat
-        camera={{ position: [-2.4, 8, 10], fov: 32, near: 0.1, far: 60 }}
+        camera={{ position: [0, 8, 12], fov: FOV, near: 0.1, far: 60 }}
         gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
         onCreated={() => {
           setReady(true);

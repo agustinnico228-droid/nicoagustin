@@ -39,9 +39,9 @@ export const profile = {
 /** Hero stat strip: real numbers only. */
 export const stats = [
   { value: "5", label: "live dashboard demos, one reporting system" },
-  { value: "257", label: "leads in one month from a Meta lead campaign" },
+  { value: "4", label: "websites and portals built, incl. a spa CRM" },
   { value: "7", label: "certificates, incl. an Omdena AI challenge" },
-  { value: "1 yr", label: "full-time at Agora Data Driven" },
+  { value: "1 yr", label: "as a fullstack developer at Agora Data Driven" },
 ] as const;
 
 export type ExperienceItem = {
@@ -262,7 +262,7 @@ export const stack: Tech[] = [
   { id: "git", label: "Git & GitHub", key: "Git", layer: "tools", alsoIn: "This portfolio · every project" },
   { id: "vercel", label: "Vercel", key: "Vercel", layer: "tools", alsoIn: "This portfolio" },
   { id: "github-pages", label: "GitHub Pages", key: "Pages", layer: "tools" },
-  { id: "excel", label: "Excel", key: "Excel", layer: "tools" },
+  { id: "excel", label: "Excel", key: "Excel", layer: "tools", alsoIn: "Microsoft Office Specialist: Excel Associate certification" },
 ];
 
 export const techById = Object.fromEntries(stack.map((t) => [t.id, t])) as Record<TechId, Tech>;

@@ -178,7 +178,7 @@ function buildBlocks({ phone }) {
   const degree = education[0];
   section("Summary");
   blocks.push(`<div class="entry"><p>Fullstack web developer who builds websites, CRMs and reporting dashboards, and the tracking that shows whether they work. ${
-    agora ? "One year full-time at Agora Data Driven, building one reporting system for five client businesses. " : ""
+    agora ? "One year as a Fullstack Web Developer at Agora Data Driven, building one reporting system for five client businesses. " : ""
   }${freelance ? "Freelancing since September 2026 with PERN, MERN and Next.js. " : ""}${
     degree ? `${esc(degree.degree)}, ${esc(degree.school)} (${esc(degree.note)}).` : ""
   }</p></div>`);
@@ -216,7 +216,9 @@ function buildBlocks({ phone }) {
       const kpi = (label) => p.kpis.kpis.find((k) => k.label === label)?.value;
       const leads = kpi("Leads");
       const cpl = kpi("Cost per lead");
-      second = `${leads && cpl ? `${esc(leads)} leads at ${esc(cpl)} per lead, ${esc(p.kpis.period)}. ` : ""}${esc(p.stack.join(", "))}.`;
+      // Nico's part in the campaign is not recorded yet (docs/INTAKE.md), so its results are not claimed here.
+      void leads; void cpl;
+      second = `${esc(p.stack.join(", "))}. Case study with the client-approved results on the portfolio.`;
     } else if (p.stack.length && !p.verify) {
       second = `Stack: ${esc(p.stack.join(", "))}.`;
     } else {
@@ -256,7 +258,7 @@ function buildBlocks({ phone }) {
     const items = stack.filter((t) => t.layer === layer.id).map((t) => t.label);
     if (items.length) blocks.push(`<div class="entry tight"><p><strong>${esc(layer.label)}:</strong> ${esc(items.join(", "))}</p></div>`);
   }
-  blocks.push(`<div class="entry tight"><p><strong>Also:</strong> Java, Microsoft Office, Google Workspace</p></div>`);
+  blocks.push(`<div class="entry tight"><p><strong>Also:</strong> Java, Microsoft Office, Google tools</p></div>`);
 
   // Seminars and training, volunteering.
   section("Seminars and training");

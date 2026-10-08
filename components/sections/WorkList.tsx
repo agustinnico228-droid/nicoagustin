@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
+import { Fragment, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import { techById, type TechId } from "@/lib/site";
 import { clearTech, useSelectedTech } from "@/lib/tech-store";
@@ -33,6 +33,13 @@ function subscribePreview(onChange: () => void) {
   return () => mq.removeEventListener("change", onChange);
 }
 
+/** The kind and year as separate no-wrap parts, so a line never breaks inside one or starts with "·". */
+function metaParts(item: WorkItem): string[] {
+  const parts = item.kind.split(" · ");
+  if (item.year) parts.push(item.year);
+  return parts;
+}
+
 type Mover = { x: (v: number) => void; y: (v: number) => void; place: (x: number, y: number) => void };
 
 export function WorkList({ items }: { items: WorkItem[] }) {
@@ -48,6 +55,8 @@ export function WorkList({ items }: { items: WorkItem[] }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const moverRef = useRef<Mover | null>(null);
   const placedRef = useRef(false);
+  // Focus target for the Clear button, which unmounts itself when clicked.
+  const listRef = useRef<HTMLUListElement>(null);
   const uid = useId();
 
   const active = canPreview ? hovered : null;
@@ -111,7 +120,8 @@ export function WorkList({ items }: { items: WorkItem[] }) {
 
   return (
     <div>
-      <div aria-live="polite" className="mb-6 empty:mb-0">
+      {/* No live region here: the Used in panel in the Stack section already announces each selection. */}
+      <div className="mb-6 empty:mb-0">
         {selected && tech ? (
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-2xl border border-line-strong bg-surface px-4 py-2 sm:px-5">
             <p className="py-2 text-sm text-text-2">
@@ -135,7 +145,10 @@ export function WorkList({ items }: { items: WorkItem[] }) {
             </p>
             <button
               type="button"
-              onClick={() => clearTech()}
+              onClick={() => {
+                clearTech();
+                listRef.current?.focus();
+              }}
               className="ml-auto inline-flex min-h-11 items-center gap-2 rounded-full border border-line-strong px-4 font-mono text-xs uppercase tracking-wider text-text transition-colors hover:border-accent hover:text-accent"
             >
               Clear<span className="sr-only"> the {tech.label} highlight</span>
@@ -145,7 +158,9 @@ export function WorkList({ items }: { items: WorkItem[] }) {
       </div>
 
       <ul
-        className="border-t border-line"
+        ref={listRef}
+        tabIndex={-1}
+        className="border-t border-line outline-none"
         onPointerEnter={(e) => {
           if (canPreview && e.pointerType === "mouse") setArmed(true);
         }}
@@ -170,20 +185,21 @@ export function WorkList({ items }: { items: WorkItem[] }) {
                 className={[
                   "group relative -mx-3 grid grid-cols-[1fr_auto] items-start gap-x-4 rounded-2xl px-3 py-7 no-underline transition-[opacity,background-color,box-shadow] duration-300 sm:-mx-5 sm:grid-cols-[4.5rem_1fr_auto] sm:gap-x-8 sm:px-5 sm:py-9 lg:grid-cols-[6rem_1fr_auto]",
                   matches ? "bg-surface ring-1 ring-accent shadow-[0_0_48px_-16px_var(--glow)]" : "",
-                  hoverDim ? "opacity-60" : "opacity-100",
                 ].join(" ")}
               >
                 <span
                   aria-hidden="true"
                   className={[
-                    "col-span-full mb-2 font-display text-lg font-semibold tabular-nums leading-none transition-colors sm:col-span-1 sm:mb-0 sm:pt-1 sm:text-3xl lg:text-4xl",
+                    "col-span-full mb-2 font-display text-lg font-semibold tabular-nums leading-none transition-[color,opacity] duration-300 sm:col-span-1 sm:mb-0 sm:pt-1 sm:text-3xl lg:text-4xl",
                     matches ? "text-accent-2" : "text-muted group-hover:text-accent",
+                    hoverDim ? "opacity-40" : "",
                   ].join(" ")}
                 >
                   {item.index}
                 </span>
 
-                <div className="min-w-0">
+                {/* Hover-dimming keeps the text at 90% so small muted text stays above 4.5:1; only the decorative number and media dim further. */}
+                <div className={`min-w-0 transition-opacity duration-300 ${hoverDim ? "opacity-90" : ""}`}>
                   <h3
                     id={titleId}
                     className={[
@@ -195,8 +211,15 @@ export function WorkList({ items }: { items: WorkItem[] }) {
                   </h3>
                   <div id={descId}>
                     <p className="mt-2 font-mono text-xs uppercase tracking-[0.1em] text-muted">
-                      {item.kind}
-                      {item.year ? <span> · {item.year}</span> : null}
+                      {metaParts(item).map((part, k, all) => (
+                        <Fragment key={`${k}-${part}`}>
+                          {k > 0 ? " " : ""}
+                          <span className="whitespace-nowrap">
+                            {part}
+                            {k < all.length - 1 ? " ·" : ""}
+                          </span>
+                        </Fragment>
+                      ))}
                     </p>
                     <p className="mt-3 hidden max-w-2xl text-text-2 xs:block">{item.summary}</p>
                     {item.chips.length > 0 || (matches && tech) ? (
@@ -212,7 +235,9 @@ export function WorkList({ items }: { items: WorkItem[] }) {
                   </div>
                 </div>
 
-                <div className="flex flex-col items-end gap-4 self-stretch sm:self-start">
+                <div
+                  className={`flex flex-col items-end gap-4 self-stretch transition-opacity duration-300 sm:self-start ${hoverDim ? "opacity-40" : ""}`}
+                >
                   <div
                     aria-hidden="true"
                     className="relative aspect-[4/3] w-20 overflow-hidden rounded-lg border border-line bg-bg-2 sm:w-32 lg:pointer-fine:hidden"

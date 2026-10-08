@@ -21,8 +21,9 @@ export function UsedIn({ techs }: { techs: Record<TechId, UsedInEntry> }) {
   return (
     <div
       ref={panelRef}
+      id="used-in"
       tabIndex={-1}
-      className="flex min-h-full flex-col rounded-3xl border border-line bg-surface p-6 outline-none sm:p-7"
+      className="flex min-h-full scroll-mt-24 flex-col rounded-3xl border border-line bg-surface p-6 outline-none sm:p-7"
     >
       <p className="eyebrow">Used in</p>
 
@@ -62,7 +63,10 @@ export function UsedIn({ techs }: { techs: Record<TechId, UsedInEntry> }) {
           </>
         ) : (
           <p className="text-text-2">
-            Press a key on the keyboard, or pick a name in the list below, to see the projects it shows up in.
+            <span className="hidden md:inline">
+              Press a key on the keyboard, or pick a name in the list below, to see the projects it shows up in.
+            </span>
+            <span className="md:hidden">Tap a name in the list below to see the projects it shows up in.</span>
           </p>
         )}
       </div>

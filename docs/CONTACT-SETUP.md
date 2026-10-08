@@ -140,6 +140,14 @@ A free Gmail account can send script emails to **100 recipients a day**, so abou
 limit is reached, the form says the message couldn't be sent and shows Nico's email address instead; the limit
 frees up again within 24 hours. **checkSetup** (step 3) shows how many are left today.
 
+So that nobody can use up that limit by replaying the form, the script also limits itself: at most **20 messages
+per clock hour**, none once fewer than **10** of the day's emails are left (it answers `rate_limited`), and the
+same message from the same address again within **10 minutes** is refused (`duplicate`). In those cases the visitor
+sees "try again in a moment, or email me instead" with Nico's address. The script keeps only a counter and a hash
+for this, never what anyone wrote. If the script was already installed before these limits were added, paste the
+new `apps-script.gs` and publish it as in [Updating the script](#updating-the-script) (**Deploy → Manage
+deployments → Edit → Version: New version → Deploy**); until then the old version, without limits, keeps running.
+
 ## Spam and Promotions
 The first messages may land in **Spam** or **Promotions**. Open the message and click **Not spam**
 (or drag it to **Primary**). To keep them out of Spam for good:

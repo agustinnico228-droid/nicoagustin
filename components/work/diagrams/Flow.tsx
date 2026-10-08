@@ -99,7 +99,8 @@ function BoxShape({ lb, m }: { lb: LaidBox; m: Metrics }) {
   const accent = box.tone === "accent";
   const titleTop = y + m.padY + m.titleSize * 0.85;
   const itemsTop = y + m.padY + titleLines.length * m.titleLine + 10;
-  let line = 0;
+  // Running line index of each item block (no counter mutated during render).
+  const lineStarts = itemLines.map((_, i) => itemLines.slice(0, i).reduce((n, l) => n + l.length, 0));
   return (
     <g>
       <rect
@@ -121,8 +122,7 @@ function BoxShape({ lb, m }: { lb: LaidBox; m: Metrics }) {
       )}
       {itemLines.map((lines, i) =>
         lines.map((t, j) => {
-          const yy = itemsTop + (line + 1) * m.itemLine - 4;
-          line += 1;
+          const yy = itemsTop + ((lineStarts[i] ?? 0) + j + 1) * m.itemLine - 4;
           return (
             <text key={`${i}-${j}`} x={x + m.padX + (j === 0 ? 0 : 10)} y={yy} fontSize={m.itemSize} className="fill-text-2 font-sans">
               {j === 0 ? `· ${t}` : t}

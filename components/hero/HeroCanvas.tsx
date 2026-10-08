@@ -3,11 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { HeroScene } from "./HeroScene";
+import { useMotionPaused } from "@/lib/motion-store";
 import { useHtmlTheme } from "./useHtmlTheme";
 
 /*
  * The hero's WebGL layer (loaded with next/dynamic, ssr:false, only after first paint + idle).
- * Renders only while on screen and while the tab is visible; the pointer is read from window events
+ * Renders only while on screen, while the tab is visible and while the visitor has not paused animations; the pointer is read from window events
  * because the canvas itself never receives pointer events.
  */
 export default function HeroCanvas({ onReady }: { onReady?: () => void }) {
@@ -16,6 +17,7 @@ export default function HeroCanvas({ onReady }: { onReady?: () => void }) {
   const [inView, setInView] = useState(true);
   const [tabVisible, setTabVisible] = useState(true);
   const theme = useHtmlTheme();
+  const paused = useMotionPaused();
 
   useEffect(() => {
     const el = wrapRef.current;
@@ -42,7 +44,7 @@ export default function HeroCanvas({ onReady }: { onReady?: () => void }) {
     };
   }, []);
 
-  const running = inView && tabVisible;
+  const running = inView && tabVisible && !paused;
 
   return (
     <div ref={wrapRef} className="pointer-events-none absolute inset-0">

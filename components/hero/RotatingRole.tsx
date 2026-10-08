@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore } from "react";
+import { toggleMotionPaused, useMotionPaused } from "@/lib/motion-store";
 
 const REDUCE = "(prefers-reduced-motion: reduce)";
 
@@ -12,12 +13,15 @@ function subscribeMotion(onChange: () => void) {
 
 /*
  * The hero role line: the roles slide up through a masked slot every ~3s.
- * Screen readers get one static sentence; the animated slot is aria-hidden. A pause button satisfies WCAG 2.2.2.
+ * Screen readers get one static sentence; the animated slot is aria-hidden.
+ * The button right after the visible role pauses every hero animation (this rotation and the 3D skyline),
+ * which satisfies WCAG 2.2.2. Only the active role takes up width, so the button follows the visible text;
+ * the outgoing and incoming roles are absolutely positioned and clipped vertically only.
  * Reduced motion (or no JS): the first role, static.
  */
 export function RotatingRole({ roles }: { roles: readonly string[] }) {
   const [tick, setTick] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const paused = useMotionPaused();
   // false on the server and under reduced motion.
   const motionOk = useSyncExternalStore(
     subscribeMotion,
@@ -43,15 +47,15 @@ export function RotatingRole({ roles }: { roles: readonly string[] }) {
     <div className="flex items-center gap-3">
       <p className="min-w-0 font-display text-[clamp(1.3rem,3.2vw,2.1rem)] font-semibold leading-tight tracking-[-0.02em] text-text-2">
         <span className="sr-only">{sentence}</span>
-        <span aria-hidden="true" className="inline-grid overflow-hidden py-[0.08em] align-bottom">
+        <span aria-hidden="true" className="relative inline-block overflow-x-visible overflow-y-clip py-[0.08em] align-bottom">
           {roles.map((role, i) => {
             const state = i === active ? "active" : i === prev && canAnimate ? "prev" : "next";
             return (
               <span
                 key={role}
-                className={`text-accent-2 [grid-area:1/1] ${
-                  canAnimate ? "transition-[translate,opacity] duration-700 ease-out-expo" : ""
-                } ${
+                className={`block text-accent-2 ${
+                  state === "active" ? "relative" : "absolute left-0 top-[0.08em] whitespace-nowrap"
+                } ${canAnimate ? "transition-[translate,opacity] duration-700 ease-out-expo" : ""} ${
                   state === "active"
                     ? "translate-y-0 opacity-100"
                     : state === "prev"
@@ -68,11 +72,11 @@ export function RotatingRole({ roles }: { roles: readonly string[] }) {
       {canAnimate ? (
         <button
           type="button"
-          onClick={() => setPaused((p) => !p)}
-          aria-label="Pause the role animation"
+          onClick={toggleMotionPaused}
+          aria-label="Pause animations"
           aria-pressed={paused}
-          title={paused ? "Play" : "Pause"}
-          className="inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-line text-muted transition-colors hover:border-accent hover:text-accent"
+          title={paused ? "Play animations" : "Pause animations"}
+          className="inline-flex size-11 shrink-0 items-center justify-center rounded-full border border-line-strong bg-surface/60 text-text-2 transition-colors hover:border-accent hover:text-accent"
         >
           {paused ? (
             <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">

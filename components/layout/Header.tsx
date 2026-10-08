@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ContactLink } from "@/components/contact/ContactLink";
 import { nav, profile } from "@/lib/site";
 import { HeaderFrame } from "./HeaderFrame";
@@ -21,13 +22,13 @@ export function Header() {
   return (
     <HeaderFrame>
       <div className="container-x flex h-[4.5rem] items-center justify-between gap-3">
-        <a
+        <Link
           href="/"
           className="group inline-flex min-h-11 items-center gap-3 rounded-md font-display text-[1.05rem] font-semibold tracking-[-0.02em] text-text no-underline"
         >
           <Monogram className="transition-colors group-hover:border-accent" />
           <span className="whitespace-nowrap">{profile.name}</span>
-        </a>
+        </Link>
 
         <nav aria-label="Primary" className="hidden lg:block">
           <ul className="flex items-center gap-1">

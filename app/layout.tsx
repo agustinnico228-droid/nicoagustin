@@ -13,7 +13,7 @@ import "./globals.css";
 // Display face: the hero name is the LCP element, so only Sora is preloaded. Variable font: one file for every weight.
 const sora = Sora({ subsets: ["latin"], variable: "--font-sora", display: "swap" });
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans", display: "swap", preload: false });
-const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-plex-mono", display: "swap", preload: false });
+const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-plex-mono", display: "swap", preload: false });
 
 const description =
   "Nico Agustin is a fullstack web developer in Malolos, Bulacan, Philippines. Websites, CRMs and operations portals, reporting dashboards, and the marketing data behind them.";

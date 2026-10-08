@@ -12,7 +12,10 @@ const toNumber = (value: string) => Number(value.replace(/[^0-9.]/g, ""));
 function Tile({ kpi, big }: { kpi: Kpi; big?: boolean }) {
   return (
     <div className={big ? "rounded-xl border border-line-strong bg-surface-2 p-5" : "rounded-xl border border-line bg-bg-2 p-4"}>
-      <dt className="font-mono text-[0.7rem] uppercase tracking-[0.12em] text-muted">{kpi.label}</dt>
+      {/* Small tiles reserve two label lines from 2 columns up, so values in a row line up when a label wraps. */}
+      <dt className={`font-mono text-[0.7rem] uppercase tracking-[0.12em] text-muted ${big ? "" : "xs:min-h-[2lh]"}`}>
+        {kpi.label}
+      </dt>
       <dd
         className={
           big
