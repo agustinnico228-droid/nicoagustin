@@ -1,0 +1,10 @@
+# Not uploaded by the Vercel CLI (it builds from source)
+.next
+node_modules
+.content-collections
+.screenshots
+test-results
+playwright-report
+.env*
+!.env.example
+*.tsbuildinfo

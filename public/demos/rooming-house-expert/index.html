@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en" data-a11y="1"><head>
+<meta name="robots" content="noindex, nofollow">
+<title>Rooming House Expert — Demo (sample data)</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
+
+<link rel="stylesheet" href="assets/fonts/fonts.css"><link rel="icon" href="assets/logo.png"><style id="a11y-css">
+.demo-sr{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+@layer a11y-defaults{
+:where(h3[data-a11y-was="h4"]){font-size:inherit;margin-block:1.33em}
+}
+@layer a11y-contrast{
+[data-c="1"]{color:#060606!important}
+[data-c="2"]{color:#383d39!important}
+[data-c="3"]{color:#6a726c!important}
+[role=tab][aria-selected=false][data-c-off="1"],[role=tab][aria-selected=false] [data-c-off="1"]{color:#6f7771!important}
+[role=tab][aria-selected=false][data-c-off="2"],[role=tab][aria-selected=false] [data-c-off="2"]{color:#7d34ac!important}
+[data-o="1"]{opacity:0.73!important}
+}
+</style></head>
+<body style="margin:0">
+<style>
+  
+  :root{
+    --purple:#BE5BF6; --green:#038810; --blue:#153DFD; --cyan:#02B6FD; --lilac:#C064F5;
+    --green-d:#02650C; --green-l:#2FBF4A; --purple-d:#8E3BC4;
+    --canvas:#F5F6F3; --white:#fff; --panel:#F1F3EF; --panel2:#E7EAE4;
+    --ink:#121A15; --ink2:#3A433D; --muted:#717A73; --line:#E6E9E3; --line2:#D6DAD3;
+    --night:#0D1411; --night2:#16211B;
+    --good:#038810; --bad:#D0342C; --warn:#E8871E;
+    
+    --s1:#038810; --s2:#BE5BF6; --s3:#153DFD; --s4:#02B6FD;
+    --s5:#E8871E; --s6:#D6208A; --s7:#5A6B78;
+    --grad:linear-gradient(90deg,var(--purple),var(--blue) 34%,var(--cyan) 67%,var(--green));
+    --shadow:0 1px 2px rgba(18,26,21,.04),0 10px 28px rgba(18,26,21,.06);
+    --shadow-sm:0 1px 2px rgba(18,26,21,.04),0 4px 14px rgba(18,26,21,.04);
+    --shadow-lift:0 2px 4px rgba(18,26,21,.05),0 18px 40px rgba(18,26,21,.10);
+    --radius:20px;
+    --display:'Inter',system-ui,-apple-system,sans-serif;
+    --sans:'Inter',system-ui,-apple-system,sans-serif;
+    --serif:'Playfair Display',Georgia,serif;
+    --accent:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--canvas);color:var(--ink);line-height:1.55;
+       -webkit-font-smoothing:antialiased;font-feature-settings:"cv11","ss01"}
+  h1,h2,h3:where(:not([data-a11y-was])),:is(h4,:where([data-a11y-was="h4"])){font-family:var(--display);font-weight:600;color:var(--ink);letter-spacing:-.02em}
+  em.acc,.acc{font-family:var(--serif);font-style:italic;font-weight:500;color:var(--green);letter-spacing:-.01em}
+  .wrap{max-width:1400px;margin:0 auto;padding:0 28px}
+  .tnum{font-variant-numeric:tabular-nums}
+
+  
+  header.top{position:relative;color:#fff;overflow:hidden;
+    background:
+      radial-gradient(900px 340px at 88% -10%,rgba(21,61,253,.22),transparent 60%),
+      radial-gradient(700px 300px at 8% 120%,rgba(3,136,16,.22),transparent 60%),
+      radial-gradient(520px 260px at 55% 130%,rgba(190,91,246,.16),transparent 65%),
+      linear-gradient(180deg,var(--night),var(--night2))}
+  
+  header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--grad)}
+  .top-inner{display:flex;align-items:center;gap:18px;padding:18px 28px 0;max-width:1400px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:16px;min-width:0}
+  .logo-pill{display:inline-flex;align-items:center;gap:10px;background:#fff;border-radius:999px;
+             padding:7px 18px 7px 10px;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+  .brand img{height:44px;width:auto;display:block}
+  
+  .crest{width:38px;height:38px;border-radius:12px;background:var(--grad);display:flex;align-items:center;
+         justify-content:center;font-weight:700;font-size:14px;color:#fff;flex:none}
+  .brand .wm{font-weight:700;font-size:15px;letter-spacing:.08em;color:var(--green);line-height:1.05;
+             text-transform:uppercase;white-space:nowrap}
+  
+  .brand.has-logo .wm{display:none}
+  .brand .tg{font-size:12.5px;color:rgba(255,255,255,.66);letter-spacing:.01em;font-weight:400}
+  .top-spacer{flex:1}
+  .top-meta{text-align:right;font-size:11.5px;color:rgba(255,255,255,.56);line-height:1.6}
+  .top-meta b{color:#fff;font-weight:600}
+  .srcbadge{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+            border-radius:999px;padding:1px 8px;margin-left:5px;border:1px solid rgba(255,255,255,.22);
+            color:rgba(255,255,255,.7)}
+  .srcbadge.fresh{border-color:rgba(47,191,74,.55);color:#7EE08F;background:rgba(47,191,74,.12)}
+  .srcbadge.old{border-color:rgba(255,120,110,.55);color:#FFA49C;background:rgba(208,52,44,.16)}
+  .syncbox{display:flex;align-items:center;gap:14px}
+  
+  .sync{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:13.5px;font-weight:600;
+        border:0;background:#fff;color:var(--green);padding:11px 22px;border-radius:999px;cursor:pointer;
+        transition:transform .15s, box-shadow .15s, background .15s;white-space:nowrap;
+        box-shadow:0 6px 20px rgba(0,0,0,.22)}
+  .sync:hover{transform:translateY(-1px);box-shadow:0 10px 26px rgba(0,0,0,.3)}
+  .sync[disabled]{opacity:.7;cursor:default;transform:none}
+  .sync.ok{background:#E9F8EC}
+  .sync.bad{background:#FDEBEA;color:var(--bad)}
+  .spin{width:12px;height:12px;border-radius:50%;border:2px solid rgba(3,136,16,.25);border-top-color:var(--green);
+        display:none;animation:spin .7s linear infinite}
+  .sync.busy .spin{display:inline-block}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .stale{color:#FFA49C;font-weight:700}
+  .agency{display:flex;align-items:center;gap:10px;padding-left:16px;margin-left:2px;border-left:1px solid rgba(255,255,255,.16)}
+  .agency .lbl{font-size:10px;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.12em;text-align:right}
+  
+  .agency img{height:22px;display:block;filter:brightness(0) invert(1);opacity:.82}
+  
+  .brand img[hidden], .agency img[hidden]{display:none}
+  .top-hero{max-width:1400px;margin:0 auto;padding:30px 28px 34px}
+  .eyebrow{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+           color:rgba(255,255,255,.86);border:1px solid rgba(255,255,255,.28);border-radius:999px;
+           padding:5px 14px;background:rgba(255,255,255,.06)}
+  .top-hero h1{color:#fff;font-weight:300;font-size:44px;line-height:1.08;letter-spacing:-.035em;margin-top:14px}
+  .top-hero h1 .acc{color:var(--green-l);font-weight:500}
+  .top-hero p{color:rgba(255,255,255,.66);font-size:14.5px;margin-top:8px;max-width:62ch}
+
+  
+  .tabbar{background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(12px);
+          border-bottom:1px solid var(--line);position:sticky;top:0;z-index:55}
+  .tabs{display:flex;gap:4px;padding:10px 28px;max-width:1400px;margin:0 auto;overflow-x:auto}
+  .tab{position:relative;border:none;background:transparent;font-family:var(--sans);font-size:13.5px;font-weight:500;
+       color:var(--muted);padding:9px 16px;cursor:pointer;border-radius:999px;transition:.15s;white-space:nowrap}
+  .tab:hover{color:var(--ink);background:var(--panel)}
+  .tab[aria-selected="true"]{color:#fff;background:var(--ink)}
+  .tab .ix{font-size:11px;font-weight:600;color:var(--green-l);margin-right:8px;font-variant-numeric:tabular-nums}
+  .tab:not([aria-selected="true"]) .ix{color:var(--purple-d);opacity:.8}
+
+  
+  .controls{background:rgba(245,246,243,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+            position:sticky;top:57px;z-index:50}
+  .controls-inner{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:12px 64px 12px 28px;max-width:1400px;margin:0 auto;position:relative}
+  .ctuck{position:absolute;top:12px;right:22px;display:inline-flex;align-items:center;gap:6px;
+         border:1px solid var(--line2);background:var(--white);color:var(--muted);
+         font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.02em;
+         padding:5px 11px;border-radius:999px;cursor:pointer;transition:.15s;z-index:2}
+  .ctuck:hover{border-color:var(--ink);color:var(--ink)}
+  .ctuck .cv{font-size:8px;transition:transform .18s}
+  .controls.tucked .cgroup,.controls.tucked .sep{display:none}
+  .controls.tucked .controls-inner{padding:8px 64px 8px 28px;gap:0}
+  .controls.tucked .rangenote{padding-top:0}
+  .controls.tucked .ctuck{top:6px}
+  .controls.tucked .ctuck .cv{transform:rotate(180deg)}
+  .cgroup{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .clabel{font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:600;margin-right:4px}
+  .preset{font-family:var(--sans);font-size:12.5px;font-weight:500;border:1px solid var(--line2);background:var(--white);
+          color:var(--ink2);padding:6px 13px;border-radius:999px;cursor:pointer;transition:.15s}
+  .preset:hover{border-color:var(--ink);color:var(--ink)}
+  .preset.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .preset.bench.active{background:var(--purple-d);border-color:var(--purple-d);color:#fff}
+  input[type=date],select,input[type=search]{font-family:var(--sans);font-size:12.5px;color:var(--ink);border:1px solid var(--line2);
+          background:var(--white);border-radius:999px;padding:6px 12px;cursor:pointer;font-weight:500;outline:none;transition:border-color .15s}
+  input[type=date]:focus,select:focus,input[type=search]:focus{border-color:var(--ink)}
+  input[type=search]{cursor:text;min-width:170px}
+  select{max-width:260px}
+  .sep{width:1px;height:22px;background:var(--line2)}
+  .bench-group{background:rgba(190,91,246,.08);border:1px solid rgba(190,91,246,.28);border-radius:999px;padding:4px 6px 4px 14px}
+  .bench-group .clabel{color:var(--purple-d)}
+  input[type=date].bench-date{border-color:rgba(142,59,196,.35);color:var(--purple-d)}
+  .rangenote{width:100%;font-size:12px;color:var(--muted);padding-top:2px}
+  .rangenote b{color:var(--ink2);font-weight:600}
+  .rangenote .bench{color:var(--purple-d)}
+  
+  .acctgroup{display:inline-flex;border:1px solid var(--line2);border-radius:999px;overflow:hidden;background:var(--white);padding:2px}
+  .acctgroup button{border:none;background:transparent;font-family:var(--sans);font-size:12.5px;font-weight:500;
+                    color:var(--ink2);padding:5px 12px;cursor:pointer;white-space:nowrap;transition:.14s;border-radius:999px}
+  .acctgroup button:hover{background:var(--panel)}
+  .acctgroup button.on{background:var(--ink);color:#fff}
+
+  
+  .seg{display:inline-flex;align-items:center;gap:2px;border:1px solid var(--line2);border-radius:999px;
+       background:var(--white);padding:2px}
+  .seg .cap{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);
+            font-weight:600;padding:0 8px 0 10px}
+  .seg button{border:none;background:transparent;font-family:var(--sans);font-size:12px;font-weight:500;
+              color:var(--ink2);padding:5px 12px;cursor:pointer;transition:.14s;white-space:nowrap;border-radius:999px}
+  .seg button:hover{background:var(--panel)}
+  .seg button.on{background:var(--ink);color:#fff}
+  .seg.mini button{font-size:11.5px;padding:4px 10px}
+
+  
+  main{padding:30px 0 80px}
+  .tab-pane[hidden]{display:none}
+  section{margin-bottom:44px}
+  .shead{display:flex;align-items:baseline;gap:14px;margin-bottom:18px;flex-wrap:wrap}
+  .shead h2{font-size:22px;font-weight:600;letter-spacing:-.025em}
+  .shead .sub{font-size:13.5px;color:var(--muted)}
+  .shead .spacer{flex:1}
+  .grid{display:grid;gap:18px}
+  .g2{grid-template-columns:repeat(auto-fit,minmax(360px,1fr))}
+  .g3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+  .card{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px 22px;
+        box-shadow:var(--shadow-sm);position:relative;overflow:hidden}
+  
+  .card::after{content:none}
+  .card.plain::after{display:none}
+  .card h3:where(:not([data-a11y-was])){font-size:14.5px;font-weight:600;margin-bottom:2px}
+  .card .csub{font-size:12px;color:var(--muted);margin-bottom:12px}
+  .card .chead{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+  .card .chead .spacer{flex:1}
+  .note{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.6;max-width:150ch}
+  .note b{color:var(--ink2);font-weight:600}
+  .note.budget:empty{display:none}
+  .note.budget{background:#FFF8EC;border:1px solid #F3DDB5;color:#6B5426;border-radius:14px;padding:11px 15px;margin-top:16px}
+  .note.budget b{color:#4D3B14}
+
+  
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px}
+  .kpi{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+       padding:18px 20px 20px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;
+       transition:transform .16s, box-shadow .16s}
+  .kpi::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--green)}
+  .kpi:hover{transform:translateY(-2px);box-shadow:var(--shadow-lift)}
+  .kpi .kl{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:600}
+  .kpi .kv{font-weight:600;font-size:32px;color:var(--ink);line-height:1.1;margin-top:8px;letter-spacing:-.035em;
+           font-variant-numeric:tabular-nums}
+  .kpi .kd{font-size:12px;color:var(--muted);margin-top:5px}
+  .kpi .kv .delta{font-size:13px;font-weight:600;margin-left:8px;letter-spacing:0;vertical-align:5px}
+  .kpi.sel{cursor:pointer;user-select:none}
+  .kpi.sel .kl{display:flex;align-items:center;gap:7px}
+  .kpi.sel .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .kpi.sel.off{opacity:.55;background:#FAFBF9;box-shadow:none}
+  .kpi.sel.off::after{opacity:.25}
+  .kpi.sel.off .dot{background:transparent !important;box-shadow:inset 0 0 0 2px var(--line2)}
+  .kpi.sel.off .kv{color:var(--muted)}
+  
+  .kpi.hero{background:radial-gradient(420px 200px at 100% 0%,rgba(3,136,16,.38),transparent 70%),
+                       linear-gradient(160deg,var(--night2),var(--night));
+            border-color:transparent;color:#fff}
+  .kpi.hero .kl{color:rgba(255,255,255,.62)}
+  .kpi.hero .kv{color:#fff;font-size:38px}
+  .kpi.hero .kd{color:rgba(255,255,255,.62)}
+  .kpi.hero .delta{color:#7EE08F !important}
+  .kpi.hero::after{background:var(--green-l)}
+
+  
+  .stages{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:18px}
+  .stage{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);
+         box-shadow:var(--shadow-sm);overflow:hidden;position:relative;padding-bottom:6px;
+         transition:transform .16s, box-shadow .16s}
+  .stage:hover{transform:translateY(-2px);box-shadow:var(--shadow-lift)}
+  
+  .stage::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px}
+  .stage-head{padding:18px 20px 12px;position:relative}
+  .stage-head h3:where(:not([data-a11y-was])){font-size:16px;font-weight:600;display:flex;align-items:center;gap:9px}
+  .stage-head h3:where(:not([data-a11y-was]))::before{content:"";width:9px;height:9px;border-radius:50%;flex:none;background:currentColor}
+  .stage-head .n{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--muted);margin-top:3px}
+  .stage.s1 h3:where(:not([data-a11y-was]))::before{background:var(--s3)} .stage.s2 h3:where(:not([data-a11y-was]))::before{background:var(--s2)}
+  .stage.s3 h3:where(:not([data-a11y-was]))::before{background:var(--s1)} .stage.s4 h3:where(:not([data-a11y-was]))::before{background:var(--s4)}
+  .stage.s1::after{background:var(--s3)} .stage.s2::after{background:var(--s2)}
+  .stage.s3::after{background:var(--s1)} .stage.s4::after{background:var(--s4)}
+  .stage-body{padding:0 0 6px}
+  .cmp-cols{display:grid;grid-template-columns:1fr 1fr;font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-weight:600;
+            padding:8px 20px 8px;color:var(--muted);border-top:1px solid var(--line)}
+  .cmp-cols .b{color:var(--purple-d)}
+  .cmp-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:11px 20px;border-top:1px solid var(--line)}
+  .cmp-row .cell .l{font-size:11.5px;color:var(--muted);line-height:1.35}
+  .cmp-row .cell .v{font-weight:600;font-size:21px;color:var(--ink);letter-spacing:-.03em;line-height:1.25;margin-top:2px}
+  .cmp-row .cell.bench .v{color:var(--purple-d);font-weight:500}
+  .cmp-row .cell .v.na{color:var(--muted)}
+  .cmp-row .cell .l.na-why{font-size:10.5px;font-style:italic;margin-top:1px}
+  .cmp-row .cell .delta{font-size:11px;font-weight:600;margin-left:7px;letter-spacing:0;vertical-align:2px;
+                        padding:1px 7px;border-radius:999px}
+  .delta{white-space:nowrap;display:inline-block}
+  .delta.up{color:var(--good)} .delta.dn{color:var(--bad)} .delta.flat{color:var(--muted)} .delta.neu{color:var(--muted)}
+  .cmp-row .delta.up{background:rgba(3,136,16,.09)} .cmp-row .delta.dn{background:rgba(208,52,44,.09)}
+  .cmp-row .delta.neu,.cmp-row .delta.flat{background:var(--panel)}
+
+  
+  .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+  .ccard{background:var(--white);border:1px solid var(--line);border-radius:18px;
+         overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-sm);
+         position:relative;transition:transform .16s, box-shadow .16s, border-color .16s}
+  .ccard::after{content:none}
+  .ccard.click{cursor:pointer}
+  .ccard.click:hover{transform:translateY(-3px);box-shadow:var(--shadow-lift);border-color:var(--line2)}
+  .ccard.click:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+  .cc-thumb{width:100%;aspect-ratio:1/1;object-fit:cover;background:var(--panel);display:block}
+  
+  .cc-fb{width:100%;aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;
+         justify-content:center;gap:12px;text-align:center;padding:22px;
+         background:radial-gradient(260px 200px at 100% 0%,rgba(21,61,253,.28),transparent 70%),
+                    radial-gradient(240px 200px at 0% 100%,rgba(3,136,16,.30),transparent 70%),
+                    linear-gradient(160deg,var(--night2),var(--night))}
+  .cc-fb .mk{font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+  .cc-fb .hd{font-family:var(--serif);font-style:italic;font-size:17px;font-weight:500;color:#fff;line-height:1.3;
+             display:-webkit-box;-webkit-line-clamp:5;line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+  .cc-b{padding:13px 15px 15px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .cc-h{font-weight:600;font-size:13px;line-height:1.35;color:var(--ink);
+        display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .cc-copy{color:var(--muted);font-size:11.5px;line-height:1.45;
+           display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .cc-m{display:flex;flex-wrap:wrap;gap:3px 12px;font-size:11px;color:var(--muted);
+        border-top:1px solid var(--line);padding-top:9px;margin-top:auto}
+  .cc-m b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  
+  .cmod{position:fixed;inset:0;background:rgba(13,20,17,.66);display:none;align-items:center;
+        justify-content:center;z-index:300;padding:26px;backdrop-filter:blur(6px)}
+  .cmod.on{display:flex}
+  .cmod-card{position:relative;width:100%;max-width:900px;max-height:90vh;overflow:auto;
+             background:var(--white);border-radius:24px;box-shadow:0 30px 90px rgba(13,20,17,.45)}
+  .cmod-x{position:absolute;top:14px;right:14px;z-index:2;border:1px solid var(--line2);
+          background:var(--white);color:var(--ink);width:34px;height:34px;border-radius:999px;
+          cursor:pointer;font-size:15px;line-height:1}
+  .cmod-x:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+  .cmod-body{display:flex;gap:24px;padding:28px;flex-wrap:wrap}
+  .cm-media{flex:0 0 340px;max-width:100%}
+  .cm-media img{width:100%;border-radius:16px;display:block;background:var(--panel)}
+  .cm-noimg{width:100%;min-height:250px;display:flex;align-items:center;justify-content:center;
+            text-align:center;padding:22px;background:var(--panel);border-radius:16px;
+            color:var(--muted);font-size:12.5px;line-height:1.5}
+  .cm-info{flex:1;min-width:270px;display:flex;flex-direction:column;gap:14px}
+  .cm-info h3:where(:not([data-a11y-was])){font-size:20px;line-height:1.25}
+  .cm-ad{font-size:11.5px;color:var(--muted)}
+  .cm-body{white-space:pre-wrap;font-size:13.5px;line-height:1.65;color:var(--ink2);margin:0}
+  .cm-metrics{display:flex;flex-wrap:wrap;gap:9px 20px;font-size:12.5px;color:var(--muted);
+              border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:13px 0}
+  .cm-metrics b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+  .cm-link{display:inline-block;align-self:flex-start;padding:10px 20px;border-radius:999px;background:var(--ink);color:#fff;
+           text-decoration:none;font-size:13px;font-weight:600}
+  .cm-link:hover{background:var(--green)}
+  .cm-nolink{font-size:12px;color:var(--muted)}
+  .cm-cap{font-size:11px;color:var(--muted)}
+
+  
+  .tblwrap{overflow-x:auto;border-radius:16px;border:1px solid var(--line);background:var(--white)}
+  table{border-collapse:collapse;width:100%;font-size:12.5px}
+  thead th{background:#F7F8F5;color:var(--muted);font-weight:600;text-align:left;padding:11px 14px;white-space:nowrap;
+           font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;position:sticky;top:0;
+           border-bottom:1px solid var(--line)}
+  
+  thead th.srt{cursor:pointer;user-select:none;transition:color .12s, background .12s}
+  thead th.srt:hover{color:var(--ink);background:var(--panel)}
+  thead th.on{color:var(--ink);background:#EEF1EB}
+  thead th .ar{opacity:.4;font-size:9px;margin-left:4px}
+  thead th.on .ar{opacity:1;color:var(--green)}
+  tbody td{padding:10px 14px;border-top:1px solid var(--line);vertical-align:middle;color:var(--ink2)}
+  tbody tr:first-child td{border-top:none}
+  tbody tr:hover{background:#F8FAF7}
+  tbody tr.hl{background:rgba(3,136,16,.07)}
+  tbody tr.lo{background:rgba(208,52,44,.05)}
+  td.r,th.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  td.nm{max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink);font-weight:500}
+  .bic{position:relative;display:block;min-width:64px}
+  .bic i{position:absolute;left:0;top:50%;transform:translateY(-50%);height:16px;border-radius:999px;
+         background:rgba(190,91,246,.18);z-index:0}
+  .bic span{position:relative;z-index:1;padding-left:6px}
+  .tfoot{font-size:12px;color:var(--muted);padding:10px 2px 0}
+
+  
+  .chips{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;border-radius:999px;
+        padding:4px 6px 4px 12px;background:var(--ink);color:#fff}
+  .chip button{border:none;background:rgba(255,255,255,.18);color:#fff;width:18px;height:18px;border-radius:50%;
+               cursor:pointer;font-size:11px;line-height:1;font-weight:700}
+  .chip button:hover{background:var(--green-l)}
+
+  
+  .lgd{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}
+  .lg{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink2);cursor:pointer;user-select:none}
+  .lg .sw{width:10px;height:10px;border-radius:50%;display:inline-block}
+  .lg.off{opacity:.42;text-decoration:line-through}
+
+  
+  svg{display:block;width:100%;height:auto;overflow:visible}
+  .gl{stroke:var(--line);stroke-width:1}
+  .axis{font-size:10.5px;fill:var(--muted);font-family:var(--sans)}
+  .ref{stroke:var(--purple-d);stroke-width:1.5;stroke-dasharray:5 4;opacity:.8}
+  .reflbl{font-size:10px;fill:var(--purple-d);font-weight:600;font-family:var(--sans)}
+
+  
+  #tip{position:fixed;pointer-events:none;opacity:0;transition:opacity .1s;z-index:200;
+       background:var(--night);color:#fff;border-radius:12px;padding:10px 12px;font-size:12px;
+       box-shadow:0 14px 34px rgba(0,0,0,.28);min-width:140px;border:1px solid rgba(255,255,255,.08)}
+  #tip .tt{font-weight:600;font-size:12.5px;margin-bottom:6px;color:#7EE08F}
+  #tip .tr{display:flex;justify-content:space-between;gap:18px;line-height:1.65}
+  #tip .tr .m{color:rgba(255,255,255,.62)}
+  #tip .tr span:last-child{font-variant-numeric:tabular-nums;font-weight:600}
+
+  
+  .insights{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+  .insight{display:flex;gap:13px;background:var(--white);border:1px solid var(--line);
+           border-radius:18px;padding:16px 18px;box-shadow:var(--shadow-sm)}
+  .insight .ico{font-size:16px;line-height:1;width:34px;height:34px;flex:none;border-radius:999px;
+                background:var(--panel);display:flex;align-items:center;justify-content:center}
+  .insight .it{font-weight:600;font-size:13.5px;margin-bottom:3px;color:var(--ink)}
+  .insight .ib{font-size:12.5px;color:var(--ink2);line-height:1.55}
+  .insight .ib b{color:var(--ink);font-weight:600}
+
+  
+  .empty{background:repeating-linear-gradient(135deg,#FAFBF9,#FAFBF9 10px,#F3F5F1 10px,#F3F5F1 20px);
+         border:1px dashed var(--line2);border-radius:var(--radius);padding:22px 24px;color:var(--ink2)}
+  .empty :is(h4,:where([data-a11y-was="h4"])){font-size:13.5px;margin-bottom:5px}
+  .empty p{font-size:12.5px;color:var(--muted);line-height:1.6;max-width:70ch}
+  .empty code{background:var(--white);border:1px solid var(--line2);border-radius:6px;padding:1px 6px;font-size:11px}
+
+  
+  .donut-wrap{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+  .donut-wrap svg{width:190px;flex:none}
+  .dleg{flex:1;min-width:180px}
+  .dl{display:flex;align-items:center;gap:9px;font-size:12.5px;padding:4px 6px;cursor:pointer;border-radius:10px}
+  .dl:hover{background:var(--panel)}
+  .dl.off{opacity:.4}
+  .dl .sw{width:10px;height:10px;border-radius:50%;flex:none}
+  .dl .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dl .vv{font-variant-numeric:tabular-nums;font-weight:600;color:var(--ink)}
+  .dl .pp{font-size:11px;color:var(--muted);width:42px;text-align:right;font-variant-numeric:tabular-nums}
+
+  
+  .hm{display:grid;grid-template-columns:38px repeat(7,1fr);gap:4px;font-size:10px}
+  .hm .hh{color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;text-align:center;padding-bottom:2px}
+  .hm .rl{color:var(--muted);font-weight:500;display:flex;align-items:center;justify-content:flex-end;padding-right:5px}
+  .hm .cell{aspect-ratio:1.9;border-radius:6px;background:var(--panel);cursor:default}
+
+  @media (max-width:900px){
+    .top-hero h1{font-size:34px}
+  }
+  @media (max-width:760px){
+    .top-inner{flex-wrap:wrap;gap:12px;padding:16px 16px 0}
+    .syncbox{width:100%;justify-content:space-between;flex-wrap:wrap}
+    .top-meta{text-align:left}
+    .top-hero{padding:22px 16px 26px}
+    .top-hero h1{font-size:30px}
+    .wrap{padding:0 16px}
+    .tabs{padding:8px 16px}
+    .controls{position:static}
+    .controls-inner{padding:12px 16px}
+    .ctuck{display:none}
+    .cmp-row{grid-template-columns:1fr}
+    .g2{grid-template-columns:1fr}
+    
+    .grid[style]{grid-template-columns:1fr !important}
+    .sep{display:none}
+    .bench-group{border-radius:18px;padding:8px 10px}
+  }
+
+  
+  .loading{padding:90px 20px;text-align:center;color:var(--muted);font-size:15px}
+  .loading .spin2{width:28px;height:28px;margin:0 auto 14px;border-radius:50%;border:3px solid var(--line);
+        border-top-color:var(--green);animation:spin .8s linear infinite}
+
+
+
+
+@media print{
+  header.top, .tabbar, .tabs, .controls, .gbar, .filters, .filterbar,
+  .sync, .iconbtn, .ctuck, .tip, #tip, .toast, .cmod, .modal, .fsbtn, .exportbtn, .pager{
+    display:none !important;
+  }
+  
+  .tab-pane[hidden]{ display:block !important; }
+  [hidden].tab-pane{ display:block !important; }
+  body{ background:#fff !important; }
+  main{ padding-top:8px !important; }
+  
+  .card, .kpi, .cmp, .stage, .insight, .verdict, .panel, .hero, .bm, .ccard, .fresh, .acct{
+    box-shadow:none !important;
+  }
+  
+  section, .card, .kpi, .cmp, .stage, .insight, .verdict, .panel, .bm, .ccard, .acct{
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  
+  thead th{ position:static !important; }
+  
+  .tblwrap, .tablewrap, .scroll-x, .scrolly, .hbwrap, .macc{
+    overflow:visible !important; max-height:none !important;
+  }
+}
+
+
+@media (prefers-reduced-motion:reduce){
+  *, *::before, *::after{
+    transition:none !important;
+    animation:none !important;
+    scroll-behavior:auto !important;
+  }
+  html{ scroll-behavior:auto !important; }
+}
+
+
+.vh{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+</style>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand has-logo">
+      <span class="logo-pill">
+        <img id="logo" alt="Rooming House Expert" src="assets/logo.png">
+        <span class="crest" id="crest" style="display: none;">RHE</span>
+        <span class="wm" id="wm">ROOMING HOUSE EXPERT</span>
+      </span>
+      <div class="tg" id="tg">Turning underperforming property into cash-flow.</div>
+    </div>
+    <div class="top-spacer"></div>
+    <div class="syncbox">
+      <div class="top-meta">
+        <div>Updated <b id="updated">Oct 5, 2026</b></div>
+        <div>Data through <b id="thru" class="">Oct 5, 2026</b></div>
+        <div id="srcbadges" style="margin-top:3px"><span class="srcbadge fresh">Meta today</span><span class="srcbadge old">Email 6d</span></div>
+      </div>
+      
+      <div class="agency"><span class="demo-wordmark">Client reporting</span></div>
+    </div>
+  </div>
+  <div class="top-hero">
+    <span class="eyebrow">Performance dashboard</span>
+    <h1>Marketing <span class="acc">performance</span></h1>
+    <p>Meta ads, email and the lead magnet in one place — every figure recomputes with the filters below.</p>
+  </div>
+</header>
+
+<div class="tabbar" role="region" aria-label="Dashboard tabs">
+  <div class="tabs" role="tablist" aria-label="Dashboard sections">
+    <button class="tab" role="tab" data-tab="funnel" aria-selected="true" aria-controls="pane-funnel" tabindex="0" id="tabbtn-funnel" data-c-off="1"><span class="ix" data-c-off="2">01</span>Meta funnel</button>
+    <button class="tab" role="tab" data-tab="email" aria-selected="false" aria-controls="pane-email" tabindex="-1" id="tabbtn-email" data-c-off="1"><span class="ix" data-c-off="2">02</span>Email performance</button>
+    <button class="tab" role="tab" data-tab="magnet" aria-selected="false" aria-controls="pane-magnet" tabindex="-1" id="tabbtn-magnet" data-c-off="1"><span class="ix" data-c-off="2">03</span>Lead magnet &amp; sequence</button>
+    <button class="tab" role="tab" data-tab="demo" aria-selected="false" aria-controls="pane-demo" tabindex="-1" id="tabbtn-demo" data-c-off="1"><span class="ix" data-c-off="2">04</span>Demographics &amp; placement</button>
+  </div>
+</div>
+
+<div class="controls" id="controls" inert="">
+  <div class="controls-inner">
+    <button class="ctuck" id="ctuck" type="button"><span class="cv">▲</span><span id="ctucklbl">Hide</span></button>
+
+    <div class="cgroup">
+      <span class="clabel">Period</span>
+      <button class="preset" data-p="7" inert="">7d</button>
+      <button class="preset" data-p="30" inert="">30d</button>
+      <button class="preset" data-p="90" inert="">90d</button>
+      <button class="preset" data-p="ytd" inert="">YTD</button>
+      <button class="preset" data-p="all" inert="">All</button>
+      <input type="date" id="from" value="2026-09-06" inert=""><span style="color:var(--muted);font-size:11px">to</span><input type="date" id="to" value="2026-10-05" inert="">
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="cgroup bench-group">
+      <span class="clabel">KPI benchmark</span>
+      <button class="preset bench" data-b="90" inert="">90d</button>
+      <button class="preset bench" data-b="180" inert="">180d</button>
+      <button class="preset bench" data-b="365" inert="">365d</button>
+      <button class="preset bench" data-b="lastyear" inert="">Last year</button>
+      <input type="date" id="bfrom" class="bench-date" value="2025-01-01" inert=""><span style="color:var(--muted);font-size:11px">to</span><input type="date" id="bto" class="bench-date" value="2025-12-31" inert="">
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="cgroup">
+      <span class="clabel">Campaign</span>
+      <select id="campsel" inert=""><option value="" selected="">All campaigns</option></select>
+      <input type="search" id="adq" placeholder="Filter ad name…" inert="">
+    </div>
+
+    <div class="rangenote" id="rangenote"><b>Period</b> Sep 6, 2026 → Oct 5, 2026 (30 days) drives every tile, chart and table. <span class="bench"><b>KPI benchmark</b> Jan 1, 2025 → Dec 31, 2025 (52.1 weeks) drives the right-hand comparison column only.</span></div>
+  </div>
+</div>
+
+
+
+<div id="app">
+<main>
+
+
+<div class="tab-pane wrap" id="pane-funnel" role="tabpanel" aria-labelledby="tabbtn-funnel">
+
+  <section>
+    <div class="shead">
+      <h2>Where the funnel is winning or leaking</h2>
+      <span class="sub" data-c="3">actuals for the period, against your own benchmark average</span>
+    </div>
+    <div class="stages" id="stages"><div class="stage s1"><div class="stage-head"><h3>Awareness</h3><div class="n" data-c="3">are we reaching enough of the right people?</div></div><div class="stage-body"><div class="cmp-cols"><div>Period</div><div class="b">KPI benchmark</div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Reach (people)</div><div class="v tnum">119,395<span class="delta up">▲ 383%</span></div></div><div class="cell bench"><div class="l" data-c="3">avg / month</div><div class="v tnum">24,695</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Impressions</div><div class="v tnum">332,228<span class="delta up">▲ 475%</span></div></div><div class="cell bench"><div class="l" data-c="3">avg / week</div><div class="v tnum">13,477</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">CPM</div><div class="v tnum">$31.82<span class="delta up">▼ 17%</span></div></div><div class="cell bench"><div class="l" data-c="3">benchmark rate</div><div class="v tnum">$38.30</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Frequency (times seen per person)</div><div class="v tnum">2.78<span class="delta dn">▲ 17%</span></div></div><div class="cell bench"><div class="l" data-c="3">avg / month</div><div class="v tnum">2.37</div></div></div></div></div><div class="stage s2"><div class="stage-head"><h3>Consideration</h3><div class="n" data-c="3">interested enough to click?</div></div><div class="stage-body"><div class="cmp-cols"><div>Period</div><div class="b">KPI benchmark</div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">CTR (link clicks ÷ impr.)</div><div class="v tnum">0.94%<span class="delta dn">▼ 26%</span></div></div><div class="cell bench"><div class="l" data-c="3">benchmark rate</div><div class="v tnum">1.28%</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Link clicks</div><div class="v tnum">3,124<span class="delta up">▲ 323%</span></div></div><div class="cell bench"><div class="l" data-c="3">avg / week</div><div class="v tnum">172</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">CPC</div><div class="v tnum">$3.38<span class="delta dn">▲ 13%</span></div></div><div class="cell bench"><div class="l" data-c="3">benchmark rate</div><div class="v tnum">$3.00</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Engagement (likes + reactions)</div><div class="v tnum">3,046<span class="delta up">▲ 774%</span></div></div><div class="cell bench"><div class="l" data-c="3">avg / week</div><div class="v tnum">81</div></div></div></div></div><div class="stage s3"><div class="stage-head"><h3>Conversion</h3><div class="n" data-c="3">are they becoming leads?</div></div><div class="stage-body"><div class="cmp-cols"><div>Period</div><div class="b">KPI benchmark</div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Leads</div><div class="v tnum">314<span class="delta up">▲ 121%</span></div></div><div class="cell bench"><div class="l" data-c="3">avg / week</div><div class="v tnum">33</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">CTL (leads ÷ link clicks)</div><div class="v tnum">10.05%<span class="delta dn">▼ 48%</span></div></div><div class="cell bench"><div class="l" data-c="3">benchmark rate</div><div class="v tnum">19.22%</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Lead rate (leads ÷ impr.)</div><div class="v tnum">0.09%<span class="delta dn">▼ 62%</span></div></div><div class="cell bench"><div class="l" data-c="3">benchmark rate</div><div class="v tnum">0.25%</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">CPL</div><div class="v tnum">$33.67<span class="delta dn">▲ 116%</span></div></div><div class="cell bench"><div class="l" data-c="3">benchmark rate</div><div class="v tnum">$15.58</div></div></div></div></div><div class="stage s4"><div class="stage-head"><h3>Investment &amp; efficiency</h3><div class="n" data-c="3">what the money is buying</div></div><div class="stage-body"><div class="cmp-cols"><div>Period</div><div class="b">KPI benchmark</div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Spend</div><div class="v tnum">$10,571<span class="delta neu">▲ 378%</span></div></div><div class="cell bench"><div class="l" data-c="3">avg / week</div><div class="v tnum">$516.16</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">CPL</div><div class="v tnum">$33.67<span class="delta dn">▲ 116%</span></div></div><div class="cell bench"><div class="l" data-c="3">benchmark rate</div><div class="v tnum">$15.58</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Cost per 1,000 people reached</div><div class="v tnum">$88.54<span class="delta up">▼ 3%</span></div></div><div class="cell bench"><div class="l" data-c="3">avg / month</div><div class="v tnum">$90.82</div></div></div></div></div></div>
+    <div class="note budget" id="budgetNote"><b>Budget context.</b> This period spends <b>$2,467/week</b> against <b>$516/week</b> in the benchmark (4.8×), so the volume arrows (reach, impressions, clicks, leads) mostly track the budget. The <b>rate and cost</b> rows — CTR, CPC, CTL, lead rate, CPL — are the like-for-like read.</div>
+    <div class="note" data-c="3">
+      <b>How to read the two columns.</b> The left figure is the selected <b>period</b>. The right is the
+      <b>KPI benchmark</b>: for <i data-c="3">volume</i> metrics (impressions, clicks, leads, spend) it is the
+      <b>average per week</b> over the benchmark range; for <i data-c="3">rate and cost</i> metrics (CTR, CPM, CPC, CPL, CTL)
+      it is the <b>aggregate ratio</b> across the whole benchmark — never the average of daily ratios,
+      which skews badly when spend is uneven. Green always means <i data-c="3">better</i>: for costs that is <i data-c="3">down</i>;
+      spend has no better direction, so its arrow stays grey.
+      The <b>arrow</b> on a volume metric compares the period total against what the benchmark's weekly rate
+      would have produced over the same number of weeks, so it stays like-for-like whatever period you pick.
+      <br><b>Reach, frequency and cost per 1,000 people reached</b> count <i data-c="3">people</i>, which do not add up
+      across days — someone who sees an ad on five days is one person, not five. So these are Meta's own
+      deduplicated counts for the exact period (available for the preset ranges and whole calendar months),
+      and their benchmark is a <b>typical calendar month</b> in the benchmark range. Their arrow appears only
+      when the period is about a month long, because both climb naturally with a longer window.
+    </div>
+  </section>
+
+  <section>
+    <div class="shead">
+      <h2>Performance over time</h2>
+      <span class="sub" data-c="3">every metric on one canvas — click a scorecard to add or remove its line</span>
+      <span class="spacer"></span>
+      <div class="seg mini" id="seg-leads" data-seg="leads" inert="">
+        <span class="cap">Grain</span>
+        <button data-v="auto" class="on">Auto</button><button data-v="day">Day</button><button data-v="week">Week</button><button data-v="month">Month</button>
+      </div>
+      <div class="seg mini" id="seg-laxis" data-seg="laxis" inert="">
+        <span class="cap">Axis</span>
+        <button data-v="rel" class="on">Relative</button><button data-v="abs">Absolute</button>
+      </div>
+    </div>
+    <div class="kpis" id="leadScores" style="margin-bottom:14px"><div class="kpi sel" data-s="leads"><div class="kl" data-c="3"><span class="dot" style="background:var(--s1)"></span>Leads</div><div class="kv tnum">314</div><div class="kd" data-c="3">lead-form submissions</div><span style="position:absolute;left:0;right:0;bottom:0;height:5px;z-index:1;background:var(--s1)"></span></div><div class="kpi sel" data-s="cpl"><div class="kl" data-c="3"><span class="dot" style="background:var(--s6)"></span>Cost per lead</div><div class="kv tnum">$33.67</div><div class="kd" data-c="3">spend ÷ leads</div><span style="position:absolute;left:0;right:0;bottom:0;height:5px;z-index:1;background:var(--s6)"></span></div><div class="kpi sel off" data-s="spend"><div class="kl" data-c="1"><span class="dot" style="background:var(--s2)"></span>Spend</div><div class="kv tnum" data-c="2">$10,571</div><div class="kd" data-c="1">media investment</div><span style="position:absolute;left:0;right:0;bottom:0;height:5px;z-index:1;background:var(--s2);opacity:.25"></span></div><div class="kpi sel off" data-s="lclk"><div class="kl" data-c="1"><span class="dot" style="background:var(--s3)"></span>Link clicks</div><div class="kv tnum" data-c="2">3,124</div><div class="kd" data-c="1">clicks through to the site</div><span style="position:absolute;left:0;right:0;bottom:0;height:5px;z-index:1;background:var(--s3);opacity:.25"></span></div></div>
+    <div class="card">
+      <div class="chead">
+        <div><h3 id="leadsTitle">Leads, spend, clicks and CPL together</h3>
+             <div class="csub" id="leadsSub" data-c="3">30 days · Sep 6, 2026 → Oct 5, 2026 · 2 of 4 series shown</div></div>
+      </div>
+      <svg id="leadsChart" viewBox="0 0 1180 280" preserveAspectRatio="none"><defs><linearGradient id="ag48" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--s1)" stop-opacity="0.13"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity="0.01"></stop></linearGradient><linearGradient id="ag49" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--s6)" stop-opacity="0.13"></stop><stop offset="100%" stop-color="var(--s6)" stop-opacity="0.01"></stop></linearGradient></defs><line x1="52" y1="246" x2="1164" y2="246" class="gl"></line><text x="45" y="249.5" class="axis" text-anchor="end">0%</text><line x1="52" y1="187.5" x2="1164" y2="187.5" class="gl"></line><text x="45" y="191" class="axis" text-anchor="end">25%</text><line x1="52" y1="129" x2="1164" y2="129" class="gl"></line><text x="45" y="132.5" class="axis" text-anchor="end">50%</text><line x1="52" y1="70.5" x2="1164" y2="70.5" class="gl"></line><text x="45" y="74" class="axis" text-anchor="end">75%</text><line x1="52" y1="12" x2="1164" y2="12" class="gl"></line><text x="45" y="15.5" class="axis" text-anchor="end">100%</text><path d="M52.0 168.0L90.3 78.9L128.7 112.3L167.0 12.0L205.4 179.1L243.7 168.0L282.1 45.4L320.4 90.0L358.8 168.0L397.1 90.0L435.4 123.4L473.8 123.4L512.1 145.7L550.5 156.9L588.8 101.1L627.2 201.4L665.5 90.0L703.9 145.7L742.2 112.3L780.6 145.7L818.9 78.9L857.2 145.7L895.6 145.7L933.9 145.7L972.3 101.1L1010.6 112.3L1049.0 156.9L1087.3 145.7L1125.7 201.4L1164.0 190.3L1164.0 246.0L52.0 246.0Z" fill="url(#ag48)" stroke="none"></path><path d="M52.0 168.0L90.3 78.9L128.7 112.3L167.0 12.0L205.4 179.1L243.7 168.0L282.1 45.4L320.4 90.0L358.8 168.0L397.1 90.0L435.4 123.4L473.8 123.4L512.1 145.7L550.5 156.9L588.8 101.1L627.2 201.4L665.5 90.0L703.9 145.7L742.2 112.3L780.6 145.7L818.9 78.9L857.2 145.7L895.6 145.7L933.9 145.7L972.3 101.1L1010.6 112.3L1049.0 156.9L1087.3 145.7L1125.7 201.4L1164.0 190.3" fill="none" stroke="var(--s1)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"></path><circle cx="52" cy="168" r="2.5" fill="var(--s1)"></circle><circle cx="90.3" cy="78.8" r="2.5" fill="var(--s1)"></circle><circle cx="128.6" cy="112.2" r="2.5" fill="var(--s1)"></circle><circle cx="167.0" cy="12" r="2.5" fill="var(--s1)"></circle><circle cx="205.3" cy="179.1" r="2.5" fill="var(--s1)"></circle><circle cx="243.7" cy="168" r="2.5" fill="var(--s1)"></circle><circle cx="282.0" cy="45.4" r="2.5" fill="var(--s1)"></circle><circle cx="320.4" cy="90.0" r="2.5" fill="var(--s1)"></circle><circle cx="358.7" cy="168" r="2.5" fill="var(--s1)"></circle><circle cx="397.1" cy="90.0" r="2.5" fill="var(--s1)"></circle><circle cx="435.4" cy="123.4" r="2.5" fill="var(--s1)"></circle><circle cx="473.7" cy="123.4" r="2.5" fill="var(--s1)"></circle><circle cx="512.1" cy="145.7" r="2.5" fill="var(--s1)"></circle><circle cx="550.4" cy="156.8" r="2.5" fill="var(--s1)"></circle><circle cx="588.8" cy="101.1" r="2.5" fill="var(--s1)"></circle><circle cx="627.1" cy="201.4" r="2.5" fill="var(--s1)"></circle><circle cx="665.5" cy="90.0" r="2.5" fill="var(--s1)"></circle><circle cx="703.8" cy="145.7" r="2.5" fill="var(--s1)"></circle><circle cx="742.2" cy="112.2" r="2.5" fill="var(--s1)"></circle><circle cx="780.5" cy="145.7" r="2.5" fill="var(--s1)"></circle><circle cx="818.8" cy="78.8" r="2.5" fill="var(--s1)"></circle><circle cx="857.2" cy="145.7" r="2.5" fill="var(--s1)"></circle><circle cx="895.5" cy="145.7" r="2.5" fill="var(--s1)"></circle><circle cx="933.9" cy="145.7" r="2.5" fill="var(--s1)"></circle><circle cx="972.2" cy="101.1" r="2.5" fill="var(--s1)"></circle><circle cx="1010.6" cy="112.2" r="2.5" fill="var(--s1)"></circle><circle cx="1048.9" cy="156.8" r="2.5" fill="var(--s1)"></circle><circle cx="1087.3" cy="145.7" r="2.5" fill="var(--s1)"></circle><circle cx="1125.6" cy="201.4" r="2.5" fill="var(--s1)"></circle><circle cx="1164" cy="190.2" r="2.5" fill="var(--s1)"></circle><path d="M52.0 113.6L90.3 176.8L128.7 167.5L167.0 194.4L205.4 56.8L243.7 110.8L282.1 175.7L320.4 160.7L358.8 90.4L397.1 166.4L435.4 150.0L473.8 160.7L512.1 129.6L550.5 111.4L588.8 157.9L627.2 12.0L665.5 165.6L703.9 99.0L742.2 164.3L780.6 134.3L818.9 173.1L857.2 130.4L895.6 132.0L933.9 137.6L972.3 162.0L1010.6 154.1L1049.0 126.8L1087.3 132.6L1125.7 35.7L1164.0 72.1L1164.0 246.0L52.0 246.0Z" fill="url(#ag49)" stroke="none"></path><path d="M52.0 113.6L90.3 176.8L128.7 167.5L167.0 194.4L205.4 56.8L243.7 110.8L282.1 175.7L320.4 160.7L358.8 90.4L397.1 166.4L435.4 150.0L473.8 160.7L512.1 129.6L550.5 111.4L588.8 157.9L627.2 12.0L665.5 165.6L703.9 99.0L742.2 164.3L780.6 134.3L818.9 173.1L857.2 130.4L895.6 132.0L933.9 137.6L972.3 162.0L1010.6 154.1L1049.0 126.8L1087.3 132.6L1125.7 35.7L1164.0 72.1" fill="none" stroke="var(--s6)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"></path><circle cx="52" cy="113.5" r="2.5" fill="var(--s6)"></circle><circle cx="90.3" cy="176.8" r="2.5" fill="var(--s6)"></circle><circle cx="128.6" cy="167.4" r="2.5" fill="var(--s6)"></circle><circle cx="167.0" cy="194.4" r="2.5" fill="var(--s6)"></circle><circle cx="205.3" cy="56.7" r="2.5" fill="var(--s6)"></circle><circle cx="243.7" cy="110.8" r="2.5" fill="var(--s6)"></circle><circle cx="282.0" cy="175.6" r="2.5" fill="var(--s6)"></circle><circle cx="320.4" cy="160.7" r="2.5" fill="var(--s6)"></circle><circle cx="358.7" cy="90.3" r="2.5" fill="var(--s6)"></circle><circle cx="397.1" cy="166.4" r="2.5" fill="var(--s6)"></circle><circle cx="435.4" cy="150.0" r="2.5" fill="var(--s6)"></circle><circle cx="473.7" cy="160.7" r="2.5" fill="var(--s6)"></circle><circle cx="512.1" cy="129.6" r="2.5" fill="var(--s6)"></circle><circle cx="550.4" cy="111.3" r="2.5" fill="var(--s6)"></circle><circle cx="588.8" cy="157.8" r="2.5" fill="var(--s6)"></circle><circle cx="627.1" cy="12" r="2.5" fill="var(--s6)"></circle><circle cx="665.5" cy="165.6" r="2.5" fill="var(--s6)"></circle><circle cx="703.8" cy="98.9" r="2.5" fill="var(--s6)"></circle><circle cx="742.2" cy="164.3" r="2.5" fill="var(--s6)"></circle><circle cx="780.5" cy="134.2" r="2.5" fill="var(--s6)"></circle><circle cx="818.8" cy="173.0" r="2.5" fill="var(--s6)"></circle><circle cx="857.2" cy="130.4" r="2.5" fill="var(--s6)"></circle><circle cx="895.5" cy="132.0" r="2.5" fill="var(--s6)"></circle><circle cx="933.9" cy="137.5" r="2.5" fill="var(--s6)"></circle><circle cx="972.2" cy="161.9" r="2.5" fill="var(--s6)"></circle><circle cx="1010.6" cy="154.0" r="2.5" fill="var(--s6)"></circle><circle cx="1048.9" cy="126.7" r="2.5" fill="var(--s6)"></circle><circle cx="1087.3" cy="132.6" r="2.5" fill="var(--s6)"></circle><circle cx="1125.6" cy="35.6" r="2.5" fill="var(--s6)"></circle><circle cx="1164" cy="72.1" r="2.5" fill="var(--s6)"></circle><text x="52" y="263" class="axis" text-anchor="middle">Sun 6 Sep</text><text x="167.0" y="263" class="axis" text-anchor="middle">Wed 9 Sep</text><text x="282.0" y="263" class="axis" text-anchor="middle">Sat 12 Sep</text><text x="397.1" y="263" class="axis" text-anchor="middle">Tue 15 Sep</text><text x="512.1" y="263" class="axis" text-anchor="middle">Fri 18 Sep</text><text x="627.1" y="263" class="axis" text-anchor="middle">Mon 21 Sep</text><text x="742.2" y="263" class="axis" text-anchor="middle">Thu 24 Sep</text><text x="857.2" y="263" class="axis" text-anchor="middle">Sun 27 Sep</text><text x="972.2" y="263" class="axis" text-anchor="middle">Wed 30 Sep</text><text x="1087.3" y="263" class="axis" text-anchor="middle">Sat 3 Oct</text><text x="1164" y="263" class="axis" text-anchor="middle">Mon 5 Oct</text><rect x="52" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="89.0" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="126.1" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="163.2" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="200.2" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="237.3" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="274.4" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="311.4" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="348.5" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="385.6" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="422.6" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="459.7" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="496.8" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="533.8" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="570.9" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="608" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="645.0" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="682.1" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="719.2" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="756.2" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="793.3" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="830.4" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="867.4" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="904.5" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="941.6" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="978.6" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="1015.7" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="1052.8" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="1089.8" y="12" width="37.0" height="234" fill="transparent"></rect><rect x="1126.9" y="12" width="37.0" height="234" fill="transparent"></rect></svg>
+      <div class="lgd" id="leadsLegend"><div class="lg"><span class="sw" style="background:var(--s1)"></span>Leads</div><div class="lg"><span class="sw" style="background:var(--s6)"></span>Cost per lead</div><div class="lg off" data-o="1"><span class="sw" style="background:var(--s2)"></span>Spend</div><div class="lg off" data-o="1"><span class="sw" style="background:var(--s3)"></span>Link clicks</div></div>
+      <div class="note" id="leadsNote" data-c="3"><b>Relative.</b> Each series is indexed to its own peak on a shared 0–100% axis, so leads, spend, clicks and cost per lead can be compared <i data-c="3">by shape</i> despite living on wildly different scales. Tooltips show the real values. Bucketed by <b>day</b> (auto, from the selected span).</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead">
+      <h2>How far the funnel carries people</h2>
+      <span class="sub" data-c="3">every stage as a conversion, not a loss</span>
+    </div>
+    <div class="grid" style="grid-template-columns:minmax(320px,1.3fr) minmax(280px,1fr);gap:16px" id="funnelGrid">
+      <div class="card">
+        <h3>Impressions → link clicks → leads</h3>
+        <div class="csub" data-c="3">stage widths use a square-root scale, or leads vanish next to impressions</div>
+        <svg id="funnelChart" viewBox="0 0 560 260"><defs><linearGradient id="bg50" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s3)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s3)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg51" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s2)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s2)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg52" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient></defs><rect x="110" y="24" width="340" height="54.6" rx="6" fill="url(#bg50)"></rect><text x="88" y="52.3" text-anchor="end" style="font:900 12px var(--display);fill:var(--green-d)">Saw the ad</text><text x="88" y="64.3" class="axis" text-anchor="end">impressions</text><text x="548" y="56.3" text-anchor="end" style="font:900 16px var(--display);fill:var(--green-d)">332K</text><rect x="263.5" y="100.6" width="32.9" height="54.6" rx="6" fill="url(#bg51)"></rect><text x="88" y="129" text-anchor="end" style="font:900 12px var(--display);fill:var(--green-d)">Clicked through</text><text x="88" y="141" class="axis" text-anchor="end">link clicks</text><text x="548" y="133" text-anchor="end" style="font:900 16px var(--display);fill:var(--green-d)">3.1K</text><text x="280" y="94.6" text-anchor="middle" style="font:900 10.5px var(--sans);fill:var(--green)">0.94% of them clicked through</text><rect x="274.7" y="177.3" width="10.4" height="54.6" rx="6" fill="url(#bg52)"></rect><text x="88" y="205.6" text-anchor="end" style="font:900 12px var(--display);fill:var(--green-d)">Became a lead</text><text x="88" y="217.6" class="axis" text-anchor="end">lead-form submissions</text><text x="548" y="209.6" text-anchor="end" style="font:900 16px var(--display);fill:var(--green-d)">314</text><text x="280" y="171.3" text-anchor="middle" style="font:900 10.5px var(--sans);fill:var(--green)">10.05% of them became a lead</text></svg>
+      </div>
+      <div>
+        <div class="kpis" id="funnelKpis" style="grid-template-columns:1fr"><div class="kpi hero"><div class="kl">Leads won this period</div><div class="kv tnum">314<span class="delta up">▲ 121%</span></div><div class="kd">at $33.67 each</div></div><div class="kpi"><div class="kl" data-c="3">Ad → click</div><div class="kv tnum">0.94%<span class="delta dn">▼ 26%</span></div><div class="kd" data-c="3">of everyone who saw an ad clicked through</div></div><div class="kpi"><div class="kl" data-c="3">Click → lead</div><div class="kv tnum">10.1%<span class="delta dn">▼ 48%</span></div><div class="kd" data-c="3">of clickers filled in the form</div></div><div class="kpi"><div class="kl" data-c="3">Ad → lead</div><div class="kv tnum">0.095%<span class="delta dn">▼ 62%</span></div><div class="kd" data-c="3">end-to-end conversion</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead">
+      <h2>The actual ads that ran</h2>
+      <span class="sub" data-c="3">the creatives behind the numbers above</span>
+      <span class="spacer"></span>
+      <div class="seg mini" id="seg-crank" data-seg="crank" inert="">
+        <span class="cap">Rank by</span>
+        <button data-v="imps" class="on">Impressions</button><button data-v="leads">Leads</button><button data-v="cpl">Cheapest lead</button><button data-v="spend">Spend</button>
+      </div>
+    </div>
+    <div class="card plain" style="padding:0;border:0;box-shadow:none;background:transparent">
+      <div class="note" id="galNote" style="margin:0 0 12px" data-c="3">The <b>11</b> creatives with the highest impressions over the selected period, each with its own delivery. <b>Click any card</b> to read the full copy and open where the ad pointed. Images are copied into our own storage while Meta's link is live — Meta expires them once an ad stops, so a card without one falls back to the ad's headline rather than a blank box.</div>
+      <div class="cgrid" id="creativeGallery"><div class="ccard click" role="button" tabindex="0" inert=""><img class="cc-thumb" loading="lazy" alt="" src="assets/creative-01.jpg"><div class="cc-b"><div class="cc-h">Convert. Rent. Repeat.</div><div class="cc-copy">Turn 1 property into 2-3x rental income - see if yours qualifies! Not every home is suited to a rooming house conversion, but if yours is, it could be earning far more than a standard rental.</div><div class="cc-m"><span><b>56K</b> impr</span><span><b>545</b> clicks</span><span><b>$2.1K</b></span><span><b>72</b> leads</span><span><b>$29.77</b>/lead</span></div></div></div><div class="ccard click" role="button" tabindex="0" inert=""><img class="cc-thumb" loading="lazy" alt="" src="assets/creative-02.jpg"><div class="cc-b"><div class="cc-h">Reel_Compilation1 V2</div><div class="cc-copy">Most property investors are still playing the same tired game: low yield, long hold, hope for growth. We take a different approach.</div><div class="cc-m"><span><b>30K</b> impr</span><span><b>317</b> clicks</span><span><b>$1.0K</b></span><span><b>36</b> leads</span><span><b>$28.37</b>/lead</span></div></div></div><div class="ccard click" role="button" tabindex="0" inert=""><div class="cc-fb"><div class="mk">Rooming House Expert · Ad</div><div class="hd">Replace Chaos With Control</div></div><div class="cc-b"><div class="cc-h">Replace Chaos With Control</div><div class="cc-copy">High rooming house returns sound attractive. Getting the project built is where things get messy. A standardised studio system replaces the blank page.</div><div class="cc-m"><span><b>30K</b> impr</span><span><b>501</b> clicks</span><span><b>$1.2K</b></span><span><b>40</b> leads</span><span><b>$30.21</b>/lead</span></div></div></div><div class="ccard click" role="button" tabindex="0" inert=""><img class="cc-thumb" loading="lazy" alt="" src="assets/creative-09.jpg"><div class="cc-b"><div class="cc-h">4 Bedrooms to 9 Bedrooms Rooming House Conversion!</div><div class="cc-copy">From 4 bedrooms to 9: one smart conversion turned a modest rental into a high-yield rooming house.</div><div class="cc-m"><span><b>22K</b> impr</span><span><b>205</b> clicks</span><span><b>$870</b></span><span><b>22</b> leads</span><span><b>$39.53</b>/lead</span></div></div></div><div class="ccard click" role="button" tabindex="0" inert=""><img class="cc-thumb" loading="lazy" alt="" src="assets/creative-08.jpg"><div class="cc-b"><div class="cc-h">Council approval: learn more</div><div class="cc-copy">Permits for a rooming house conversion? In Victoria it takes both a planning permit and a building permit - and we handle it from start to finish.</div><div class="cc-m"><span><b>18K</b> impr</span><span><b>162</b> clicks</span><span><b>$680</b></span><span><b>19</b> leads</span><span><b>$35.77</b>/lead</span></div></div></div><div class="ccard click" role="button" tabindex="0" inert=""><img class="cc-thumb" loading="lazy" alt="" src="assets/creative-07.jpg"><div class="cc-b"><div class="cc-h">Could Your Rooming House Qualify?</div><div class="cc-copy">Some Victorian rooming houses may qualify for a land tax exemption. The Ultimate Rooming House Conversion Guide breaks down what investors need to know.</div><div class="cc-m"><span><b>15K</b> impr</span><span><b>265</b> clicks</span><span><b>$620</b></span><span><b>32</b> leads</span><span><b>$19.38</b>/lead</span></div></div></div><div class="ccard click" role="button" tabindex="0" inert=""><img class="cc-thumb" loading="lazy" alt="" src="assets/creative-04.jpg"><div class="cc-b"><div class="cc-h">Access the Private Investor Brochure</div><div class="cc-copy">Now for sale: a fully registered 9-bedroom rooming house, purpose-built for both people and performance. Tap Learn More for the brochure.</div><div class="cc-m"><span><b>15K</b> impr</span><span><b>217</b> clicks</span><span><b>$553</b></span><span><b>14</b> leads</span><span><b>$39.49</b>/lead</span></div></div></div><div class="ccard click" role="button" tabindex="0" inert=""><div class="cc-fb"><div class="mk">Rooming House Expert · Ad</div><div class="hd">Fully Licensed Class 1B Rooming House</div></div><div class="cc-b"><div class="cc-h">Fully Licensed Class 1B Rooming House</div><div class="cc-copy">A fully licensed Class 1B rooming house opportunity, already positioned for strong cashflow. Sign up for the full property brochure.</div><div class="cc-m"><span><b>14K</b> impr</span><span><b>166</b> clicks</span><span><b>$524</b></span><span><b>12</b> leads</span><span><b>$43.70</b>/lead</span></div></div></div><div class="ccard click" role="button" tabindex="0" inert=""><img class="cc-thumb" loading="lazy" alt="" src="assets/creative-06.jpg"><div class="cc-b"><div class="cc-h">A Proven High-Yield Rooming House Investment</div><div class="cc-copy">While most investors settle for 3-5% residential yields, this licensed Class 1B rooming house is doing something entirely different.</div><div class="cc-m"><span><b>14K</b> impr</span><span><b>258</b> clicks</span><span><b>$517</b></span><span><b>13</b> leads</span><span><b>$39.79</b>/lead</span></div></div></div><div class="ccard click" role="button" tabindex="0" inert=""><img class="cc-thumb" loading="lazy" alt="" src="assets/creative-05.jpg"><div class="cc-b"><div class="cc-h">Pivot to Positive Cash Flow</div><div class="cc-copy">Over the last two decades, my team and I have completed hundreds of conversions for savvy investors. We handle council permits, builders and designers so you do not have to.</div><div class="cc-m"><span><b>8.0K</b> impr</span><span><b>58</b> clicks</span><span><b>$303</b></span><span><b>9</b> leads</span><span><b>$33.67</b>/lead</span></div></div></div><div class="ccard click" role="button" tabindex="0" inert=""><img class="cc-thumb" loading="lazy" alt="" src="assets/creative-07.jpg"><div class="cc-b"><div class="cc-h">Could Your Rooming House Qualify?</div><div class="cc-copy">You might not have to pay land tax on your rooming house - some Victorian rooming houses may qualify for an exemption, subject to the relevant requirements.</div><div class="cc-m"><span><b>6.8K</b> impr</span><span><b>106</b> clicks</span><span><b>$241</b></span><span><b>13</b> leads</span><span><b>$18.53</b>/lead</span></div></div></div></div>
+      <div class="tfoot" id="galFoot" data-c="3">11 creatives ran in this period · 0 with a stored image · ranked by impressions.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead">
+      <h2>Campaigns</h2><span class="sub" data-c="3">click any column header to rank by it; CPL is a bar so outliers pop</span>
+      <span class="spacer"></span>
+      <div class="chips" id="campChips"></div>
+    </div>
+    <div class="tblwrap" tabindex="0" role="region" aria-label="Campaigns, scrollable table">
+      <table id="campTbl" data-sort="camp">
+        <thead><tr>
+          <th data-k="name" class="srt srt" inert="">Campaign<span class="ar">↕</span></th>
+          <th data-k="acct" class="srt srt" inert="">Ad account<span class="ar">↕</span></th>
+          <th class="r srt srt on" data-k="spend" inert="">Spend<span class="ar">↓</span></th>
+          <th class="r srt srt" data-k="imps" inert="">Impressions<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="ctr" inert="">Click-through rate<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="lclk" inert="">Link clicks<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="leads" inert="">Leads<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="ctl" inert="">Clicks → leads<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="cpl" inert="">Cost per lead<span class="ar">↕</span></th>
+        </tr></thead>
+        <tbody><tr style="cursor: pointer;"><td class="nm">LEADS_RHE_URHCG - 12/2025</td><td style="color:var(--muted);font-size:11.5px" data-c="3">RHE</td><td class="r">$6,279</td><td class="r">169,651</td><td class="r">0.95%</td><td class="r">1,611</td><td class="r">190</td><td class="r">11.8%</td><td class="r" style="background:rgba(212,42,42,0.1)">$33.05</td></tr><tr style="cursor: pointer;"><td class="nm">LISTING LEADS_SCD_Listing A-July 2026 Campaign</td><td style="color:var(--muted);font-size:11.5px" data-c="3">RHE</td><td class="r">$1,208</td><td class="r">30,091</td><td class="r">1.66%</td><td class="r">501</td><td class="r">40</td><td class="r">8.0%</td><td class="r" style="background:rgba(3,136,16,-0.0)">$30.21</td></tr><tr style="cursor: pointer;"><td class="nm">LEADS_RHE_Interstate_URHCG</td><td style="color:var(--muted);font-size:11.5px" data-c="3">RHE</td><td class="r">$861</td><td class="r">22,240</td><td class="r">1.67%</td><td class="r">371</td><td class="r">45</td><td class="r">12.1%</td><td class="r" style="background:rgba(3,136,16,0.2)">$19.14</td></tr><tr style="cursor: pointer;"><td class="nm">LIKES_RHE Page Campaign 03/31/2026</td><td style="color:var(--muted);font-size:11.5px" data-c="3">RHE</td><td class="r">$628</td><td class="r">68,114</td><td class="r">0.00%</td><td class="r">0</td><td class="r">0</td><td class="r">—</td><td class="r">—</td></tr><tr style="cursor: pointer;"><td class="nm">LISTING LEADS_SCD_Listing B-Dec2025</td><td style="color:var(--muted);font-size:11.5px" data-c="3">RHE</td><td class="r">$553</td><td class="r">14,902</td><td class="r">1.46%</td><td class="r">217</td><td class="r">14</td><td class="r">6.5%</td><td class="r" style="background:rgba(212,42,42,0.2)">$39.49</td></tr><tr style="cursor: pointer;"><td class="nm">LISTING LEADS_SCD_Listing C-April2026 Campaign</td><td style="color:var(--muted);font-size:11.5px" data-c="3">RHE</td><td class="r">$524</td><td class="r">13,721</td><td class="r">1.21%</td><td class="r">166</td><td class="r">12</td><td class="r">7.2%</td><td class="r" style="background:rgba(212,42,42,0.3)">$43.70</td></tr><tr style="cursor: pointer;"><td class="nm">LISTING LEADS_SCD_Listing D-February2026 Campaign</td><td style="color:var(--muted);font-size:11.5px" data-c="3">RHE</td><td class="r">$517</td><td class="r">13,509</td><td class="r">1.91%</td><td class="r">258</td><td class="r">13</td><td class="r">5.0%</td><td class="r" style="background:rgba(212,42,42,0.2)">$39.79</td></tr></tbody>
+      </table>
+    </div>
+    <div class="tfoot" id="campFoot" data-c="3">7 campaigns — click a row to filter the whole tab to that campaign.</div>
+  </section>
+
+  <section>
+    <div class="shead">
+      <h2>Creative fatigue</h2>
+      <span class="sub" data-c="3">click-through decaying as the same people see it more is the signal to refresh</span>
+    </div>
+    <div class="tblwrap" tabindex="0" role="region" aria-label="Creative fatigue, scrollable table">
+      <table id="adTbl" data-sort="ad">
+        <thead><tr>
+          <th data-k="name" class="srt srt" inert="">Ad<span class="ar">↕</span></th><th data-k="created" class="srt srt" inert="">First run<span class="ar">↕</span></th>
+          <th class="r srt srt on" data-k="spend" inert="">Spend<span class="ar">↓</span></th>
+          <th class="r srt srt" data-k="imps" inert="">Impressions<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="freq" inert="">Times seen per person<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="ctr" inert="">Click-through rate<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="leads" inert="">Leads<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="cpl" inert="">Cost per lead<span class="ar">↕</span></th>
+        </tr></thead>
+        <tbody><tr><td class="nm">Static Images_URHCG_Download</td><td>Mar 26, 2026</td><td class="r">$2,144</td><td class="r">55,925</td><td class="r">2.24</td><td class="r">0.97%</td><td class="r">72</td><td class="r" style="background:rgba(3,136,16,0.1)">$29.77</td></tr><tr class="lo"><td class="nm">Video Reel_Listing A_0726_2</td><td>Jul 16, 2026</td><td class="r">$1,208</td><td class="r">30,091</td><td class="r" style="color:var(--bad);font-weight:700">2.80</td><td class="r">1.66%</td><td class="r">40</td><td class="r" style="background:rgba(3,136,16,0.1)">$30.21</td></tr><tr class="lo"><td class="nm">Reel_Compilation1 V2</td><td>May 29, 2026</td><td class="r">$1,021</td><td class="r">30,245</td><td class="r" style="color:var(--bad);font-weight:700">2.54</td><td class="r">1.05%</td><td class="r">36</td><td class="r" style="background:rgba(3,136,16,0.1)">$28.37</td></tr><tr><td class="nm">Reel_AI_Signup</td><td>Jan 29, 2026</td><td class="r">$967</td><td class="r">28,168</td><td class="r">2.47</td><td class="r">0.96%</td><td class="r">26</td><td class="r" style="background:rgba(3,136,16,0.0)">$37.20</td></tr><tr><td class="nm">Reel_CarSeat2_Download</td><td>Apr 16, 2026</td><td class="r">$870</td><td class="r">21,644</td><td class="r">2.45</td><td class="r">0.95%</td><td class="r">22</td><td class="r" style="background:rgba(3,136,16,0.0)">$39.53</td></tr><tr><td class="nm">Reel_Community Looks_V1_LearnMore</td><td>Jan 1, 2026</td><td class="r">$855</td><td class="r">74,360</td><td class="r">2.09</td><td class="r">0.07%</td><td class="r">6</td><td class="r" style="background:rgba(212,42,42,0.3)">$142.43</td></tr><tr class="lo"><td class="nm">Reel_Council Approval_Learn More</td><td>Jan 20, 2026</td><td class="r">$680</td><td class="r">17,702</td><td class="r" style="color:var(--bad);font-weight:700">2.55</td><td class="r">0.92%</td><td class="r">19</td><td class="r" style="background:rgba(3,136,16,0.0)">$35.77</td></tr><tr class="lo"><td class="nm">RHE | Interstate | Land Tax</td><td>Apr 2, 2026</td><td class="r">$620</td><td class="r">15,484</td><td class="r" style="color:var(--bad);font-weight:700">2.65</td><td class="r">1.71%</td><td class="r">32</td><td class="r" style="background:rgba(3,136,16,0.2)">$19.38</td></tr><tr class="lo"><td class="nm">Static Images_Brochure_Listing B</td><td>Dec 5, 2025</td><td class="r">$553</td><td class="r">14,902</td><td class="r" style="color:var(--bad);font-weight:700">2.83</td><td class="r">1.46%</td><td class="r">14</td><td class="r" style="background:rgba(3,136,16,0.0)">$39.49</td></tr><tr><td class="nm">Static Images_LICENSED_Listing C_0528</td><td>Jun 3, 2026</td><td class="r">$524</td><td class="r">13,721</td><td class="r">2.40</td><td class="r">1.21%</td><td class="r">12</td><td class="r" style="background:rgba(3,136,16,0.0)">$43.70</td></tr></tbody>
+      </table>
+    </div>
+    <div class="tfoot" id="adFoot" data-c="3">Top 10 of 14 ads — click any column header to re-rank. Rows in red were seen 2.5+ times per person in this period, the point where click-through starts to decay (6 of 14 ads overall).</div>
+  </section>
+
+  <section>
+    <div class="shead"><h2>Reading of the funnel</h2><span class="sub" data-c="3">recomputed with your filters</span></div>
+    <div class="insights" id="funnelInsights"><div class="insight"><div class="ico">⚠️</div><div><div class="it">Cost per lead</div><div class="ib">You are paying <b>$33.67</b> per lead this period against a benchmark of <b>$15.58</b> — that is <b>116% more expensive</b> than your own baseline.</div></div></div><div class="insight"><div class="ico">📉</div><div><div class="it">Consideration</div><div class="ib">CTR is <b>0.94%</b> against a benchmark of <b>1.28%</b>. This is the weak link — people see the ad and do not click.</div></div></div><div class="insight"><div class="ico">🎯</div><div><div class="it">Click-to-lead</div><div class="ib"><b>10.1%</b> of link clicks become a lead (314 from 3,124). Benchmark <b>19.2%</b>. Clicks are arriving but the form is losing them.</div></div></div><div class="insight"><div class="ico">🔁</div><div><div class="it">Audience fatigue</div><div class="ib">Each person reached saw the ads <b>2.78</b> times in this period, above the 2.5 threshold — the same people are seeing them repeatedly. Expect CTR to decay; refresh creative or widen the audience.</div></div></div><div class="insight"><div class="ico">🏆</div><div><div class="it">Best and worst campaign</div><div class="ib"><b>LEADS_RHE_Interstate_URHCG</b> is your cheapest at <b>$19.14</b> per lead; <b>LISTING LEADS_SCD_Listing C-April2026 Campai</b> costs <b>$43.70</b> — 2.3× more for the same outcome.</div></div></div></div>
+  </section>
+</div>
+
+
+<div class="tab-pane wrap" id="pane-email" hidden="" role="tabpanel" aria-labelledby="tabbtn-email">
+
+  <section>
+    <div class="shead"><h2>The list</h2><span class="sub" data-c="3">how big it is and how much of it is awake</span></div>
+    <div class="kpis" id="emailTop"><div class="kpi"><div class="kl" data-c="3">Total contacts</div><div class="kv tnum">3,911</div><div class="kd" data-c="3">1,720 have opened at least once (44%)</div></div><div class="kpi"><div class="kl" data-c="3">New contacts in period</div><div class="kv tnum">125</div><div class="kd" data-c="3">Sep 6, 2026 → Oct 5, 2026</div></div><div class="kpi"><div class="kl" data-c="3">Emails sent (all time)</div><div class="kv tnum">82,782</div><div class="kd" data-c="3">from the send log</div></div><div class="kpi"><div class="kl" data-c="3">Broadcast campaigns</div><div class="kv tnum">11</div><div class="kd" data-c="3">of 34 total; the rest are automations</div></div><div class="kpi"><div class="kl" data-c="3">Active automations</div><div class="kv tnum">7</div><div class="kd" data-c="3">8 defined</div></div></div>
+  </section>
+
+  <section>
+    <div class="shead">
+      <h2>Sending and engagement</h2>
+      <span class="sub" data-c="3">period actuals against the benchmark</span>
+    </div>
+    <div class="stages" id="emailStages"><div class="stage s1"><div class="stage-head"><h3>Volume — all mail</h3><div class="n" data-c="3">every email, broadcast and automated</div></div><div class="stage-body"><div class="cmp-cols"><div>Period</div><div class="b">KPI benchmark</div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Emails sent</div><div class="v tnum">5,322<span class="delta up">▲ 24%</span></div></div><div class="cell bench"><div class="l" data-c="3">avg / week · from 21 Jul 25</div><div class="v tnum">1,001</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Opens</div><div class="v tnum">1,199<span class="delta dn">▼ 24%</span></div></div><div class="cell bench"><div class="l" data-c="3">avg / week · all history before this period</div><div class="v tnum">366</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Open rate (opens ÷ sends)</div><div class="v tnum">22.53%<span class="delta dn">▼ 6%</span></div></div><div class="cell bench"><div class="l" data-c="3">benchmark rate · all history before this period</div><div class="v tnum">23.95%</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Apple privacy prefetches</div><div class="v tnum">641<span class="delta dn">▼ 14%</span></div></div><div class="cell bench"><div class="l" data-c="3">avg / week · all history before this period</div><div class="v tnum">173</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Link clicks (all mail)</div><div class="v tnum" style="color:var(--muted)">—</div></div><div class="cell bench"><div class="l" style="font-style:italic" data-c="3">clicks are only reported per campaign</div><div class="v tnum" style="color:var(--muted);font-size:14px" data-c="3">n/a</div></div></div></div></div><div class="stage s2"><div class="stage-head"><h3>Engagement — broadcasts</h3><div class="n" data-c="3">measured on the campaigns, where it is exact</div></div><div class="stage-body"><div class="cmp-cols"><div>Period</div><div class="b">KPI benchmark</div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Recipients</div><div class="v tnum">3,718<span class="delta dn">▼ 37%</span></div></div><div class="cell bench"><div class="l" data-c="3">avg / week · all history before this period</div><div class="v tnum">1,380</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Open rate (openers ÷ recipients)</div><div class="v tnum">24.37%<span class="delta dn">▼ 22%</span></div></div><div class="cell bench"><div class="l" data-c="3">benchmark rate · all history before this period</div><div class="v tnum">31.09%</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Click rate (clickers ÷ recipients)</div><div class="v tnum">1.05%<span class="delta dn">▼ 15%</span></div></div><div class="cell bench"><div class="l" data-c="3">benchmark rate · all history before this period</div><div class="v tnum">1.24%</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Openers → clickers</div><div class="v tnum">4.30%<span class="delta up">▲ 8%</span></div></div><div class="cell bench"><div class="l" data-c="3">benchmark rate · all history before this period</div><div class="v tnum">3.98%</div></div></div></div></div><div class="stage s3"><div class="stage-head"><h3>Deliverability</h3><div class="n" data-c="3">the signals clients actually act on</div></div><div class="stage-body"><div class="cmp-cols"><div>Period</div><div class="b">KPI benchmark</div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Unsubscribes</div><div class="v tnum">11<span class="delta up">▼ 64%</span></div></div><div class="cell bench"><div class="l" data-c="3">avg / week · all history before this period</div><div class="v tnum">7</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Unsub rate</div><div class="v tnum">0.30%<span class="delta up">▼ 43%</span></div></div><div class="cell bench"><div class="l" data-c="3">benchmark rate · all history before this period</div><div class="v tnum">0.52%</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Bounces</div><div class="v tnum">24<span class="delta up">▼ 50%</span></div></div><div class="cell bench"><div class="l" data-c="3">avg / week · all history before this period</div><div class="v tnum">11</div></div></div><div class="cmp-row"><div class="cell"><div class="l" data-c="3">Bounce rate</div><div class="v tnum">0.65%<span class="delta up">▼ 21%</span></div></div><div class="cell bench"><div class="l" data-c="3">benchmark rate · all history before this period</div><div class="v tnum">0.81%</div></div></div></div></div></div>
+    <div class="note" id="emailBasisNote" data-c="3"><b>Two different scopes, deliberately.</b> <b>Opens</b> are available for ALL mail — they come from the tracking-pixel read event, so the top block covers automated mail as well as broadcasts. <b>Clicks</b> are only reported per campaign, so every click figure is scoped to the <b>broadcasts</b> and the automated volume is excluded from it. Apple Mail privacy prefetches are shown as their own line, NOT as a share of opens: they are a separate record that ActiveCampaign keeps out of its open count, and this dashboard does the same. <br><b>Open-to-click basis.</b> The old Looker report showed 125–144% because it divided <i data-c="3">total</i> clicks by <i data-c="3">unique</i> opens. This uses <b>unique clicks ÷ unique opens</b>, which caps at 100%. Across all broadcasts that is <b>4.0%</b> (the old basis would read 5.4%). <br><b>Engagement history starts May 2, 2026.</b> Opens and clicks come from an event stream ActiveCampaign only serves 100 rows at a time, so earlier periods show sends without opens until the backfill reaches them. Send volume is complete for the whole range.</div>
+  </section>
+
+  <section>
+    <div class="shead">
+      <h2>Sends vs opens vs clicks</h2>
+      <span class="sub" data-c="3">every series re-buckets to the grain you choose</span>
+      <span class="spacer"></span>
+      <div class="seg mini" id="seg-email" data-seg="email" inert="">
+        <span class="cap">Grain</span>
+        <button data-v="auto" class="on">Auto</button><button data-v="day">Day</button><button data-v="week">Week</button><button data-v="month">Month</button>
+      </div>
+      <div class="seg mini" id="seg-eaxis" data-seg="eaxis" inert="">
+        <span class="cap">Axis</span>
+        <button data-v="abs" class="on">Absolute</button><button data-v="rel">Relative</button>
+      </div>
+    </div>
+    <div class="kpis" id="emailScores" style="margin-bottom:14px"><div class="kpi sel" data-s="sends"><div class="kl" data-c="3"><span class="dot" style="background:var(--s3)"></span>Emails sent</div><div class="kv tnum">5,322</div><div class="kd" data-c="3">delivered in this period</div><span style="position:absolute;left:0;right:0;bottom:0;height:5px;z-index:1;background:var(--s3)"></span></div><div class="kpi sel" data-s="opens"><div class="kl" data-c="3"><span class="dot" style="background:var(--s1)"></span>Opens</div><div class="kv tnum">1,199</div><div class="kd" data-c="3">22.5% of sends</div><span style="position:absolute;left:0;right:0;bottom:0;height:5px;z-index:1;background:var(--s1)"></span></div><div class="kpi sel" data-s="mpp"><div class="kl" data-c="3"><span class="dot" style="background:var(--s7)"></span>Apple privacy prefetches</div><div class="kv tnum">641</div><div class="kd" data-c="3">machine prefetches — NOT counted in the open rate</div><span style="position:absolute;left:0;right:0;bottom:0;height:5px;z-index:1;background:var(--s7)"></span></div></div>
+    <div class="card">
+      <svg id="emailChart" viewBox="0 0 1180 270" preserveAspectRatio="none"><defs><linearGradient id="ag25" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--s3)" stop-opacity="0.13"></stop><stop offset="100%" stop-color="var(--s3)" stop-opacity="0.01"></stop></linearGradient><linearGradient id="ag26" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--s1)" stop-opacity="0.13"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity="0.01"></stop></linearGradient><linearGradient id="ag27" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--s7)" stop-opacity="0.13"></stop><stop offset="100%" stop-color="var(--s7)" stop-opacity="0.01"></stop></linearGradient></defs><line x1="52" y1="236" x2="1164" y2="236" class="gl"></line><text x="45" y="239.5" class="axis" text-anchor="end">0</text><line x1="52" y1="180" x2="1164" y2="180" class="gl"></line><text x="45" y="183.5" class="axis" text-anchor="end">125</text><line x1="52" y1="124" x2="1164" y2="124" class="gl"></line><text x="45" y="127.5" class="axis" text-anchor="end">250</text><line x1="52" y1="68" x2="1164" y2="68" class="gl"></line><text x="45" y="71.5" class="axis" text-anchor="end">375</text><line x1="52" y1="12" x2="1164" y2="12" class="gl"></line><text x="45" y="15.5" class="axis" text-anchor="end">500</text><path d="M52.0 159.4L90.3 143.3L128.7 52.8L167.0 159.8L205.4 146.8L243.7 102.0L282.1 129.4L320.4 141.0L358.8 192.5L397.1 119.5L435.4 149.5L473.8 201.1L512.1 116.4L550.5 61.3L588.8 146.4L627.2 151.3L665.5 152.7L703.9 172.4L742.2 78.8L780.6 120.9L818.9 192.5L857.2 131.2L895.6 115.0L933.9 143.7L972.3 236.0L1010.6 236.0L1049.0 236.0L1087.3 236.0L1125.7 236.0L1164.0 236.0L1164.0 236.0L52.0 236.0Z" fill="url(#ag25)" stroke="none"></path><path d="M52.0 159.4L90.3 143.3L128.7 52.8L167.0 159.8L205.4 146.8L243.7 102.0L282.1 129.4L320.4 141.0L358.8 192.5L397.1 119.5L435.4 149.5L473.8 201.1L512.1 116.4L550.5 61.3L588.8 146.4L627.2 151.3L665.5 152.7L703.9 172.4L742.2 78.8L780.6 120.9L818.9 192.5L857.2 131.2L895.6 115.0L933.9 143.7L972.3 236.0L1010.6 236.0L1049.0 236.0L1087.3 236.0L1125.7 236.0L1164.0 236.0" fill="none" stroke="var(--s3)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"></path><path d="M52.0 214.9L90.3 217.2L128.7 193.4L167.0 218.1L205.4 215.4L243.7 207.8L282.1 214.0L320.4 214.0L358.8 225.7L397.1 207.8L435.4 212.3L473.8 228.4L512.1 207.8L550.5 204.2L588.8 210.5L627.2 214.5L665.5 214.0L703.9 223.9L742.2 204.6L780.6 211.4L818.9 227.5L857.2 214.9L895.6 210.5L933.9 214.0L972.3 236.0L1010.6 236.0L1049.0 236.0L1087.3 236.0L1125.7 236.0L1164.0 236.0L1164.0 236.0L52.0 236.0Z" fill="url(#ag26)" stroke="none"></path><path d="M52.0 214.9L90.3 217.2L128.7 193.4L167.0 218.1L205.4 215.4L243.7 207.8L282.1 214.0L320.4 214.0L358.8 225.7L397.1 207.8L435.4 212.3L473.8 228.4L512.1 207.8L550.5 204.2L588.8 210.5L627.2 214.5L665.5 214.0L703.9 223.9L742.2 204.6L780.6 211.4L818.9 227.5L857.2 214.9L895.6 210.5L933.9 214.0L972.3 236.0L1010.6 236.0L1049.0 236.0L1087.3 236.0L1125.7 236.0L1164.0 236.0" fill="none" stroke="var(--s1)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"></path><path d="M52.0 227.9L90.3 224.8L128.7 208.7L167.0 227.9L205.4 228.8L243.7 223.0L282.1 220.3L320.4 225.2L358.8 229.7L397.1 225.7L435.4 228.8L473.8 231.1L512.1 219.4L550.5 215.4L588.8 225.7L627.2 223.0L665.5 227.5L703.9 227.0L742.2 215.8L780.6 223.0L818.9 229.3L857.2 224.8L895.6 217.2L933.9 226.6L972.3 236.0L1010.6 236.0L1049.0 236.0L1087.3 236.0L1125.7 236.0L1164.0 236.0L1164.0 236.0L52.0 236.0Z" fill="url(#ag27)" stroke="none"></path><path d="M52.0 227.9L90.3 224.8L128.7 208.7L167.0 227.9L205.4 228.8L243.7 223.0L282.1 220.3L320.4 225.2L358.8 229.7L397.1 225.7L435.4 228.8L473.8 231.1L512.1 219.4L550.5 215.4L588.8 225.7L627.2 223.0L665.5 227.5L703.9 227.0L742.2 215.8L780.6 223.0L818.9 229.3L857.2 224.8L895.6 217.2L933.9 226.6L972.3 236.0L1010.6 236.0L1049.0 236.0L1087.3 236.0L1125.7 236.0L1164.0 236.0" fill="none" stroke="var(--s7)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"></path><text x="52" y="253" class="axis" text-anchor="middle">Sun 6 Sep</text><text x="167.0" y="253" class="axis" text-anchor="middle">Wed 9 Sep</text><text x="282.0" y="253" class="axis" text-anchor="middle">Sat 12 Sep</text><text x="397.1" y="253" class="axis" text-anchor="middle">Tue 15 Sep</text><text x="512.1" y="253" class="axis" text-anchor="middle">Fri 18 Sep</text><text x="627.1" y="253" class="axis" text-anchor="middle">Mon 21 Sep</text><text x="742.2" y="253" class="axis" text-anchor="middle">Thu 24 Sep</text><text x="857.2" y="253" class="axis" text-anchor="middle">Sun 27 Sep</text><text x="972.2" y="253" class="axis" text-anchor="middle">Wed 30 Sep</text><text x="1087.3" y="253" class="axis" text-anchor="middle">Sat 3 Oct</text><text x="1164" y="253" class="axis" text-anchor="middle">Mon 5 Oct</text><rect x="52" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="89.0" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="126.1" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="163.2" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="200.2" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="237.3" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="274.4" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="311.4" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="348.5" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="385.6" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="422.6" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="459.7" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="496.8" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="533.8" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="570.9" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="608" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="645.0" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="682.1" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="719.2" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="756.2" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="793.3" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="830.4" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="867.4" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="904.5" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="941.6" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="978.6" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="1015.7" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="1052.8" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="1089.8" y="12" width="37.0" height="224" fill="transparent"></rect><rect x="1126.9" y="12" width="37.0" height="224" fill="transparent"></rect></svg>
+      <div class="lgd" id="emailLegend"><div class="lg"><span class="sw" style="background:var(--s3)"></span>Emails sent</div><div class="lg"><span class="sw" style="background:var(--s1)"></span>Opens</div><div class="lg"><span class="sw" style="background:var(--s7)"></span>Apple privacy prefetches</div></div>
+      <div class="note" id="emailAxisNote" data-c="3"><b>Absolute.</b> Real counts on one axis. Sends dwarf clicks here — switch to Relative to compare their shapes. Bucketed by <b>day</b>.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead">
+      <h2>When we send</h2><span class="sub" data-c="3">find the window that actually gets opened</span>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <h3>Send volume by weekday</h3>
+        <div class="csub" data-c="3">total sends in the selected period</div>
+        <svg id="dowChart" viewBox="0 0 560 220"><defs><linearGradient id="bg28" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s3)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s3)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg29" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s3)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s3)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg30" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s3)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s3)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg31" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s3)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s3)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg32" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s3)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s3)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg33" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s3)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s3)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg34" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s3)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s3)" stop-opacity=".62"></stop></linearGradient></defs><text x="44" y="24.3" class="axis" text-anchor="end">Mon</text><rect x="52" y="8.5" width="454" height="24.7" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="52" y="8.5" width="326.4" height="24.7" rx="4" fill="url(#bg28)"></rect><text x="385.4" y="24.3" class="axis" text-anchor="start">763</text><text x="44" y="54.0" class="axis" text-anchor="end">Tue</text><rect x="52" y="38.2" width="454" height="24.7" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="52" y="38.2" width="454" height="24.7" rx="4" fill="url(#bg29)"></rect><text x="513" y="54.0" class="axis" text-anchor="start">1.1K</text><text x="44" y="83.7" class="axis" text-anchor="end">Wed</text><rect x="52" y="67.9" width="454" height="24.7" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="52" y="67.9" width="216.0" height="24.7" rx="4" fill="url(#bg30)"></rect><text x="275.0" y="83.7" class="axis" text-anchor="start">505</text><text x="44" y="113.5" class="axis" text-anchor="end">Thu</text><rect x="52" y="97.6" width="454" height="24.7" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="52" y="97.6" width="268.7" height="24.7" rx="4" fill="url(#bg31)"></rect><text x="327.7" y="113.5" class="axis" text-anchor="start">628</text><text x="44" y="143.2" class="axis" text-anchor="end">Fri</text><rect x="52" y="127.3" width="454" height="24.7" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="52" y="127.3" width="352.1" height="24.7" rx="4" fill="url(#bg32)"></rect><text x="411.1" y="143.2" class="axis" text-anchor="start">823</text><text x="44" y="172.9" class="axis" text-anchor="end">Sat</text><rect x="52" y="157.0" width="454" height="24.7" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="52" y="157.0" width="310.2" height="24.7" rx="4" fill="url(#bg33)"></rect><text x="369.2" y="172.9" class="axis" text-anchor="start">725</text><text x="44" y="202.6" class="axis" text-anchor="end">Sun</text><rect x="52" y="186.7" width="454" height="24.7" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="52" y="186.7" width="349.5" height="24.7" rx="4" fill="url(#bg34)"></rect><text x="408.5" y="202.6" class="axis" text-anchor="start">817</text></svg>
+      </div>
+      <div class="card">
+        <h3>Open rate by weekday</h3>
+        <div class="csub" data-c="3">opens ÷ sends on the same day; a low-volume day is marked</div>
+        <svg id="dowRate" viewBox="0 0 560 220"><defs><linearGradient id="bg35" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg36" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg37" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg38" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg39" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg40" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg41" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient></defs><text x="44" y="24.3" class="axis" text-anchor="end">Mon</text><rect x="52" y="8.5" width="454" height="24.7" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="52" y="8.5" width="413.2" height="24.7" rx="4" fill="url(#bg35)"></rect><text x="472.2" y="24.3" class="axis" text-anchor="start">22.3%</text><text x="44" y="54.0" class="axis" text-anchor="end">Tue</text><rect x="52" y="38.2" width="454" height="24.7" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="52" y="38.2" width="447.4" height="24.7" rx="4" fill="url(#bg36)"></rect><text x="506.4" y="54.0" class="axis" text-anchor="start">24.1%</text><text x="44" y="83.7" class="axis" text-anchor="end">Wed</text><rect x="52" y="67.9" width="454" height="24.7" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="52" y="67.9" width="440.6" height="24.7" rx="4" fill="url(#bg37)"></rect><text x="499.6" y="83.7" class="axis" text-anchor="start">23.8%</text><text x="44" y="113.5" class="axis" text-anchor="end">Thu</text><rect x="52" y="97.6" width="454" height="24.7" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="52" y="97.6" width="392.7" height="24.7" rx="4" fill="url(#bg38)"></rect><text x="451.7" y="113.5" class="axis" text-anchor="start">21.2%</text><text x="44" y="143.2" class="axis" text-anchor="end">Fri</text><rect x="52" y="127.3" width="454" height="24.7" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="52" y="127.3" width="407.8" height="24.7" rx="4" fill="url(#bg39)"></rect><text x="466.8" y="143.2" class="axis" text-anchor="start">22.0%</text><text x="44" y="172.9" class="axis" text-anchor="end">Sat</text><rect x="52" y="157.0" width="454" height="24.7" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="52" y="157.0" width="355.5" height="24.7" rx="4" fill="url(#bg40)"></rect><text x="414.5" y="172.9" class="axis" text-anchor="start">19.2%</text><text x="44" y="202.6" class="axis" text-anchor="end">Sun</text><rect x="52" y="186.7" width="454" height="24.7" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="52" y="186.7" width="454" height="24.7" rx="4" fill="url(#bg41)"></rect><text x="513" y="202.6" class="axis" text-anchor="start">24.5%</text></svg>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><h2>Broadcast campaigns</h2><span class="sub" data-c="3">the 11 one-off sends; automations are counted separately below</span></div>
+    <div class="tblwrap" tabindex="0" role="region" aria-label="Broadcast campaigns, scrollable table">
+      <table id="acTbl" data-sort="ac">
+        <thead><tr>
+          <th data-k="name" class="srt srt" inert="">Campaign<span class="ar">↕</span></th>
+          <th data-k="date" class="srt srt on" inert="">Sent on<span class="ar">↓</span></th>
+          <th class="r srt srt" data-k="sent" inert="">Recipients<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="opens" inert="">People who opened<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="orate" inert="">Open rate<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="clicks" inert="">People who clicked<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="cto" inert="">Openers → clickers<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="unsubs" inert="">Unsubscribed<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="bounces" inert="">Bounced<span class="ar">↕</span></th>
+        </tr></thead>
+        <tbody><tr class="hl"><td class="nm">Webinar replay</td><td>Sep 17, 2026</td><td class="r">3,718</td><td class="r">906</td><td class="r" style="background:rgba(212,42,42,0.2)">24.4%</td><td class="r">39</td><td class="r">4.3%</td><td class="r">11</td><td class="r">24</td></tr></tbody>
+      </table>
+    </div>
+    <div class="tfoot" id="acFoot" data-c="3">1 campaign in range. Best open rate highlighted green, worst red (campaigns under 100 recipients excluded from that comparison).</div>
+  </section>
+
+  <section>
+    <div class="shead"><h2>Automations</h2><span class="sub" data-c="3">where the real volume is — entered vs completed</span></div>
+    <div class="grid g2">
+      <div class="card">
+        <div class="tblwrap" tabindex="0" role="region" aria-label="Automations, scrollable table">
+          <table id="autoTbl" data-sort="auto">
+            <thead><tr>
+              <th data-k="name" class="srt srt" inert="">Automation<span class="ar">↕</span></th>
+              <th class="r srt srt on" data-k="entered" inert="">People entered<span class="ar">↓</span></th>
+              <th class="r srt srt" data-k="exited" inert="">Finished<span class="ar">↕</span></th>
+              <th class="r srt srt" data-k="comp" inert="">Completion<span class="ar">↕</span></th>
+            </tr></thead>
+            <tbody><tr><td class="nm">Guide download - welcome sequence</td><td class="r">3,912</td><td class="r">3,640</td><td class="r">93%</td></tr><tr><td class="nm">Old guide sequence (2024) <span style="color:var(--muted);font-size:11px" data-c="3">(off)</span></td><td class="r">2,210</td><td class="r">2,210</td><td class="r">100%</td></tr><tr><td class="nm">Re-engagement (90 days quiet)</td><td class="r">1,290</td><td class="r">1,104</td><td class="r">86%</td></tr><tr><td class="nm">Interstate investor nurture</td><td class="r">842</td><td class="r">611</td><td class="r">73%</td></tr><tr><td class="nm">Listing enquiry follow-up</td><td class="r">655</td><td class="r">640</td><td class="r">98%</td></tr><tr><td class="nm">Brochure request</td><td class="r">418</td><td class="r">418</td><td class="r">100%</td></tr><tr><td class="nm">Webinar reminders</td><td class="r">377</td><td class="r">377</td><td class="r">100%</td></tr><tr><td class="nm">Consultation booking follow-up</td><td class="r">96</td><td class="r">81</td><td class="r">84%</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Lists</h3>
+        <div class="csub" data-c="3">active subscribers per list</div>
+        <svg id="listChart" viewBox="0 0 560 250"><defs><linearGradient id="bg42" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg43" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s2)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s2)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg44" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s3)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s3)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg45" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s4)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s4)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg46" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s5)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s5)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg47" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s6)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s6)" stop-opacity=".62"></stop></linearGradient></defs><text x="162" y="29.3" class="axis" text-anchor="end">Master list</text><rect x="170" y="12.8" width="336" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="170" y="12.8" width="336" height="26" rx="4" fill="url(#bg42)"></rect><text x="513" y="29.3" class="axis" text-anchor="start">4,310</text><text x="162" y="69" class="axis" text-anchor="end">Guide downloads</text><rect x="170" y="52.5" width="336" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="170" y="52.5" width="281.0" height="26" rx="4" fill="url(#bg43)"></rect><text x="458.0" y="69" class="axis" text-anchor="start">3,605</text><text x="162" y="108.6" class="axis" text-anchor="end">Interstate invest…</text><rect x="170" y="92.1" width="336" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="170" y="92.1" width="63.3" height="26" rx="4" fill="url(#bg44)"></rect><text x="240.3" y="108.6" class="axis" text-anchor="start">812</text><text x="162" y="148.3" class="axis" text-anchor="end">Listing enquiries</text><rect x="170" y="131.8" width="336" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="170" y="131.8" width="49.8" height="26" rx="4" fill="url(#bg45)"></rect><text x="226.8" y="148.3" class="axis" text-anchor="start">640</text><text x="162" y="188" class="axis" text-anchor="end">Webinar registran…</text><rect x="170" y="171.5" width="336" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="170" y="171.5" width="29.3" height="26" rx="4" fill="url(#bg46)"></rect><text x="206.3" y="188" class="axis" text-anchor="start">377</text><text x="162" y="227.6" class="axis" text-anchor="end">Newsletter only</text><rect x="170" y="211.1" width="336" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="170" y="211.1" width="15.9" height="26" rx="4" fill="url(#bg47)"></rect><text x="192.9" y="227.6" class="axis" text-anchor="start">205</text></svg>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><h2>Reading of the email programme</h2><span class="sub" data-c="3">recomputed with your filters</span></div>
+    <div class="insights" id="emailInsights"><div class="insight"><div class="ico">⚠️</div><div><div class="it">Open rate (broadcasts)</div><div class="ib"><b>24.4%</b> of the 3,718 broadcast recipients in this period opened (1 campaign). Below the 25% mark this list should be clearing. Automated mail cannot be measured this way — ActiveCampaign records no open event for it.</div></div></div><div class="insight"><div class="ico">🔴</div><div><div class="it">Clicks are the weak link</div><div class="ib">Of the 906 people who opened, only <b>39</b> clicked — <b>4.3%</b>. People are reading and not acting: the subject line earns the open but the call to action is not converting. This is the single biggest lever on this tab.</div></div></div><div class="insight"><div class="ico">📬</div><div><div class="it">Opens across all mail</div><div class="ib"><b>1,199</b> opens on <b>5,322</b> emails (<b>22.5%</b>), counting automated mail as well as broadcasts. Separately, <b>641</b> Apple Mail privacy prefetches were recorded — a machine fetching the tracking pixel, which ActiveCampaign excludes from the open count and so does this figure. Clicks are only measurable on broadcasts, which is why every click figure is scoped to them.</div></div></div><div class="insight"><div class="ico">🌡️</div><div><div class="it">How much of the list is awake</div><div class="ib"><b>1,720</b> of <b>3,911</b> contacts (44%) have opened at least one email. The rest have never engaged — they are list weight, not pipeline.</div></div></div><div class="insight"><div class="ico">📬</div><div><div class="it">Deliverability</div><div class="ib"><b>11</b> unsubscribes on 3,718 broadcast sends (<b>0.30%</b>). Within a normal range.</div></div></div><div class="insight"><div class="ico">🍏</div><div><div class="it">Apple Mail privacy</div><div class="ib"><b>641</b> Apple Mail privacy prefetches were recorded in this period — a machine fetching the tracking pixel, not a person. ActiveCampaign keeps them OUT of its open count and so does this dashboard, so they are shown as their own line rather than as a share of opens. Treat them as noise, not engagement.</div></div></div></div>
+  </section>
+</div>
+
+
+<div class="tab-pane wrap" id="pane-magnet" hidden="" role="tabpanel" aria-labelledby="tabbtn-magnet">
+
+  <section>
+    <div class="shead"><h2>Who is on the list</h2><span class="sub" data-c="3">click a segment to filter this whole tab</span></div>
+    <div class="grid g2">
+      <div class="card">
+        <div class="chead"><div><h3>Investor experience</h3><div class="csub" id="qzExpSub" data-c="3">58 of 125 contacts answered · click a slice to filter</div></div></div>
+        <div class="donut-wrap">
+          <svg id="expDonut" viewBox="0 0 200 200"><path d="M 100 18 A 82 82 0 0 1 126.1 177.7 L 115.9 147.3 A 50 50 0 0 0 100 50 Z" fill="var(--s1)" stroke="#fff" stroke-width="1.5" style="cursor:pointer"></path><path d="M 126.1 177.7 A 82 82 0 0 1 19.0 86.7 L 50.6 91.9 A 50 50 0 0 0 115.9 147.3 Z" fill="var(--s2)" stroke="#fff" stroke-width="1.5" style="cursor:pointer"></path><path d="M 19.0 86.7 A 82 82 0 0 1 73.8 22.2 L 84.0 52.6 A 50 50 0 0 0 50.6 91.9 Z" fill="var(--s3)" stroke="#fff" stroke-width="1.5" style="cursor:pointer"></path><path d="M 73.8 22.2 A 82 82 0 0 1 99.9 18 L 99.9 50 A 50 50 0 0 0 84.0 52.6 Z" fill="var(--s4)" stroke="#fff" stroke-width="1.5" style="cursor:pointer"></path><text x="100" y="98" text-anchor="middle" style="font:900 21px var(--display);fill:var(--green-d)">58</text><text x="100" y="115" text-anchor="middle" class="axis">answered</text></svg>
+          <div class="dleg" id="expLegend"><div class="dl"><span class="sw" style="background:var(--s1)"></span><span class="nm">First property investor</span><span class="vv tnum">26</span><span class="pp" data-c="3">45%</span></div><div class="dl"><span class="sw" style="background:var(--s2)"></span><span class="nm">Own 1-2 investment properties</span><span class="vv tnum">19</span><span class="pp" data-c="3">33%</span></div><div class="dl"><span class="sw" style="background:var(--s3)"></span><span class="nm">Own 3+ properties</span><span class="vv tnum">10</span><span class="pp" data-c="3">17%</span></div><div class="dl"><span class="sw" style="background:var(--s4)"></span><span class="nm">Already own a rooming house</span><span class="vv tnum">3</span><span class="pp" data-c="3">5%</span></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="chead"><div><h3>Purchase timeline</h3><div class="csub" id="qzTimeSub" data-c="3">53 of 125 contacts answered · click a slice to filter</div></div></div>
+        <div class="donut-wrap">
+          <svg id="timeDonut" viewBox="0 0 200 200"><path d="M 100 18 A 82 82 0 0 1 160.5 44.6 L 136.8 66.2 A 50 50 0 0 0 100 50 Z" fill="var(--s3)" stroke="#fff" stroke-width="1.5" style="cursor:pointer"></path><path d="M 160.5 44.6 A 82 82 0 0 1 174.0 135.2 L 145.1 121.5 A 50 50 0 0 0 136.8 66.2 Z" fill="var(--s4)" stroke="#fff" stroke-width="1.5" style="cursor:pointer"></path><path d="M 174.0 135.2 A 82 82 0 0 1 22.3 126.2 L 52.6 116.0 A 50 50 0 0 0 145.1 121.5 Z" fill="var(--s5)" stroke="#fff" stroke-width="1.5" style="cursor:pointer"></path><path d="M 22.3 126.2 A 82 82 0 0 1 99.9 18 L 99.9 50 A 50 50 0 0 0 52.6 116.0 Z" fill="var(--s6)" stroke="#fff" stroke-width="1.5" style="cursor:pointer"></path><text x="100" y="98" text-anchor="middle" style="font:900 21px var(--display);fill:var(--green-d)">53</text><text x="100" y="115" text-anchor="middle" class="axis">answered</text></svg>
+          <div class="dleg" id="timeLegend"><div class="dl"><span class="sw" style="background:var(--s3)"></span><span class="nm">Ready now</span><span class="vv tnum">7</span><span class="pp" data-c="3">13%</span></div><div class="dl"><span class="sw" style="background:var(--s4)"></span><span class="nm">Within 3 months</span><span class="vv tnum">10</span><span class="pp" data-c="3">19%</span></div><div class="dl"><span class="sw" style="background:var(--s5)"></span><span class="nm">3-12 months</span><span class="vv tnum">20</span><span class="pp" data-c="3">38%</span></div><div class="dl"><span class="sw" style="background:var(--s6)"></span><span class="nm">Just researching</span><span class="vv tnum">16</span><span class="pp" data-c="3">30%</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:12px" class="chips" id="quizChips"></div>
+  </section>
+
+  <section>
+    <div class="shead">
+      <h2>How warm is each segment?</h2>
+      <span class="sub" data-c="3">engagement is the only sales-readiness signal we have until the team tags clients</span>
+    </div>
+    <div class="kpis" id="segScores"><div class="kpi"><div class="kl" data-c="3">Contacts in view</div><div class="kv tnum">125</div><div class="kd" data-c="3">signed up in the selected period</div></div><div class="kpi"><div class="kl" data-c="3">Have opened</div><div class="kv tnum">48</div><div class="kd" data-c="3">38.4% of the segment</div></div><div class="kpi"><div class="kl" data-c="3">Have clicked</div><div class="kv tnum">5</div><div class="kd" data-c="3">4.0% of the segment</div></div><div class="kpi"><div class="kl" data-c="3">Emails received</div><div class="kv tnum">1,322</div><div class="kd" data-c="3">10.6 per contact</div></div><div class="kpi"><div class="kl" data-c="3">Converted</div><div class="kv tnum">0</div><div class="kd" data-c="3">no contacts tagged as clients yet</div></div></div>
+    <div class="card" style="margin-top:14px">
+      <h3>Open and click rate by segment</h3>
+      <div class="csub" data-c="3">share of contacts in the segment that have ever opened / clicked</div>
+      <svg id="segChart" viewBox="0 0 1180 260" preserveAspectRatio="none"><defs><linearGradient id="bg22" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg23" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--s6)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s6)" stop-opacity=".62"></stop></linearGradient></defs><line x1="52" y1="224" x2="1164" y2="224" class="gl"></line><text x="45" y="227.5" class="axis" text-anchor="end">0%</text><line x1="52" y1="171" x2="1164" y2="171" class="gl"></line><text x="45" y="174.5" class="axis" text-anchor="end">13%</text><line x1="52" y1="118" x2="1164" y2="118" class="gl"></line><text x="45" y="121.5" class="axis" text-anchor="end">25%</text><line x1="52" y1="65" x2="1164" y2="65" class="gl"></line><text x="45" y="68.5" class="axis" text-anchor="end">38%</text><line x1="52" y1="12" x2="1164" y2="12" class="gl"></line><text x="45" y="15.5" class="axis" text-anchor="end">50%</text><rect x="96.4" y="12" width="83.3" height="212" rx="3" fill="url(#bg22)"></rect><rect x="196.5" y="207.6" width="83.3" height="16.3" rx="3" fill="url(#bg23)"></rect><text x="191" y="241" class="axis" text-anchor="middle">First property in…</text><rect x="374.4" y="67.7" width="83.3" height="156.2" rx="3" fill="url(#bg22)"></rect><rect x="474.5" y="201.6" width="83.3" height="22.3" rx="3" fill="url(#bg23)"></rect><text x="469" y="241" class="axis" text-anchor="middle">Own 1-2 investmen…</text><rect x="652.4" y="96.8" width="83.3" height="127.1" rx="3" fill="url(#bg22)"></rect><rect x="752.5" y="224" width="83.3" height="1" rx="3" fill="url(#bg23)"></rect><text x="747" y="241" class="axis" text-anchor="middle">Own 3+ properties</text><rect x="930.4" y="82.6" width="83.3" height="141.3" rx="3" fill="url(#bg22)"></rect><rect x="1030.5" y="82.6" width="83.3" height="141.3" rx="3" fill="url(#bg23)"></rect><text x="1025" y="241" class="axis" text-anchor="middle">Already own a roo…</text><text x="52" y="11" class="axis">■ open rate (green)   ■ click rate (pink)</text></svg>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead">
+      <h2>List growth</h2><span class="sub" data-c="3">new contacts added, at the grain you choose</span>
+      <span class="spacer"></span>
+      <div class="seg mini" id="seg-growth" data-seg="growth" inert="">
+        <span class="cap">Grain</span>
+        <button data-v="auto" class="on">Auto</button><button data-v="day">Day</button><button data-v="week">Week</button><button data-v="month">Month</button>
+      </div>
+    </div>
+    <div class="card">
+      <svg id="growthChart" viewBox="0 0 1180 250" preserveAspectRatio="none"><defs><linearGradient id="bg24" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--s3)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s3)" stop-opacity=".62"></stop></linearGradient></defs><line x1="52" y1="216" x2="1164" y2="216" class="gl"></line><text x="45" y="219.5" class="axis" text-anchor="end">0</text><line x1="52" y1="165" x2="1164" y2="165" class="gl"></line><text x="45" y="168.5" class="axis" text-anchor="end">3</text><line x1="52" y1="114" x2="1164" y2="114" class="gl"></line><text x="45" y="117.5" class="axis" text-anchor="end">5</text><line x1="52" y1="63" x2="1164" y2="63" class="gl"></line><text x="45" y="66.5" class="axis" text-anchor="end">8</text><line x1="52" y1="12" x2="1164" y2="12" class="gl"></line><text x="45" y="15.5" class="axis" text-anchor="end">10</text><rect x="57.1" y="154.8" width="26.6" height="61.1" rx="3" fill="url(#bg24)"></rect><rect x="94.2" y="32.4" width="26.6" height="183.6" rx="3" fill="url(#bg24)"></rect><rect x="131.3" y="32.4" width="26.6" height="183.6" rx="3" fill="url(#bg24)"></rect><rect x="168.3" y="134.3" width="26.6" height="81.6" rx="3" fill="url(#bg24)"></rect><rect x="205.4" y="93.6" width="26.6" height="122.3" rx="3" fill="url(#bg24)"></rect><rect x="242.5" y="154.8" width="26.6" height="61.1" rx="3" fill="url(#bg24)"></rect><rect x="279.5" y="134.3" width="26.6" height="81.6" rx="3" fill="url(#bg24)"></rect><rect x="316.6" y="93.6" width="26.6" height="122.3" rx="3" fill="url(#bg24)"></rect><rect x="353.7" y="93.6" width="26.6" height="122.3" rx="3" fill="url(#bg24)"></rect><rect x="390.7" y="175.2" width="26.6" height="40.8" rx="3" fill="url(#bg24)"></rect><rect x="427.8" y="134.3" width="26.6" height="81.6" rx="3" fill="url(#bg24)"></rect><rect x="464.9" y="114" width="26.6" height="102" rx="3" fill="url(#bg24)"></rect><rect x="501.9" y="73.2" width="26.6" height="142.7" rx="3" fill="url(#bg24)"></rect><rect x="539.0" y="134.3" width="26.6" height="81.6" rx="3" fill="url(#bg24)"></rect><rect x="576.1" y="134.3" width="26.6" height="81.6" rx="3" fill="url(#bg24)"></rect><rect x="613.1" y="175.2" width="26.6" height="40.8" rx="3" fill="url(#bg24)"></rect><rect x="650.2" y="52.7" width="26.6" height="163.2" rx="3" fill="url(#bg24)"></rect><rect x="687.3" y="93.6" width="26.6" height="122.3" rx="3" fill="url(#bg24)"></rect><rect x="724.3" y="73.2" width="26.6" height="142.7" rx="3" fill="url(#bg24)"></rect><rect x="761.4" y="114" width="26.6" height="102" rx="3" fill="url(#bg24)"></rect><rect x="798.5" y="114" width="26.6" height="102" rx="3" fill="url(#bg24)"></rect><rect x="835.5" y="93.6" width="26.6" height="122.3" rx="3" fill="url(#bg24)"></rect><rect x="872.6" y="114" width="26.6" height="102" rx="3" fill="url(#bg24)"></rect><rect x="909.7" y="114" width="26.6" height="102" rx="3" fill="url(#bg24)"></rect><rect x="946.7" y="216" width="26.6" height="0" rx="3" fill="url(#bg24)"></rect><rect x="983.8" y="216" width="26.6" height="0" rx="3" fill="url(#bg24)"></rect><rect x="1020.9" y="216" width="26.6" height="0" rx="3" fill="url(#bg24)"></rect><rect x="1057.9" y="216" width="26.6" height="0" rx="3" fill="url(#bg24)"></rect><rect x="1095.0" y="216" width="26.6" height="0" rx="3" fill="url(#bg24)"></rect><rect x="1132.1" y="216" width="26.6" height="0" rx="3" fill="url(#bg24)"></rect><text x="70.5" y="233" class="axis" text-anchor="middle">Sun 6 Sep</text><text x="181.7" y="233" class="axis" text-anchor="middle">Wed 9 Sep</text><text x="292.9" y="233" class="axis" text-anchor="middle">Sat 12 Sep</text><text x="404.1" y="233" class="axis" text-anchor="middle">Tue 15 Sep</text><text x="515.3" y="233" class="axis" text-anchor="middle">Fri 18 Sep</text><text x="626.5" y="233" class="axis" text-anchor="middle">Mon 21 Sep</text><text x="737.7" y="233" class="axis" text-anchor="middle">Thu 24 Sep</text><text x="848.9" y="233" class="axis" text-anchor="middle">Sun 27 Sep</text><text x="960.1" y="233" class="axis" text-anchor="middle">Wed 30 Sep</text><text x="1071.3" y="233" class="axis" text-anchor="middle">Sat 3 Oct</text></svg>
+      <div class="note" id="growthNote" data-c="3"><b>125</b> new contacts over 30 days (grain auto-selected from the span).</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead">
+      <h2>Email sequence performance</h2>
+      <span class="sub" data-c="3">every template that has ever been sent, ranked</span>
+      <span class="spacer"></span>
+      <div class="seg mini" id="seg-tpl" data-seg="tpl" inert="">
+        <span class="cap">Show</span>
+        <button data-v="10" class="on">Top 10</button><button data-v="25">Top 25</button><button data-v="all">All</button>
+      </div>
+    </div>
+    <div class="tblwrap" tabindex="0" role="region" aria-label="Email sequence performance, scrollable table">
+      <table id="tplTbl" data-sort="tpl">
+        <thead><tr>
+          <th data-k="name" class="srt srt" inert="">Email template<span class="ar">↕</span></th>
+          <th class="r srt srt on" data-k="sends" inert="">Times sent<span class="ar">↓</span></th>
+          <th data-k="first" class="srt srt" inert="">First sent<span class="ar">↕</span></th>
+          <th data-k="last" class="srt srt" inert="">Last sent<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="share" inert="">Share of all sends<span class="ar">↕</span></th>
+        </tr></thead>
+        <tbody><tr><td class="nm">Guide delivery - email 1</td><td class="r">4,770</td><td>Sep 11, 2025</td><td>Sep 23, 2026</td><td class="r"><span class="bic"><i style="width:100%"></i><span>33.4%</span></span></td></tr><tr><td class="nm">Guide follow-up - email 2</td><td class="r">3,663</td><td>Oct 2, 2025</td><td>Sep 29, 2026</td><td class="r"><span class="bic"><i style="width:77%"></i><span>25.7%</span></span></td></tr><tr><td class="nm">Case study - email 3</td><td class="r">2,022</td><td>Aug 23, 2025</td><td>Sep 10, 2026</td><td class="r"><span class="bic"><i style="width:42%"></i><span>14.2%</span></span></td></tr><tr><td class="nm">Permits explained - email 4</td><td class="r">1,114</td><td>Aug 6, 2025</td><td>Sep 11, 2026</td><td class="r"><span class="bic"><i style="width:23%"></i><span>7.8%</span></span></td></tr><tr><td class="nm">Book a call - email 5</td><td class="r">878</td><td>Aug 13, 2025</td><td>Sep 28, 2026</td><td class="r"><span class="bic"><i style="width:18%"></i><span>6.2%</span></span></td></tr><tr><td class="nm">Interstate - email 1</td><td class="r">589</td><td>Nov 18, 2025</td><td>Sep 17, 2026</td><td class="r"><span class="bic"><i style="width:12%"></i><span>4.1%</span></span></td></tr><tr><td class="nm">Interstate - email 2</td><td class="r">328</td><td>Sep 27, 2025</td><td>Sep 10, 2026</td><td class="r"><span class="bic"><i style="width:7%"></i><span>2.3%</span></span></td></tr><tr><td class="nm">Listing brochure delivery</td><td class="r">273</td><td>Aug 3, 2025</td><td>Sep 11, 2026</td><td class="r"><span class="bic"><i style="width:6%"></i><span>1.9%</span></span></td></tr><tr><td class="nm">Webinar reminder - 1h</td><td class="r">127</td><td>Sep 10, 2025</td><td>Sep 25, 2026</td><td class="r"><span class="bic"><i style="width:3%"></i><span>0.9%</span></span></td></tr><tr><td class="nm">Re-engagement - email 1</td><td class="r">120</td><td>Aug 22, 2025</td><td>Sep 27, 2026</td><td class="r"><span class="bic"><i style="width:3%"></i><span>0.8%</span></span></td></tr></tbody>
+      </table>
+    </div>
+    <div class="tfoot" id="tplFoot" data-c="3">Showing 10 of 15 templates — the share column is against all 15 (14,267 sends).</div>
+  </section>
+
+  <section>
+    <div class="shead"><h2>Conversion</h2><span class="sub" data-c="3">the definition agreed 2026-07-27</span></div>
+    <div id="convBlock"><div class="empty"><h3 data-a11y-was="h4">No contacts are tagged as clients yet — so conversion reads zero, correctly</h3><p>Conversion is defined as ActiveCampaign's <code data-c="3">Status</code> field reading <b>Client</b> or <b>Returning Client</b> (agreed 2026-07-27). Right now every one of the 3,911 contacts is <b>Lead</b> or <b>Listing Lead</b>, so this is an empty metric rather than a broken one — it will populate as the team tags won business.<br><br>This replaces the old Colab join, which matched leads to a conversions spreadsheet on phone number and was silently returning <b>zero matches</b>, so the previous report's “Converted” filter showed nothing at all.<br><br>Until then the honest sales-readiness signal is an <b>engaged lead</b> — one that has opened at least one email — which is what the tiles above and the Cost per Engaged Lead figure use.</p></div></div>
+  </section>
+
+  <section>
+    <div class="shead"><h2>Reading of the nurture</h2><span class="sub" data-c="3">recomputed with your filters</span></div>
+    <div class="insights" id="magnetInsights"><div class="insight"><div class="ico">🕳️</div><div><div class="it">Quiz coverage</div><div class="ib">Only <b>46%</b> of contacts in this period answered the experience question (58 of 125). Every segment cut below is based on that subset — worth making the question mandatory on the form.</div></div></div><div class="insight"><div class="ico">📨</div><div><div class="it">Sequence concentration</div><div class="ib"><b>Guide delivery - email 1</b> is the single biggest send at <b>4,770</b> (33% of all volume). A sequence this top-heavy means most contacts only ever see the first step.</div></div></div></div>
+  </section>
+</div>
+
+
+<div class="tab-pane wrap" id="pane-demo" hidden="" role="tabpanel" aria-labelledby="tabbtn-demo">
+
+  <div id="demoWindowNote"></div>
+
+  <section>
+    <div class="shead">
+      <h2>The audience, by value not by volume</h2>
+      <span class="sub" data-c="3">every segment placed by what it costs against how much it delivers</span>
+      <span class="spacer"></span>
+      <div class="seg mini" id="seg-demo" data-seg="demo" inert="">
+        <span class="cap">Split by</span>
+        <button data-v="age" class="on">Age</button><button data-v="gender">Gender</button><button data-v="platform">Platform</button><button data-v="position">Placement</button><button data-v="device">Device</button>
+      </div>
+    </div>
+    <div class="grid" style="grid-template-columns:minmax(420px,1.5fr) minmax(300px,1fr);gap:16px">
+      <div class="card">
+        <div class="chead"><div>
+          <h3>Value map — spend against leads</h3>
+          <div class="csub" id="scatterSub" data-c="3">bubble size is spend; anything below the line beats your average cost per lead</div>
+        </div></div>
+        <svg id="scatterChart" viewBox="0 0 660 380"><line x1="62" y1="334" x2="638" y2="334" class="gl"></line><text x="54" y="337.5" class="axis" text-anchor="end">0</text><text x="62" y="352" class="axis" text-anchor="middle">$0</text><line x1="62" y1="255" x2="638" y2="255" class="gl"></line><text x="54" y="258.5" class="axis" text-anchor="end">50</text><text x="206" y="352" class="axis" text-anchor="middle">$1.3K</text><line x1="62" y1="176" x2="638" y2="176" class="gl"></line><text x="54" y="179.5" class="axis" text-anchor="end">100</text><text x="350" y="352" class="axis" text-anchor="middle">$2.5K</text><line x1="62" y1="97" x2="638" y2="97" class="gl"></line><text x="54" y="100.5" class="axis" text-anchor="end">150</text><text x="494" y="352" class="axis" text-anchor="middle">$3.8K</text><line x1="62" y1="18" x2="638" y2="18" class="gl"></line><text x="54" y="21.5" class="axis" text-anchor="end">200</text><text x="638" y="352" class="axis" text-anchor="middle">$5.0K</text><line x1="62" y1="334" x2="638" y2="101.4" class="ref"></line><text x="634" y="94.4" class="reflbl" text-anchor="end">average $33.97 per lead</text><circle cx="84.3" cy="330.8" r="13.0" fill="var(--s6)" fill-opacity=".28" stroke="var(--s6)" stroke-width="2"></circle><text x="84.3" y="312.8" text-anchor="middle" style="font:900 10.5px var(--sans);fill:var(--green-d);pointer-events:none;paint-order:stroke;stroke:var(--white);stroke-width:3.5px;stroke-linejoin:round">18-24</text><circle cx="162.8" cy="297.6" r="19.7" fill="var(--s6)" fill-opacity=".28" stroke="var(--s6)" stroke-width="2"></circle><text x="162.8" y="272.8" text-anchor="middle" style="font:900 10.5px var(--sans);fill:var(--green-d);pointer-events:none;paint-order:stroke;stroke:var(--white);stroke-width:3.5px;stroke-linejoin:round">25-34</text><circle cx="306.9" cy="224.9" r="26.8" fill="var(--s1)" fill-opacity=".28" stroke="var(--s1)" stroke-width="2"></circle><text x="306.9" y="193.0" text-anchor="middle" style="font:900 10.5px var(--sans);fill:var(--green-d);pointer-events:none;paint-order:stroke;stroke:var(--white);stroke-width:3.5px;stroke-linejoin:round">35-44</text><circle cx="353.0" cy="185.4" r="28.6" fill="var(--s1)" fill-opacity=".28" stroke="var(--s1)" stroke-width="2"></circle><text x="353.0" y="151.7" text-anchor="middle" style="font:900 10.5px var(--sans);fill:var(--green-d);pointer-events:none;paint-order:stroke;stroke:var(--white);stroke-width:3.5px;stroke-linejoin:round">45-54</text><circle cx="361.5" cy="217.0" r="29" fill="var(--s6)" fill-opacity=".28" stroke="var(--s6)" stroke-width="2"></circle><text x="361.5" y="183.0" text-anchor="middle" style="font:900 10.5px var(--sans);fill:var(--green-d);pointer-events:none;paint-order:stroke;stroke:var(--white);stroke-width:3.5px;stroke-linejoin:round">55-64</text><circle cx="285.1" cy="270.8" r="25.9" fill="var(--s6)" fill-opacity=".28" stroke="var(--s6)" stroke-width="2"></circle><text x="285.1" y="239.8" text-anchor="middle" style="font:900 10.5px var(--sans);fill:var(--green-d);pointer-events:none;paint-order:stroke;stroke:var(--white);stroke-width:3.5px;stroke-linejoin:round">65+</text><text x="350" y="374" class="axis" text-anchor="middle">Spend →</text><text x="14" y="176" class="axis" text-anchor="middle" transform="rotate(-90 14 176)">Leads →</text></svg>
+        <div class="note" id="scatterNote" data-c="3"><b>2 of 6</b> age band segments beat the account average of <b>$33.97</b> per lead (green, below the dashed line). Bubble size is spend, so a large red bubble is where the money is going without the leads to justify it.</div>
+      </div>
+      <div class="card">
+        <div class="chead"><div>
+          <h3>Cost per lead, ranked</h3>
+          <div class="csub" id="rankSub" data-c="3">cheapest at the top · best is 45-54 at $26.87</div>
+        </div></div>
+        <svg id="rankChart" viewBox="0 0 420 380"><defs><linearGradient id="bg6" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg7" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg8" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s6)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s6)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg9" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s6)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s6)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg10" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s6)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s6)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg11" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s6)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s6)" stop-opacity=".62"></stop></linearGradient></defs><text x="124" y="40.1" class="axis" text-anchor="end">45-54</text><rect x="132" y="23.6" width="234" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="132" y="23.6" width="64.8" height="26" rx="4" fill="url(#bg6)"></rect><text x="203.8" y="40.1" class="axis" text-anchor="start">$26.87</text><text x="124" y="101.5" class="axis" text-anchor="end">35-44</text><rect x="132" y="85.0" width="234" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="132" y="85.0" width="74.3" height="26" rx="4" fill="url(#bg7)"></rect><text x="213.3" y="101.5" class="axis" text-anchor="start">$30.82</text><text x="124" y="162.8" class="axis" text-anchor="end">55-64</text><rect x="132" y="146.3" width="234" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="132" y="146.3" width="84.8" height="26" rx="4" fill="url(#bg8)"></rect><text x="223.8" y="162.8" class="axis" text-anchor="start">$35.14</text><text x="124" y="224.1" class="axis" text-anchor="end">25-34</text><rect x="132" y="207.6" width="234" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="132" y="207.6" width="91.8" height="26" rx="4" fill="url(#bg9)"></rect><text x="230.8" y="224.1" class="axis" text-anchor="start">$38.05</text><text x="124" y="285.5" class="axis" text-anchor="end">65+</text><rect x="132" y="269" width="234" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="132" y="269" width="116.9" height="26" rx="4" fill="url(#bg10)"></rect><text x="255.9" y="285.5" class="axis" text-anchor="start">$48.43</text><text x="124" y="346.8" class="axis" text-anchor="end">18-24</text><rect x="132" y="330.3" width="234" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="132" y="330.3" width="234" height="26" rx="4" fill="url(#bg11)"></rect><text x="373" y="346.8" class="axis" text-anchor="start">$96.92</text></svg>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead">
+      <h2>Where the money goes, and what comes back</h2>
+      <span class="sub" data-c="3">budget share against lead share — a segment wider than it is tall is overfunded</span>
+    </div>
+    <div class="card">
+      <svg id="shareChart" viewBox="0 0 1180 260" preserveAspectRatio="none"><defs><linearGradient id="bg12" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--s2)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s2)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg13" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient></defs><line x1="52" y1="220" x2="1164" y2="220" class="gl"></line><text x="45" y="223.5" class="axis" text-anchor="end">0%</text><line x1="52" y1="168" x2="1164" y2="168" class="gl"></line><text x="45" y="171.5" class="axis" text-anchor="end">13%</text><line x1="52" y1="116" x2="1164" y2="116" class="gl"></line><text x="45" y="119.5" class="axis" text-anchor="end">25%</text><line x1="52" y1="64" x2="1164" y2="64" class="gl"></line><text x="45" y="67.5" class="axis" text-anchor="end">38%</text><line x1="52" y1="12" x2="1164" y2="12" class="gl"></line><text x="45" y="15.5" class="axis" text-anchor="end">50%</text><rect x="79.8" y="114.5" width="59.3" height="105.4" rx="3" fill="url(#bg12)"></rect><rect x="150.2" y="118.0" width="59.3" height="101.9" rx="3" fill="url(#bg13)"></rect><text x="144.6" y="237" class="axis" text-anchor="middle">55-64</text><rect x="265.1" y="117.5" width="59.3" height="102.4" rx="3" fill="url(#bg12)"></rect><rect x="335.5" y="90.5" width="59.3" height="129.4" rx="3" fill="url(#bg13)"></rect><text x="330" y="237" class="axis" text-anchor="middle">45-54</text><rect x="450.4" y="133.7" width="59.3" height="86.2" rx="3" fill="url(#bg12)"></rect><rect x="520.8" y="124.9" width="59.3" height="95.0" rx="3" fill="url(#bg13)"></rect><text x="515.3" y="237" class="axis" text-anchor="middle">35-44</text><rect x="635.8" y="141.4" width="59.3" height="78.5" rx="3" fill="url(#bg12)"></rect><rect x="706.2" y="164.9" width="59.3" height="55.0" rx="3" fill="url(#bg13)"></rect><text x="700.6" y="237" class="axis" text-anchor="middle">65+</text><rect x="821.1" y="184.5" width="59.3" height="35.4" rx="3" fill="url(#bg12)"></rect><rect x="891.5" y="188.3" width="59.3" height="31.6" rx="3" fill="url(#bg13)"></rect><text x="886" y="237" class="axis" text-anchor="middle">25-34</text><rect x="1006.4" y="212.1" width="59.3" height="7.8" rx="3" fill="url(#bg12)"></rect><rect x="1076.8" y="217.2" width="59.3" height="2.7" rx="3" fill="url(#bg13)"></rect><text x="1071.3" y="237" class="axis" text-anchor="middle">18-24</text><text x="52" y="10" class="axis">■ share of budget (purple)   ■ share of leads (green)</text></svg>
+      <div class="note" id="shareNote" data-c="3"><b>65+</b> takes <b>18.9%</b> of the budget but returns <b>13.2%</b> of the leads — the clearest place to move money out of.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead">
+      <h2>Every segment, side by side</h2>
+      <span class="sub" data-c="3">click any column header to rank the whole table by it</span>
+    </div>
+    <div class="tblwrap" tabindex="0" role="region" aria-label="Every segment, side by side, scrollable table">
+      <table id="demoTbl" data-sort="demo">
+        <thead><tr>
+          <th data-k="name" class="srt srt" inert="">Segment<span class="ar">↕</span></th>
+          <th data-k="dim" class="srt srt" inert="">Split<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="spend" inert="">Spend<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="imps" inert="">Impressions<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="ctr" inert="">Click-through rate<span class="ar">↕</span></th>
+          <th class="r srt srt on" data-k="leads" inert="">Leads<span class="ar">↓</span></th>
+          <th class="r srt srt" data-k="cpl" inert="">Cost per lead<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="sharespend" inert="">Budget share<span class="ar">↕</span></th>
+          <th class="r srt srt" data-k="shareleads" inert="">Lead share<span class="ar">↕</span></th>
+        </tr></thead>
+        <tbody><tr class="hl"><td class="nm">45-54</td><td>Age band</td><td class="r">$2,526</td><td class="r">79,146</td><td class="r">0.93%</td><td class="r">94</td><td class="r" style="background:rgba(3,136,16,0.2)">$26.87</td><td class="r">24.6%</td><td class="r" style="background:rgba(3,136,16,0.2)">31.1%</td></tr><tr><td class="nm">55-64</td><td>Age band</td><td class="r">$2,601</td><td class="r">81,485</td><td class="r">0.94%</td><td class="r">74</td><td class="r" style="background:rgba(3,136,16,0.1)">$35.14</td><td class="r">25.3%</td><td class="r" style="background:rgba(212,42,42,0.1)">24.5%</td></tr><tr><td class="nm">35-44</td><td>Age band</td><td class="r">$2,126</td><td class="r">66,579</td><td class="r">0.94%</td><td class="r">69</td><td class="r" style="background:rgba(3,136,16,0.1)">$30.82</td><td class="r">20.7%</td><td class="r" style="background:rgba(3,136,16,0.0)">22.8%</td></tr><tr><td class="nm">65+</td><td>Age band</td><td class="r">$1,937</td><td class="r">60,685</td><td class="r">0.93%</td><td class="r">40</td><td class="r" style="background:rgba(3,136,16,0.0)">$48.43</td><td class="r">18.9%</td><td class="r" style="background:rgba(212,42,42,0.3)">13.2%</td></tr><tr><td class="nm">25-34</td><td>Age band</td><td class="r">$875</td><td class="r">27,384</td><td class="r">0.93%</td><td class="r">23</td><td class="r" style="background:rgba(3,136,16,0.0)">$38.05</td><td class="r">8.5%</td><td class="r" style="background:rgba(212,42,42,0.1)">7.6%</td></tr><tr class="lo"><td class="nm">18-24</td><td>Age band</td><td class="r">$194</td><td class="r">6,054</td><td class="r">0.83%</td><td class="r">2</td><td class="r" style="background:rgba(212,42,42,0.3)">$96.92</td><td class="r">1.9%</td><td class="r" style="background:rgba(212,42,42,0.2)">0.7%</td></tr></tbody>
+      </table>
+    </div>
+    <div class="tfoot" id="demoFoot" data-c="3">6 age band segments · $10,259 spend · 302 leads · cheapest highlighted green, dearest red.</div>
+  </section>
+
+  <section>
+    <div class="shead">
+      <h2>Cost per lead by age × placement</h2>
+      <span class="sub" data-c="3">the cross-tab that tells you where to move money</span>
+    </div>
+    <div class="card">
+      <div id="crossWrap"><div style="overflow-x:auto" tabindex="0" role="region" aria-label="Cost per lead by age × placement, scrollable table"><table style="font-size:12px"><thead><tr><th data-c="3">Placement</th><th class="r" data-c="3">18-24</th><th class="r" data-c="3">25-34</th><th class="r" data-c="3">35-44</th><th class="r" data-c="3">45-54</th><th class="r" data-c="3">55-64</th><th class="r" data-c="3">65+</th></tr></thead><tbody><tr><td class="nm">feed</td><td class="r" style="color:var(--muted)">—</td><td class="r" style="background:rgba(212,42,42,0.2)">$33</td><td class="r" style="background:rgba(212,42,42,0.1)">$26</td><td class="r" style="background:rgba(212,42,42,0.0)">$23</td><td class="r" style="background:rgba(212,42,42,0.2)">$30</td><td class="r" style="background:rgba(212,42,42,0.3)">$42</td></tr><tr><td class="nm">facebook reels</td><td class="r" style="color:var(--muted)">—</td><td class="r" style="background:rgba(212,42,42,0.3)">$38</td><td class="r" style="background:rgba(212,42,42,0.2)">$31</td><td class="r" style="background:rgba(212,42,42,0.1)">$27</td><td class="r" style="background:rgba(212,42,42,0.2)">$35</td><td class="r" style="background:rgba(212,42,42,0.3)">$49</td></tr><tr><td class="nm">instagram reels</td><td class="r" style="color:var(--muted)">—</td><td class="r" style="background:rgba(212,42,42,0.2)">$34</td><td class="r" style="background:rgba(212,42,42,0.2)">$28</td><td class="r" style="background:rgba(212,42,42,0.1)">$24</td><td class="r" style="background:rgba(212,42,42,0.2)">$32</td><td class="r" style="background:rgba(212,42,42,0.3)">$44</td></tr><tr><td class="nm">instagram stories</td><td class="r" style="color:var(--muted)">—</td><td class="r" style="background:rgba(212,42,42,0.3)">$46</td><td class="r" style="background:rgba(212,42,42,0.3)">$37</td><td class="r" style="background:rgba(212,42,42,0.2)">$32</td><td class="r" style="background:rgba(212,42,42,0.3)">$42</td><td class="r" style="background:rgba(212,42,42,0.4)">$58</td></tr><tr><td class="nm">marketplace</td><td class="r" style="color:var(--muted)">—</td><td class="r" style="background:rgba(212,42,42,0.3)">$39</td><td class="r" style="background:rgba(212,42,42,0.2)">$32</td><td class="r" style="background:rgba(212,42,42,0.2)">$28</td><td class="r" style="background:rgba(212,42,42,0.2)">$36</td><td class="r" style="background:rgba(212,42,42,0.4)">$50</td></tr><tr><td class="nm">video feeds</td><td class="r" style="color:var(--muted)">—</td><td class="r" style="color:var(--muted)">—</td><td class="r" style="background:rgba(212,42,42,0.3)">$41</td><td class="r" style="background:rgba(212,42,42,0.2)">$36</td><td class="r" style="background:rgba(212,42,42,0.3)">$47</td><td class="r" style="background:rgba(212,42,42,0.4)">$64</td></tr></tbody></table></div></div>
+      <div class="note" id="crossNote" data-c="3"><b>Approximate by construction.</b> Meta will not return age and placement in the same query, so each placement's leads and spend are distributed across the age bands in proportion to those bands' own share. Read it for <i data-c="3">direction</i> — which corner is expensive — not as an exact CPL. Darker red is a higher cost per lead; the scale is square-rooted so mid-range cells stay legible.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><h2>Geography</h2><span class="sub" data-c="3">delivery only — see the note</span></div>
+    <div class="card">
+      <div class="chead">
+        <div><h3>Spend and reach by state</h3><div class="csub" id="geoSub" data-c="3">8 states/territories · month-granular</div></div>
+        <div class="spacer"></div>
+        <div class="seg mini" id="seg-geo" data-seg="geo" inert="">
+          <span class="cap">Measure</span>
+          <button data-v="spend" class="on">Spend</button><button data-v="imps">Impressions</button><button data-v="reach">Reach</button><button data-v="ctr">CTR</button>
+        </div>
+      </div>
+      <svg id="geoChart" viewBox="0 0 1180 300" preserveAspectRatio="none"><defs><linearGradient id="bg14" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg15" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s2)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s2)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg16" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s3)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s3)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg17" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s4)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s4)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg18" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s5)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s5)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg19" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s6)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s6)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg20" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s7)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s7)" stop-opacity=".62"></stop></linearGradient><linearGradient id="bg21" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="var(--s1)" stop-opacity="1"></stop><stop offset="100%" stop-color="var(--s1)" stop-opacity=".62"></stop></linearGradient></defs><text x="182" y="27.5" class="axis" text-anchor="end">Victoria</text><rect x="190" y="11" width="936" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="190" y="11" width="936" height="26" rx="4" fill="url(#bg14)"></rect><text x="1133" y="27.5" class="axis" text-anchor="start">$7.8K</text><text x="182" y="63.5" class="axis" text-anchor="end">New South Wales</text><rect x="190" y="47" width="936" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="190" y="47" width="123.4" height="26" rx="4" fill="url(#bg15)"></rect><text x="320.4" y="63.5" class="axis" text-anchor="start">$1.0K</text><text x="182" y="99.5" class="axis" text-anchor="end">Queensland</text><rect x="190" y="83" width="936" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="190" y="83" width="96.0" height="26" rx="4" fill="url(#bg16)"></rect><text x="293.0" y="99.5" class="axis" text-anchor="start">$796</text><text x="182" y="135.5" class="axis" text-anchor="end">Western Australia</text><rect x="190" y="119" width="936" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="190" y="119" width="69.7" height="26" rx="4" fill="url(#bg17)"></rect><text x="266.7" y="135.5" class="axis" text-anchor="start">$579</text><text x="182" y="171.5" class="axis" text-anchor="end">South Australia</text><rect x="190" y="155" width="936" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="190" y="155" width="54.8" height="26" rx="4" fill="url(#bg18)"></rect><text x="251.8" y="171.5" class="axis" text-anchor="start">$455</text><text x="182" y="207.5" class="axis" text-anchor="end">Tasmania</text><rect x="190" y="191" width="936" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="190" y="191" width="33.6" height="26" rx="4" fill="url(#bg19)"></rect><text x="230.6" y="207.5" class="axis" text-anchor="start">$279</text><text x="182" y="243.5" class="axis" text-anchor="end">Australian Capita…</text><rect x="190" y="227" width="936" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="190" y="227" width="24.0" height="26" rx="4" fill="url(#bg20)"></rect><text x="221.0" y="243.5" class="axis" text-anchor="start">$199</text><text x="182" y="279.5" class="axis" text-anchor="end">Northern Territory</text><rect x="190" y="263" width="936" height="26" rx="4" fill="var(--panel)" opacity=".55"></rect><rect x="190" y="263" width="15.2" height="26" rx="4" fill="url(#bg21)"></rect><text x="212.2" y="279.5" class="axis" text-anchor="start">$126</text></svg>
+      <div class="note" id="geoNote" data-c="3"><b>No leads by state.</b> Meta returns <code data-c="3">actions_lead</code> as identically zero on the region breakdown — every variant was tested, including <code data-c="3">unique_actions_lead</code>. So geography can show delivery (spend, impressions, reach, CTR) but <b>not</b> leads or CPL. The build brief asked for a lead/CPL map; that is a Meta limitation, not a missing field, and age × gender above is the actionable cut instead. Region is rolled to month to keep the payload small.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="shead"><h2>Reading of the audience</h2><span class="sub" data-c="3">recomputed with your filters</span></div>
+    <div class="insights" id="demoInsights"><div class="insight"><div class="ico">🔀</div><div><div class="it">Best age band to buy</div><div class="ib"><b>45-54</b> delivers leads at <b>$26.87</b> against <b>$96.92</b> for 18-24. Shifting budget from the second to the first is the cheapest win available on this split.</div></div></div><div class="insight"><div class="ico">🎯</div><div><div class="it">Where the cheap leads are</div><div class="ib"><b>45-54 male</b> converts at <b>$25.08</b> per lead (53 leads on $1,329). The worst, <b>65+ female</b>, costs <b>$50.95</b> — 2.0× more for the same outcome.</div></div></div><div class="insight"><div class="ico">📱</div><div><div class="it">Platform mix</div><div class="ib"><b>facebook</b> takes <b>66%</b> of spend at $31.51 per lead. Audience Network is running 2.2× more expensive — a common place to trim.</div></div></div><div class="insight"><div class="ico">🧭</div><div><div class="it">Best placement</div><div class="ib"><b>feed</b> is the cheapest placement at <b>$29.21</b> per lead. The most expensive of the tested placements is <b>video feeds</b> at <b>$44.95</b>.</div></div></div><div class="insight"><div class="ico">💻</div><div><div class="it">Device</div><div class="ib"><b>android smartphone</b> produces the most leads (158 at $33.72). Check the lead form renders well there first.</div></div></div></div>
+  </section>
+</div>
+
+</main>
+</div>
+
+
+
+
+
+
+
+
+<style>
+.demo-wordmark{font:600 11px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.75;white-space:nowrap}
+.demo-badge{position:fixed;left:0;bottom:12px;z-index:99999;pointer-events:none;writing-mode:vertical-rl;transform:rotate(180deg);font:700 9px/1 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#fff;background:rgba(17,18,20,.9);border:1px solid rgba(255,255,255,.28);border-right:0;border-radius:6px 0 0 6px;padding:9px 2px;box-shadow:0 1px 6px rgba(0,0,0,.25)}
+</style>
+<aside class="demo-badge" data-a11y-was="div" aria-label="Demo notice">Demo — sample data</aside>
+<script>
+(function(){var t=[].slice.call(document.querySelectorAll(".tabs[role=tablist] [role=tab]"));if(!t.length)return;
+function key(b){return b.getAttribute("data-tab")||b.getAttribute("data-v")||b.getAttribute("aria-controls")}
+var sub=document.querySelector("#none");
+function show(b,f){t.forEach(function(x){var on=x===b,p=document.getElementById(x.getAttribute("aria-controls"));x.setAttribute("aria-selected",on?"true":"false");x.setAttribute("tabindex",on?"0":"-1");x.classList.toggle("on",on);if(p)p.hidden=!on});if(sub&&b.getAttribute("data-sub"))sub.textContent=b.getAttribute("data-sub");if(f)b.focus()}
+t.forEach(function(b,i){b.addEventListener("click",function(){show(b);try{history.replaceState(null,"","#"+key(b))}catch(e){}});b.addEventListener("keydown",function(e){var k=e.key==="ArrowRight"?1:e.key==="ArrowLeft"?-1:0;if(k){e.preventDefault();show(t[(i+k+t.length)%t.length],true)}})});
+var h=location.hash.slice(1);t.forEach(function(b){if(h&&key(b)===h)show(b)})})();
+</script>
+</body></html>

@@ -1,0 +1,266 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. Midnight navy with electric blue + cyan accents (dark, the default) and a light theme.
+ * Theme: <html data-theme="dark|light">, set before paint by the inline script in app/layout.tsx
+ * (stored choice, else dark). Without JavaScript the page stays dark and fully readable.
+ * Fonts (all SIL OFL, self-hosted by next/font): Sora (display), DM Sans (body), IBM Plex Mono (labels).
+ */
+
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #050914;
+  --bg-2: #08101f;
+  --surface: #0c1630;
+  --surface-2: #11204a;
+  --line: rgb(140 170 255 / 0.14);
+  --line-strong: rgb(140 170 255 / 0.28);
+  --text: #e9efff;
+  --text-2: #b6c2df;
+  --muted: #8f9dc0;
+  --accent: #4d8dff; /* electric blue: links, highlights */
+  --accent-2: #2ee6ff; /* cyan: glow, active keys */
+  --accent-3: #8b7bff; /* violet: one layer colour on the keyboard */
+  --btn-bg: #2ee6ff;
+  --btn-fg: #03122b;
+  --btn-2-border: rgb(140 170 255 / 0.4);
+  --focus: #2ee6ff;
+  --glow: rgb(46 230 255 / 0.18);
+  --shadow: 0 30px 80px -40px rgb(0 0 0 / 0.8);
+  --grid-line: rgb(77 141 255 / 0.07);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f3f6fd;
+  --bg-2: #e9eefa;
+  --surface: #ffffff;
+  --surface-2: #e3eafb;
+  --line: rgb(16 34 84 / 0.12);
+  --line-strong: rgb(16 34 84 / 0.24);
+  --text: #0a1430;
+  --text-2: #26355c;
+  --muted: #4a5a82;
+  --accent: #1d4ed8;
+  --accent-2: #0e7490;
+  --accent-3: #5b46e0;
+  --btn-bg: #1d4ed8;
+  --btn-fg: #ffffff;
+  --btn-2-border: rgb(16 34 84 / 0.35);
+  --focus: #1d4ed8;
+  --glow: rgb(29 78 216 / 0.12);
+  --shadow: 0 30px 80px -40px rgb(16 34 84 / 0.35);
+  --grid-line: rgb(29 78 216 / 0.06);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-text: var(--text);
+  --color-text-2: var(--text-2);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+  --color-btn: var(--btn-bg);
+  --color-btn-fg: var(--btn-fg);
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --breakpoint-xs: 26rem;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────────────────────────── */
+
+/* In the base layer so Tailwind utilities on elements (text-accent on links, rounded-* on focus) win. */
+@layer base {
+
+  html {
+    background: var(--bg);
+    color: var(--text);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-top: 5.5rem;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::selection {
+    background: var(--accent-2);
+    color: var(--btn-fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  a {
+    color: inherit;
+    text-underline-offset: 0.2em;
+  }
+
+  img,
+  video,
+  canvas {
+    max-width: 100%;
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+/* ── Shared utilities ─────────────────────────────────────────────────────────────────────────── */
+
+/* In the components layer so Tailwind utilities (hidden, sm:flex, …) can override them. */
+@layer components {
+
+  .container-x {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2.5rem);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .section {
+    padding-block: clamp(5rem, 12vw, 9rem);
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(2rem, 5.5vw, 3.75rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 3rem;
+    padding: 0.75rem 1.4rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: transform 0.25s var(--ease-out-expo), box-shadow 0.25s ease, background-color 0.25s ease,
+      border-color 0.25s ease, color 0.25s ease;
+  }
+  .btn-primary {
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    box-shadow: 0 0 0 0 var(--glow);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px -8px var(--glow), 0 0 0 6px var(--glow);
+  }
+  .btn-ghost {
+    border: 1px solid var(--btn-2-border);
+    color: var(--text);
+    background: transparent;
+  }
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    color: var(--text-2);
+    white-space: nowrap;
+  }
+
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Faint blueprint grid used behind the hero and section heads. */
+  .bg-grid {
+    background-image: linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+}
+
+/*
+ * Reveal-on-scroll: elements with [data-reveal] start hidden ONLY when JavaScript runs (html.js, set before paint)
+ * and motion is allowed. Without JS or with reduced motion, everything is visible immediately.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  html.js [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

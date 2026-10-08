@@ -1,0 +1,168 @@
+/*
+ * The "Let's talk" pop-up: the whole screen under 768px, a centred 42rem panel above it.
+ * Built only from the theme tokens in app/globals.css, so it follows the dark and light themes.
+ */
+
+.dialog {
+  /* Under 768px: full screen, like a page of its own. */
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: var(--bg);
+  background-image: radial-gradient(120% 60% at 100% 0%, var(--glow), transparent 60%);
+  color: var(--text);
+  font-family: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  overflow: hidden;
+}
+
+.dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog::backdrop {
+  background: rgb(2 6 16 / 0.72);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+@media (min-width: 768px) {
+  .dialog {
+    width: min(42rem, calc(100vw - 4rem));
+    /* Hugs its content (a modal dialog is inset top and bottom, so "auto" would fill the screen). */
+    height: fit-content;
+    max-height: 90dvh;
+    margin: auto;
+    border: 1px solid var(--line-strong);
+    border-radius: 1.25rem;
+    background-color: var(--surface);
+    box-shadow: var(--shadow), 0 0 0 1px var(--line);
+  }
+}
+
+/* While it's open the page behind stays put (the scrollbar's gutter stays too, so nothing shifts). */
+:global(html):has(.dialog[open]) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dialog[open] {
+    animation: dialogIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .dialog[open]::backdrop {
+    animation: backdropIn 0.35s ease-out;
+  }
+}
+
+@keyframes dialogIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.985);
+  }
+}
+
+@keyframes backdropIn {
+  from {
+    opacity: 0;
+  }
+}
+
+/* The title bar stays in view; the content scrolls under it. */
+.bar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 1rem;
+  min-height: 4.5rem;
+  padding: 0.75rem clamp(1rem, 4vw, 2rem);
+  border-bottom: 1px solid var(--line);
+}
+
+.heading {
+  margin-right: auto;
+  min-width: 0;
+}
+
+.eyebrow {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+/* Focus lands here on phones: a starting point, not a control, so no ring. */
+.title:focus {
+  outline: none;
+}
+
+.close {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  padding: 0 1rem;
+  border: 1px solid var(--btn-2-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* A cross drawn with two hairlines. */
+.cross {
+  position: relative;
+  display: block;
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.cross::before,
+.cross::after {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 1.5px;
+  background: currentColor;
+  transform: rotate(45deg);
+}
+
+.cross::after {
+  transform: rotate(-45deg);
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  padding: 1.5rem clamp(1rem, 4vw, 2rem) 2rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}

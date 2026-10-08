@@ -1,0 +1,163 @@
+<!doctype html>
+<!--
+  Nico Agustin's résumé template. scripts/resume/build.mjs fills the #flow container with blocks generated from lib/site.ts
+  and content/projects.ts, splits them into A4 sheets (.page) and prints them with the local Chrome.
+
+  ATS rules: one system font (Arial), black on white, a single column, real text, no icons, no bullet symbols,
+  nothing positioned, floated or transformed (so the PDF's reading order matches the visual order).
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Nico Agustin — Résumé</title>
+    <style>
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: #fff;
+        color: #000;
+        font-family: Arial, "Liberation Sans", Helvetica, sans-serif;
+        font-size: 9.6pt;
+        line-height: 1.38;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* One A4 sheet: 15 mm margins on every side. A hair under 297 mm so Chrome never adds a blank page. */
+      .page {
+        width: 210mm;
+        height: 296.8mm;
+        padding: 15mm;
+        overflow: hidden;
+        background: #fff;
+        break-after: page;
+        page-break-after: always;
+      }
+      .page:last-child {
+        break-after: auto;
+        page-break-after: auto;
+      }
+      .page-body {
+        height: 100%;
+        overflow: hidden;
+      }
+      .page-body > :first-child {
+        margin-top: 0;
+      }
+
+      /* Screen only: a little room around the sheets when the template is opened directly. */
+      @media screen {
+        body {
+          background: #fff;
+        }
+      }
+
+      p {
+        margin: 0;
+      }
+      a {
+        color: #000;
+        text-decoration: none;
+      }
+
+      /* Header: text first, then the photo (same order on paper and in the text layer). */
+      .header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 6mm;
+        margin-bottom: 4mm;
+      }
+      .header-text {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+      h1 {
+        margin: 0;
+        font-size: 22pt;
+        line-height: 1.1;
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+      .title {
+        margin-top: 1.2mm;
+        font-size: 12pt;
+        font-weight: 400;
+      }
+      .contact {
+        margin-top: 3mm;
+        font-size: 9.2pt;
+        overflow-wrap: anywhere;
+      }
+      .photo {
+        flex: 0 0 auto;
+        width: 26mm;
+        height: 26mm;
+        object-fit: cover;
+        display: block;
+      }
+
+      h2 {
+        margin: 4.6mm 0 1.8mm;
+        padding-bottom: 0.8mm;
+        border-bottom: 0.6pt solid #000;
+        font-size: 10.4pt;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .entry {
+        margin-top: 2.2mm;
+      }
+      .entry.tight {
+        margin-top: 1mm;
+      }
+      h2 + .entry,
+      h2 + .entry.tight {
+        margin-top: 0;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 4mm;
+      }
+      .row > :first-child {
+        min-width: 0;
+      }
+      .date {
+        flex: 0 0 auto;
+        white-space: nowrap;
+      }
+      .line {
+        margin-top: 0.4mm;
+      }
+      .url {
+        overflow-wrap: anywhere;
+      }
+      strong {
+        font-weight: 700;
+      }
+
+      /* The flow container is emptied into .page sheets by build.mjs. */
+      #flow {
+        width: 180mm;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="doc"></div>
+    <div id="flow">{{CONTENT}}</div>
+  </body>
+</html>

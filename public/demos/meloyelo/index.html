@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en" data-a11y="1"><head>
+<meta name="robots" content="noindex, nofollow">
+<title>MeloYelo — Demo (sample data)</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
+
+
+<link rel="stylesheet" href="assets/fonts/fonts.css"><link rel="icon" href="assets/logo.png"><style id="a11y-css">
+.demo-sr{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+</style></head>
+<body style="margin:0">
+<style>
+  
+  :root{
+    --yelo:#FFD200; --gold:#E8B400; --green:#4CAF17; --olive:#1A1A0E;
+    --bg-0:#0B0B07; --canvas:#0B0B07; --card:#14140E;
+    --card-1:rgba(255,255,255,.035); --card-2:rgba(255,255,255,.012);
+    --hair:rgba(255,255,255,.09);
+    --ink:#F4F3E6; --ink2:#CFCDBA; --muted:#9B9A8A;
+    --line:rgba(255,255,255,.08); --line2:rgba(255,255,255,.15);
+    --good:#0ca30c; --goodtx:#4CC24A; --warn:#fab219; --serious:#ec835a; --bad:#e66767;
+    --s1:#c98500; --s2:#d55181; --s3:#008300; --s4:#9085e9;
+    --s5:#e66767; --s6:#3987e5; --s7:#d95926; --s8:#199e70;
+    --glow:rgba(255,210,0,.26);
+    --card-glow:0 1px 0 rgba(255,255,255,.05) inset,
+                0 24px 50px -28px rgba(0,0,0,.85),
+                0 0 44px -16px var(--glow);
+    --shadow-sm:var(--card-glow);
+    --radius:15px;
+    --display:'Archivo',system-ui,sans-serif;
+    --sans:'Inter',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
+       background:
+         radial-gradient(1000px 520px at 50% -6%, rgba(255,210,0,.13), transparent 64%),
+         radial-gradient(620px 340px at 50% -3%, rgba(76,175,23,.07), transparent 62%),
+         var(--bg-0)}
+  h1,h2,h3,h4{font-family:var(--display);font-weight:900;color:var(--ink);letter-spacing:-.01em}
+  .wrap{max-width:1400px;margin:0 auto;padding:0 26px}
+  .tnum{font-variant-numeric:tabular-nums}
+
+  
+  header.top{background:rgba(5,5,3,.92);backdrop-filter:blur(8px);border-bottom:2px solid var(--yelo);position:sticky;top:0;z-index:60}
+  .top-inner{display:flex;align-items:center;gap:18px;padding:10px 26px;max-width:1400px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:13px;min-width:0}
+  .brand img{height:40px;width:auto;display:block;border-radius:8px}
+  .brand .wm{font-family:var(--display);font-weight:900;font-size:18px;letter-spacing:.04em;color:#fff;line-height:1.05}
+  .brand .wm .y{color:var(--yelo)}
+  .brand .tg{font-size:11.5px;color:#B9B89F;letter-spacing:.03em;font-style:italic}
+  .top-spacer{flex:1}
+  .top-meta{text-align:right;font-size:11px;color:#A5A490;line-height:1.5}
+  .top-meta b{color:#EDEDE0;font-weight:700}
+  .syncbox{display:flex;align-items:center;gap:12px}
+  .sync{display:inline-flex;align-items:center;gap:7px;font-family:var(--sans);font-size:12.5px;font-weight:700;
+        border:1px solid rgba(255,210,0,.35);background:rgba(255,210,0,.08);color:#F5E9A8;padding:7px 14px;border-radius:8px;
+        cursor:pointer;transition:.15s;white-space:nowrap}
+  .sync:hover{border-color:var(--yelo);color:var(--yelo);box-shadow:0 0 14px -4px var(--glow)}
+  .sync[disabled]{opacity:.65;cursor:default}
+  .sync.ok{border-color:var(--good);color:#7DDB7D}
+  .sync.bad{border-color:var(--bad);color:#F09C9C}
+  .spin{width:12px;height:12px;border-radius:50%;border:2px solid rgba(255,255,255,.2);border-top-color:var(--yelo);
+        display:none;animation:spin .7s linear infinite}
+  .sync.busy .spin{display:inline-block}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .stale{color:#F09C9C;font-weight:700}
+  .agency{display:flex;align-items:center;gap:9px;padding-left:18px;margin-left:4px;border-left:1px solid rgba(255,255,255,.14)}
+  .agency .lbl{font-size:9.5px;color:#8B8A76;text-transform:uppercase;letter-spacing:1.1px;text-align:right}
+  .agency img{height:22px;display:block;background:#F4F3E4;border-radius:6px;padding:2px 7px;box-sizing:content-box}
+
+  
+  .tabbar{background:rgba(11,11,7,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--hair);position:sticky;top:63px;z-index:55}
+  .tabs{display:flex;gap:4px;padding:0 26px;max-width:1400px;margin:0 auto;overflow-x:auto}
+  .tab{position:relative;border:none;background:transparent;font-family:var(--display);font-size:13.5px;font-weight:700;
+       color:var(--muted);padding:13px 18px 12px;cursor:pointer;letter-spacing:.01em;transition:color .15s;white-space:nowrap}
+  .tab:hover{color:var(--ink)}
+  .tab[aria-selected="true"]{color:var(--yelo)}
+  .tab[aria-selected="true"]::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:3px;
+       background:var(--yelo);border-radius:3px 3px 0 0;box-shadow:0 0 12px var(--glow)}
+  .tab .ix{color:var(--gold);font-size:12px;margin-right:7px;font-weight:900}
+
+  
+  .controls{background:rgba(11,11,7,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--hair);
+            position:sticky;top:111px;z-index:50}
+  .controls-inner{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:11px 56px 11px 26px;max-width:1400px;margin:0 auto;position:relative}
+  .ctuck{position:absolute;top:8px;right:18px;display:inline-flex;align-items:center;gap:5px;
+         border:1px solid var(--line2);background:transparent;color:var(--muted);
+         font-family:var(--sans);font-size:10.5px;font-weight:700;letter-spacing:.6px;
+         text-transform:uppercase;padding:4px 9px;border-radius:7px;cursor:pointer;transition:.15s;z-index:2}
+  .ctuck:hover{border-color:var(--yelo);color:var(--yelo)}
+  .ctuck .cv{font-size:9px;transition:transform .18s}
+  .controls.tucked .cgroup,.controls.tucked .sep{display:none}
+  .controls.tucked .controls-inner{padding:7px 56px 7px 26px;gap:0}
+  .controls.tucked .rangenote{padding-top:0}
+  .controls.tucked .ctuck{top:5px}
+  .controls.tucked .ctuck .cv{transform:rotate(180deg)}
+  .cgroup{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .clabel{font-size:9.5px;text-transform:uppercase;letter-spacing:1.1px;color:var(--muted);font-weight:700;margin-right:2px}
+  .preset{font-family:var(--sans);font-size:12px;font-weight:600;border:1px solid var(--line2);background:transparent;
+          color:var(--ink2);padding:5px 11px;border-radius:7px;cursor:pointer;transition:.15s}
+  .preset:hover{border-color:var(--yelo);color:var(--yelo)}
+  .preset.active{background:var(--yelo);color:#141408;border-color:var(--yelo);font-weight:700;
+                 box-shadow:0 0 16px -6px var(--glow)}
+  input[type=date],select,input[type=search]{font-family:var(--sans);font-size:12px;color:var(--ink);border:1px solid var(--line2);
+          background:#181811;border-radius:7px;padding:5px 9px;cursor:pointer;font-weight:600;color-scheme:dark}
+  input[type=search]{cursor:text;min-width:150px}
+  select{max-width:230px}
+  .sep{width:1px;height:22px;background:var(--line2)}
+  .rangenote{width:100%;font-size:11.5px;color:var(--muted);padding-top:1px}
+  .rangenote b{color:var(--ink2)}
+
+  
+  :is(main:where(:not([data-a11y-was])),:where([data-a11y-was="main"])){padding:26px 0 70px}
+  .tab-pane[hidden]{display:none}
+  section{margin-bottom:30px}
+  .shead{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+  .shead h2{font-size:17px}
+  .shead .sub{font-size:12.5px;color:var(--muted)}
+  .shead .spacer{flex:1}
+  .grid{display:grid;gap:16px}
+  .card{background:linear-gradient(180deg,var(--card-1),var(--card-2));border:1px solid var(--hair);
+        border-radius:var(--radius);padding:16px 18px;box-shadow:var(--card-glow)}
+  .card h3{font-size:13.5px;font-weight:900;margin-bottom:2px}
+  .card .csub{font-size:11.5px;color:var(--muted);margin-bottom:10px}
+  .cardhead{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .cardhead>:is(div:where(:not([data-a11y-was])),:where([data-a11y-was="div"])):first-child{flex:1;min-width:170px}
+  .cardhead .csub{margin-bottom:0}
+
+  
+  .hero{background:linear-gradient(180deg,var(--card-1),var(--card-2));border:1px solid var(--hair);
+        border-radius:var(--radius);box-shadow:var(--card-glow);padding:18px 20px;position:relative;overflow:hidden}
+  .hero::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--yelo);box-shadow:0 0 14px var(--glow)}
+  .hero .hl{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);font-weight:700}
+  .hero .hv{font-family:var(--sans);font-weight:700;font-size:44px;line-height:1.1;color:#fff;letter-spacing:-.02em}
+  .hero .hv small{font-size:19px;color:var(--muted);font-weight:600;letter-spacing:0}
+  .hero .hd{font-size:12px;color:var(--ink2);margin-top:3px}
+  .meter{position:relative;height:14px;background:rgba(255,210,0,.10);border-radius:7px;margin:14px 0 6px;overflow:visible}
+  .meter .fill{position:absolute;left:0;top:0;bottom:0;background:var(--yelo);border-radius:7px 3px 3px 7px;min-width:3px;
+               box-shadow:0 0 18px -2px var(--glow)}
+  .meter .pace{position:absolute;top:-4px;bottom:-4px;width:2px;background:#F4F3E6}
+  .meter .pace i{position:absolute;top:-15px;left:-24px;width:50px;text-align:center;font-style:normal;
+                 font-size:9px;font-weight:700;color:var(--ink2);letter-spacing:.4px}
+  .meter-notes{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);flex-wrap:wrap;gap:4px}
+  .meter-notes b{color:var(--ink2)}
+
+  
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:14px}
+  .kpi{background:linear-gradient(180deg,var(--card-1),var(--card-2));border:1px solid var(--hair);
+       border-radius:var(--radius);padding:14px 16px;box-shadow:var(--card-glow);position:relative;overflow:hidden}
+  .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent,var(--yelo))}
+  .kpi .kl{font-size:10px;text-transform:uppercase;letter-spacing:1.1px;color:var(--muted);font-weight:700}
+  .kpi .kv{font-family:var(--sans);font-weight:700;font-size:27px;color:#fff;line-height:1.15;margin-top:5px;letter-spacing:-.02em}
+  .kpi .kd{font-size:11.5px;color:var(--muted);margin-top:4px}
+  .kpi .kd .up{color:var(--goodtx);font-weight:700} .kpi .kd .dn{color:var(--bad);font-weight:700}
+  .kpi.sel{cursor:pointer;transition:.14s;user-select:none}
+  .kpi.sel:hover{transform:translateY(-1px);border-color:rgba(255,210,0,.4)}
+  .kpi.sel .kl{display:flex;align-items:center;gap:6px}
+  .kpi.sel .dot{width:9px;height:9px;border-radius:50%;flex:none;box-shadow:0 0 6px var(--accent,var(--yelo))}
+  .kpi.sel.off{opacity:.5}
+  .kpi.sel.off::before{opacity:.25}
+  .kpi.sel.off .dot{background:transparent !important;box-shadow:inset 0 0 0 2px var(--line2)}
+  .kpi.sel.off .kv{color:var(--muted)}
+
+  
+  .cmp{background:linear-gradient(180deg,var(--card-1),var(--card-2));border:1px solid var(--hair);
+       border-radius:var(--radius);box-shadow:var(--card-glow);overflow:hidden}
+  .cmp-head{display:flex;align-items:center;gap:10px;padding:11px 16px;background:linear-gradient(90deg,rgba(255,210,0,.10),rgba(255,255,255,0))}
+  .cmp-head h3{font-size:13.5px}
+  .cmp-head .tag{font-size:11.5px;color:var(--muted)}
+  .cmp-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px 16px;border-top:1px solid var(--line)}
+  .cmp-row .cell .l{font-size:10px;color:var(--muted);line-height:1.3;text-transform:uppercase;letter-spacing:.7px;font-weight:700}
+  .cmp-row .cell .v{font-family:var(--sans);font-weight:700;font-size:19px;color:#fff;letter-spacing:-.01em;line-height:1.25}
+  .cmp-row .cell .s{font-size:10.5px;color:var(--muted)}
+  .delta{font-size:11px;font-weight:700;margin-left:5px}
+  .delta.up{color:var(--goodtx)} .delta.dn{color:var(--bad)} .delta.flat{color:var(--muted)}
+
+  
+  .tblwrap{overflow-x:auto;border-radius:10px;border:1px solid var(--hair)}
+  table{border-collapse:collapse;width:100%;font-size:12.5px}
+  thead th{background:#191912;color:#E9E7CF;font-weight:700;text-align:left;padding:9px 12px;white-space:nowrap;
+           font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;position:sticky;top:0}
+  thead th.srt{cursor:pointer;user-select:none}
+  thead th.srt:hover{background:#22221A;color:var(--yelo)}
+  thead th .ar{opacity:.45;font-size:9px;margin-left:3px}
+  thead th.on .ar{opacity:1;color:var(--yelo)}
+  tbody td{padding:8px 12px;border-top:1px solid var(--line);vertical-align:middle;color:var(--ink2)}
+  tbody td b{color:var(--ink)}
+  tbody tr:nth-child(even){background:rgba(255,255,255,.02)}
+  tbody tr:hover{background:rgba(255,210,0,.06)}
+  tbody tr.click{cursor:pointer}
+  tbody tr.onrow{background:rgba(255,210,0,.12)}
+  td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
+  td.rank{color:var(--muted);width:34px;font-variant-numeric:tabular-nums}
+  .bar-cell{position:relative;min-width:110px}
+  .bar-cell .bg{position:absolute;left:0;top:3px;bottom:3px;background:rgba(255,210,0,.14);border-radius:4px}
+  .bar-cell span{position:relative}
+  .tfoot{padding:7px 12px;font-size:11.5px;color:var(--muted);background:rgba(255,255,255,.02);border-top:1px solid var(--line)}
+
+  
+  .ch{width:100%;height:auto;display:block;overflow:visible}
+  .axis{fill:var(--muted);font-size:10.5px;font-family:var(--sans)}
+  .gl{stroke:var(--line);stroke-width:1}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin-bottom:9px}
+  .lg{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink2);cursor:pointer;user-select:none;font-weight:600}
+  .lg .sw{width:11px;height:11px;border-radius:3px;flex:none}
+  .lg.off{opacity:.35}
+  .tip{position:fixed;pointer-events:none;background:#0F0F0A;color:#F1EFDD;border:1px solid rgba(255,210,0,.28);border-radius:9px;padding:9px 11px;
+       font-size:11.5px;opacity:0;transition:opacity .1s;z-index:200;box-shadow:0 8px 28px rgba(0,0,0,.7),0 0 22px -8px var(--glow);max-width:290px}
+  .tip .td{font-family:var(--display);font-weight:900;font-size:12.5px;margin-bottom:4px;color:var(--yelo)}
+  .tip .tr{display:flex;justify-content:space-between;gap:16px;font-variant-numeric:tabular-nums}
+  .tip .tr .m{opacity:.7}
+
+  
+  .donut-wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .donut-legend{display:flex;flex-direction:column;gap:5px;font-size:11.5px;min-width:170px;flex:1}
+  .donut-legend .dl{display:flex;align-items:center;gap:7px;cursor:pointer;padding:2px 5px;border-radius:5px}
+  .donut-legend .dl:hover{background:rgba(255,255,255,.04)}
+  .donut-legend .dl.sel{background:rgba(255,210,0,.10);box-shadow:inset 0 0 0 1px rgba(255,210,0,.3)}
+  .donut-legend .dl .sw{width:10px;height:10px;border-radius:3px;flex:none}
+  .donut-legend .dl .nm{flex:1;color:var(--ink2)}
+  .donut-legend .dl .vv{font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
+
+  .pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.04);border:1px solid var(--line2);
+        border-radius:999px;padding:3px 10px;font-size:11px;font-weight:700;color:var(--ink2)}
+  .pill.on{background:var(--yelo);border-color:var(--yelo);color:#141408}
+  .pill button{border:none;background:transparent;color:inherit;cursor:pointer;font-size:13px;line-height:1;padding:0}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+
+  .seg{display:inline-flex;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:999px;padding:2px}
+  .seg button{border:none;background:transparent;color:var(--muted);font-family:var(--sans);font-size:11.5px;
+              font-weight:600;padding:5px 13px;border-radius:999px;cursor:pointer;white-space:nowrap}
+  .seg button:hover{color:var(--ink)}
+  .seg button.on{background:var(--yelo);color:#141408;font-weight:700}
+  .seg.mini button{font-size:10.5px;padding:4px 9px}
+  .seg .cap{font-size:9.5px;text-transform:uppercase;letter-spacing:1.1px;color:var(--muted);
+            font-weight:700;padding:6px 8px 6px 10px}
+
+  
+  .st{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px}
+  .st .ic{font-size:10px;line-height:1}
+  .st.good{background:rgba(12,163,12,.16);color:#6FD46F}
+  .st.warn{background:rgba(250,178,25,.14);color:#F5C86A}
+  .st.serious{background:rgba(236,131,90,.16);color:#F0A183}
+  .st.bad{background:rgba(230,103,103,.16);color:#F09C9C}
+  .st.neutral{background:rgba(255,255,255,.07);color:var(--ink2)}
+
+  
+  .funnel{display:flex;flex-direction:column;gap:6px}
+  .frow{display:grid;grid-template-columns:170px 1fr 150px;align-items:center;gap:12px}
+  .frow .fl{font-size:12px;font-weight:600;color:var(--ink2);text-align:right}
+  .frow .fbar{position:relative;height:26px;background:rgba(255,255,255,.04);border-radius:6px;overflow:visible}
+  .frow .fbar i{position:absolute;left:0;top:0;bottom:0;border-radius:6px 4px 4px 6px;min-width:2px}
+  .frow .fv{font-size:12px;color:var(--ink2)}
+  .frow .fv b{font-variant-numeric:tabular-nums;color:#fff}
+  .frow .fv .cv{color:var(--muted);font-size:11px}
+
+  
+  .stl-big{font-family:var(--sans);font-weight:700;font-size:33px;color:#fff;letter-spacing:-.01em}
+  .stl-big small{font-size:14px;color:var(--muted);font-weight:600}
+
+  
+  .empty{background:repeating-linear-gradient(45deg,rgba(255,255,255,.02),rgba(255,255,255,.02) 9px,rgba(255,255,255,.045) 9px,rgba(255,255,255,.045) 18px);
+         border:1px dashed var(--line2);border-radius:11px;padding:22px;text-align:center;color:var(--muted);font-size:12.5px}
+  .empty b{display:block;font-family:var(--display);font-weight:900;color:var(--ink2);font-size:13.5px;margin-bottom:5px}
+  .empty code{background:rgba(255,255,255,.07);border:1px solid var(--line2);border-radius:4px;padding:1px 5px;font-size:11px;color:var(--ink2)}
+  .note{font-size:11.5px;color:var(--muted);margin-top:8px}
+  .note b{color:var(--ink2)}
+  .loading{padding:70px 0;text-align:center;color:var(--muted);font-size:15px}
+  .err{background:rgba(230,103,103,.10);border:1px solid rgba(230,103,103,.4);color:#F0A9A9;border-radius:11px;padding:15px 18px;font-size:13px}
+  .insight{display:flex;gap:11px;background:linear-gradient(180deg,var(--card-1),var(--card-2));border:1px solid var(--hair);
+           border-left:3px solid var(--yelo);border-radius:10px;padding:12px 15px;box-shadow:var(--card-glow)}
+  .insight .ico{font-size:15px;line-height:1.3}
+  .insight .it{font-family:var(--display);font-weight:900;font-size:12.5px;margin-bottom:2px}
+  .insight .ib{font-size:12px;color:var(--ink2)}
+
+  
+  svg.ch{background:radial-gradient(58% 68% at 50% 42%, rgba(255,210,0,.05), transparent 72%);border-radius:12px}
+  .kpi{background:linear-gradient(135deg, color-mix(in srgb, var(--accent, #FFD200) 10%, transparent), transparent 55%),
+                 linear-gradient(180deg,var(--card-1),var(--card-2))}
+  .hero{background:linear-gradient(135deg, rgba(255,210,0,.09), transparent 48%),
+                  linear-gradient(180deg,var(--card-1),var(--card-2))}
+  .cmp-head{background:linear-gradient(90deg,rgba(255,210,0,.16),rgba(255,210,0,.02) 70%,transparent)}
+  .insight{background:linear-gradient(135deg, rgba(255,210,0,.07), transparent 45%),
+                     linear-gradient(180deg,var(--card-1),var(--card-2))}
+  thead th{background:linear-gradient(180deg,#26251B,#171710);border-bottom:1px solid rgba(255,210,0,.35)}
+  .bar-cell .bg{background:linear-gradient(90deg, rgba(255,210,0,.10), rgba(255,210,0,.30))}
+  td.rank.top1{color:#FFD200;font-weight:700;text-shadow:0 0 10px rgba(255,210,0,.5)}
+  td.rank.top2{color:#E3C765;font-weight:700}
+  td.rank.top3{color:#BCA95E;font-weight:700}
+  .frow .fbar i{background-image:linear-gradient(180deg,rgba(255,255,255,.20),rgba(255,255,255,0) 60%)}
+  .frow .fbar{background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.02))}
+  #ctDonut path,#srcDonut path{filter:drop-shadow(0 3px 7px rgba(0,0,0,.5))}
+  .donut-legend .dl .sw,.lg .sw{box-shadow:0 0 7px -1px rgba(0,0,0,.6),0 1px 0 rgba(255,255,255,.08) inset}
+  .meter{background:linear-gradient(90deg,rgba(255,210,0,.14),rgba(255,210,0,.07))}
+  .st.good{background:linear-gradient(135deg,rgba(12,163,12,.28),rgba(12,163,12,.10))}
+  .st.warn{background:linear-gradient(135deg,rgba(250,178,25,.26),rgba(250,178,25,.10))}
+  .st.serious{background:linear-gradient(135deg,rgba(236,131,90,.28),rgba(236,131,90,.10))}
+  .st.bad{background:linear-gradient(135deg,rgba(230,103,103,.28),rgba(230,103,103,.10))}
+  .empty{background:linear-gradient(135deg, rgba(255,210,0,.05), transparent 55%),
+         repeating-linear-gradient(45deg,rgba(255,255,255,.02),rgba(255,255,255,.02) 9px,rgba(255,255,255,.045) 9px,rgba(255,255,255,.045) 18px)}
+
+  @media (max-width:820px){
+    .controls{position:static} .tabbar{position:static} header.top{position:static}
+    .top-meta{display:none} .cmp-row{grid-template-columns:1fr}
+    .tab{padding:11px 12px;font-size:12.5px} .tab .ix{display:none}
+    .frow{grid-template-columns:110px 1fr}
+    .frow .fv{grid-column:2}
+  }
+
+
+  
+  .bench-group{background:rgba(76,175,23,.10);border:1px solid rgba(76,175,23,.34);
+        border-radius:9px;padding:4px 9px}
+  .bench-group .clabel{color:#8FD46A}
+  .preset.bench.active{background:var(--green);border-color:var(--green);color:#0B0B07}
+  input[type=date].bench-date{border-color:rgba(76,175,23,.45);color:#CDE9B8}
+  .rangenote .bench{color:#8FD46A}
+
+
+
+
+@media print{
+  header.top, .tabbar, .tabs, .controls, .gbar, .filters, .filterbar,
+  .sync, .iconbtn, .ctuck, .tip, #tip, .toast, .cmod, .modal, .fsbtn, .exportbtn, .pager{
+    display:none !important;
+  }
+  
+  .tab-pane[hidden]{ display:block !important; }
+  [hidden].tab-pane{ display:block !important; }
+  body{ background:#fff !important; }
+  :is(main:where(:not([data-a11y-was])),:where([data-a11y-was="main"])){ padding-top:8px !important; }
+  
+  .card, .kpi, .cmp, .stage, .insight, .verdict, .panel, .hero, .bm, .ccard, .fresh, .acct{
+    box-shadow:none !important;
+  }
+  
+  section, .card, .kpi, .cmp, .stage, .insight, .verdict, .panel, .bm, .ccard, .acct{
+    break-inside:avoid; page-break-inside:avoid;
+  }
+  
+  thead th{ position:static !important; }
+  
+  .tblwrap, .tablewrap, .scroll-x, .scrolly, .hbwrap, .macc{
+    overflow:visible !important; max-height:none !important;
+  }
+}
+
+
+@media (prefers-reduced-motion:reduce){
+  *, *::before, *::after{
+    transition:none !important;
+    animation:none !important;
+    scroll-behavior:auto !important;
+  }
+  html{ scroll-behavior:auto !important; }
+}
+
+
+.vh{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+</style>
+
+<header class="top"><h1 class="demo-sr">MeloYelo performance dashboard</h1>
+  <div class="top-inner">
+    <div class="brand">
+      <img id="logo" alt="MeloYelo" src="assets/logo.png">
+      <div>
+        <div class="wm">melo<span class="y">YELO</span> E-BIKES</div>
+        <div class="tg">just mad about e-bikes</div>
+      </div>
+    </div>
+    <div class="top-spacer"></div>
+    <div class="syncbox">
+      
+      <div class="top-meta">
+        <div>Updated <b id="updated">Oct 5, 2026</b></div>
+        <div>Data through <b id="thru" class="">5 Oct 2026</b></div>
+      </div>
+    </div>
+    <div class="agency"><span class="demo-wordmark">Client reporting</span></div>
+  </div>
+</header>
+
+<div class="tabbar" role="region" aria-label="Dashboard tabs">
+  <div class="tabs" id="tabs" role="tablist" aria-label="Dashboard sections">
+    <button type="button" class="tab" id="tabbtn-sales" role="tab" data-tab="sales" aria-selected="true" aria-controls="tab-sales" tabindex="0"><span class="ix">01</span>Sales Performance</button>
+    <button type="button" class="tab" id="tabbtn-riders" role="tab" data-tab="riders" aria-selected="false" aria-controls="tab-riders" tabindex="-1"><span class="ix">02</span>Riders &amp; Leads</button>
+    <button type="button" class="tab" id="tabbtn-inventory" role="tab" data-tab="inventory" aria-selected="false" aria-controls="tab-inventory" tabindex="-1"><span class="ix">03</span>Inventory &amp; Production</button>
+    <button type="button" class="tab" id="tabbtn-marketing" role="tab" data-tab="marketing" aria-selected="false" aria-controls="tab-marketing" tabindex="-1"><span class="ix">04</span>Marketing</button>
+  </div>
+</div>
+
+
+
+<main id="app" data-a11y-was="div">
+
+
+<div id="tab-sales" class="tab-pane" role="tabpanel" aria-labelledby="tabbtn-sales"><h2 class="demo-sr">Sales performance</h2>
+  <div class="controls" inert="">
+    <div class="controls-inner">
+      <button type="button" class="ctuck" data-tuck="1" aria-label="Collapse or expand the filters"><span class="cv">▲</span><span class="cl">Filters</span></button>
+      <div class="cgroup">
+        <span class="clabel">Period</span>
+        <button type="button" class="preset" data-p1="30" inert="">30d</button>
+        <button type="button" class="preset" data-p1="90" inert="">90d</button>
+        <button type="button" class="preset active" data-p1="fytd" inert="">FYTD</button>
+        <button type="button" class="preset" data-p1="365" inert="">12m</button>
+        <button type="button" class="preset" data-p1="all" inert="">All time</button>
+        <input type="date" id="s1from" inert=""><span style="color:var(--muted);font-size:11px">to</span><input type="date" id="s1to" inert="">
+      </div>
+      <div class="sep"></div>
+      
+      <div class="cgroup bench-group">
+        <span class="clabel">KPI benchmark</span>
+        <button type="button" class="preset bench active" data-b1="prev" inert="">Previous window</button>
+        <button type="button" class="preset bench" data-b1="90" inert="">90d</button>
+        <button type="button" class="preset bench" data-b1="365" inert="">Rolling 12m</button>
+        <button type="button" class="preset bench" data-b1="lastfy" inert="">Last FY</button>
+        <button type="button" class="preset bench" data-b1="all" inert="">All time</button>
+        <input type="date" id="s1bfrom" class="bench-date" inert=""><span style="color:var(--muted);font-size:11px">to</span><input type="date" id="s1bto" class="bench-date" inert="">
+      </div>
+      <div class="sep"></div>
+      <div class="cgroup">
+        <span class="clabel">Agent</span>
+        <select id="s1agent" inert=""><option value="" selected="">All agents</option></select>
+        <select id="s1ast" inert=""><option value="" selected="">All statuses</option></select>
+      </div>
+      <div class="sep"></div>
+      <div class="cgroup">
+        <span class="clabel">Customer type</span>
+        <select id="s1ct" inert=""><option value="" selected="">All types</option></select>
+        <span class="clabel" style="margin-left:8px">Product</span>
+        <input type="search" id="s1prod" placeholder="Filter by product…" autocomplete="off" inert="">
+      </div>
+      <div class="rangenote" id="s1note">Reporting <b>1 Apr 2026</b> → <b>5 Oct 2026</b> (188 days) · bike counts include the legacy Special Bike Package group; revenue is net of credit notes. <span class="bench">The <b>KPI benchmark</b> - → - drives the comparison line under each scorecard only — volume metrics are scaled to this period's length, rates are the benchmark's own aggregate.</span></div>
+    </div>
+  </div>
+
+  <div data-a11y-was="main"><div class="wrap">
+    <section>
+      <div class="grid" style="grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)">
+        <div class="hero">
+          <div class="hl">Financial-year bike target</div>
+          <div class="hv tnum" id="fyHero">207 <small>of 820 bikes · FY2027</small></div>
+          <div class="meter" id="fyMeter"><div class="fill" style="width:25.2%"></div><div class="pace" style="left:51.5%"><i>pace 422</i></div></div>
+          <div class="meter-notes" id="fyNotes"><span><b>25.2%</b> of target</span><span>pace says <b>422</b> by 5 Oct 2026</span><span>full-year projection <b>402</b></span></div>
+          <div class="hd" id="fyPace">Same window last year: <b>196 bikes</b> · <span style="color:var(--goodtx);font-weight:700">11 ahead</span>. Projection assumes the year keeps the pace sold so far.</div>
+        </div>
+        <div class="cmp" id="cmpFy"><div class="cmp-head"><h3>FY2027 so far</h3><span class="tag">1 Apr → 5 Oct 2026 vs the same window last year</span></div><div class="cmp-row"><div class="cell"><div class="l">Bike revenue</div><div class="v tnum">$694.5K</div></div><div class="cell"><div class="l">Last FY, same window</div><div class="v tnum" style="color:var(--muted)">$642.5K</div></div><div class="cell"><div class="l">Change</div><div class="v"><span class="delta up">▲ +8.1%</span></div></div></div><div class="cmp-row"><div class="cell"><div class="l">Parts &amp; accessories</div><div class="v tnum">$42.2K</div></div><div class="cell"><div class="l">Last FY, same window</div><div class="v tnum" style="color:var(--muted)">$41.2K</div></div><div class="cell"><div class="l">Change</div><div class="v"><span class="delta up">▲ +2.3%</span></div></div></div><div class="cmp-row"><div class="cell"><div class="l">Gross profit · everything</div><div class="v tnum">$307.4K</div></div><div class="cell"><div class="l">Last FY, same window</div><div class="v tnum" style="color:var(--muted)">$289.0K</div></div><div class="cell"><div class="l">Change</div><div class="v"><span class="delta up">▲ +6.4%</span></div></div></div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="kpis" id="s1kpis"><div class="kpi sel" style="--accent: #c98500;"><div class="kl"><span class="dot" style="background:#c98500"></span>Bikes sold</div><div class="kv tnum">207</div><div class="kd">prev 188d: 239 <span class="delta dn">▼ -13.4%</span></div></div><div class="kpi sel" style="--accent: #d55181;"><div class="kl"><span class="dot" style="background:#d55181"></span>Bike revenue</div><div class="kv tnum">$694.5K</div><div class="kd">prev 188d: $767.6K <span class="delta dn">▼ -9.5%</span></div></div><div class="kpi sel off" style="--accent: #008300;"><div class="kl"><span class="dot" style="background:#008300"></span>Avg $ / bike</div><div class="kv tnum">$3,355</div><div class="kd">prev 188d: $3,212 <span class="delta up">▲ +4.5%</span></div></div><div class="kpi sel off" style="--accent: #9085e9;"><div class="kl"><span class="dot" style="background:#9085e9"></span>Parts &amp; accessories</div><div class="kv tnum">$42.2K</div><div class="kd">prev 188d: $44.6K <span class="delta dn">▼ -5.5%</span></div></div><div class="kpi sel off" style="--accent: #e66767;"><div class="kl"><span class="dot" style="background:#e66767"></span>Gross profit</div><div class="kv tnum">$307.4K</div><div class="kd">prev 188d: $342.1K <span class="delta dn">▼ -10.1%</span></div></div><div class="kpi sel off" style="--accent: #3987e5;"><div class="kl"><span class="dot" style="background:#3987e5"></span>Orders</div><div class="kv tnum">508</div><div class="kd">prev 188d: 563 <span class="delta dn">▼ -9.8%</span></div></div></div>
+      <div class="card" style="margin-top:16px">
+        <div class="cardhead">
+          <div>
+            <h3>Metrics over time</h3>
+            <div class="csub" id="kpiChartSub">click a scorecard above to add or remove its line · week grain</div>
+          </div>
+          <div class="seg" id="kpiGrainSeg" inert="">
+            <button type="button" data-kgrain="auto" class="on">Auto</button>
+            <button type="button" data-kgrain="day">Day</button>
+            <button type="button" data-kgrain="week">Week</button>
+            <button type="button" data-kgrain="month">Month</button>
+          </div>
+          <div class="seg" id="kpiScaleSeg" inert="">
+            <span class="cap">Axis</span>
+            <button type="button" data-kscale="rel" class="on">Relative</button>
+            <button type="button" data-kscale="abs">Absolute</button>
+          </div>
+        </div>
+        <div class="legend" id="kpiLegend"><span class="lg" inert=""><span class="sw" style="background:#c98500"></span>Bikes sold</span><span class="lg" inert=""><span class="sw" style="background:#d55181"></span>Bike revenue</span></div>
+        <svg class="ch" id="chartKpi" style="max-height:260px" viewBox="0 0 1180 250" role="img" aria-label="Selected metrics over time"><defs><linearGradient id="gr1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="0.2"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0"></stop></linearGradient><linearGradient id="gr2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="0.2"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0"></stop></linearGradient></defs><line x1="56" x2="1116" y1="224" y2="224" class="gl"></line><text x="49" y="227.5" text-anchor="end" class="axis">0%</text><line x1="56" x2="1116" y1="170.5" y2="170.5" class="gl"></line><text x="49" y="174" text-anchor="end" class="axis">25%</text><line x1="56" x2="1116" y1="117" y2="117" class="gl"></line><text x="49" y="120.5" text-anchor="end" class="axis">50%</text><line x1="56" x2="1116" y1="63.5" y2="63.5" class="gl"></line><text x="49" y="67" text-anchor="end" class="axis">75%</text><line x1="56" x2="1116" y1="10" y2="10" class="gl"></line><text x="49" y="13.5" text-anchor="end" class="axis">100%</text><path d="M74.9 170.5L112.8 170.5L150.6 63.5L188.5 143.8L226.4 36.8L264.2 23.4L302.1 143.8L339.9 143.8L377.8 143.8L415.6 130.4L453.5 130.4L491.4 197.3L529.2 90.3L567.1 183.9L604.9 170.5L642.8 197.3L680.6 10.0L718.5 130.4L756.4 170.5L794.2 36.8L832.1 117.0L869.9 197.3L907.8 50.1L945.6 103.6L983.5 170.5L1021.4 117.0L1059.2 63.5L1097.1 197.3 L1097.1 224 L74.9 224Z" fill="url(#gr1)"></path><path d="M74.9 170.5L112.8 170.5L150.6 63.5L188.5 143.8L226.4 36.8L264.2 23.4L302.1 143.8L339.9 143.8L377.8 143.8L415.6 130.4L453.5 130.4L491.4 197.3L529.2 90.3L567.1 183.9L604.9 170.5L642.8 197.3L680.6 10.0L718.5 130.4L756.4 170.5L794.2 36.8L832.1 117.0L869.9 197.3L907.8 50.1L945.6 103.6L983.5 170.5L1021.4 117.0L1059.2 63.5L1097.1 197.3" fill="none" stroke="#c98500" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path><circle cx="1097.0" cy="197.2" r="4" fill="#c98500" stroke="#14140E" stroke-width="2"></circle><path d="M74.9 163.9L112.8 177.0L150.6 81.9L188.5 149.0L226.4 45.5L264.2 12.1L302.1 155.6L339.9 139.9L377.8 146.2L415.6 127.3L453.5 116.4L491.4 194.3L529.2 80.2L567.1 172.0L604.9 166.5L642.8 198.5L680.6 10.0L718.5 125.6L756.4 166.8L794.2 31.8L832.1 97.6L869.9 203.0L907.8 44.0L945.6 98.5L983.5 170.3L1021.4 123.3L1059.2 56.4L1097.1 195.1 L1097.1 224 L74.9 224Z" fill="url(#gr2)"></path><path d="M74.9 163.9L112.8 177.0L150.6 81.9L188.5 149.0L226.4 45.5L264.2 12.1L302.1 155.6L339.9 139.9L377.8 146.2L415.6 127.3L453.5 116.4L491.4 194.3L529.2 80.2L567.1 172.0L604.9 166.5L642.8 198.5L680.6 10.0L718.5 125.6L756.4 166.8L794.2 31.8L832.1 97.6L869.9 203.0L907.8 44.0L945.6 98.5L983.5 170.3L1021.4 123.3L1059.2 56.4L1097.1 195.1" fill="none" stroke="#d55181" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path><circle cx="1097.0" cy="195.1" r="4" fill="#d55181" stroke="#14140E" stroke-width="2"></circle><text x="74.9" y="240" text-anchor="middle" class="axis">30 Mar</text><text x="150.6" y="240" text-anchor="middle" class="axis">13 Apr</text><text x="226.3" y="240" text-anchor="middle" class="axis">27 Apr</text><text x="302.0" y="240" text-anchor="middle" class="axis">11 May</text><text x="377.7" y="240" text-anchor="middle" class="axis">25 May</text><text x="453.4" y="240" text-anchor="middle" class="axis">8 Jun</text><text x="529.2" y="240" text-anchor="middle" class="axis">22 Jun</text><text x="604.9" y="240" text-anchor="middle" class="axis">6 Jul</text><text x="680.6" y="240" text-anchor="middle" class="axis">20 Jul</text><text x="756.3" y="240" text-anchor="middle" class="axis">3 Aug</text><text x="832.0" y="240" text-anchor="middle" class="axis">17 Aug</text><text x="907.7" y="240" text-anchor="middle" class="axis">31 Aug</text><text x="983.4" y="240" text-anchor="middle" class="axis">14 Sep</text><text x="1059.2" y="240" text-anchor="middle" class="axis">28 Sep</text><rect x="56" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="93.8" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="131.7" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="169.5" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="207.4" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="245.2" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="283.1" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="321" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="358.8" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="396.7" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="434.5" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="472.4" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="510.2" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="548.1" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="586" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="623.8" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="661.7" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="699.5" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="737.4" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="775.2" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="813.1" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="850.9" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="888.8" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="926.7" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="964.5" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="1002.4" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="1040.2" y="10" width="37.8" height="214" fill="transparent"></rect><rect x="1078.1" y="10" width="37.8" height="214" fill="transparent"></rect></svg>
+        <div class="note" id="kpiScaleNote">Relative axis: every line is indexed to its own peak in this window, so shapes compare across different scales. Tooltips carry the real values.</div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shead">
+        <h2>Month scoreboard</h2>
+        <span class="sub">this month vs last month vs the same month last year · independent of the period filter</span>
+      </div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" id="monthCards"><div class="cmp"><div class="cmp-head"><h3>Bike units sold</h3></div><div class="cmp-row"><div class="cell"><div class="l">Oct 2026 (to 5)</div><div class="v tnum">7</div></div><div class="cell"><div class="l">Sep 2026</div><div class="v tnum" style="color:var(--muted)">40</div><div class="s">vs prev <span class="delta dn">▼ -82.5%</span></div></div><div class="cell"><div class="l">Oct 2025</div><div class="v tnum" style="color:var(--muted)">55</div><div class="s">vs last yr <span class="delta dn">▼ -87.3%</span></div></div></div></div><div class="cmp"><div class="cmp-head"><h3>Bike sales value</h3></div><div class="cmp-row"><div class="cell"><div class="l">Oct 2026 (to 5)</div><div class="v tnum">$23.3K</div></div><div class="cell"><div class="l">Sep 2026</div><div class="v tnum" style="color:var(--muted)">$133.6K</div><div class="s">vs prev <span class="delta dn">▼ -82.6%</span></div></div><div class="cell"><div class="l">Oct 2025</div><div class="v tnum" style="color:var(--muted)">$179.3K</div><div class="s">vs last yr <span class="delta dn">▼ -87.0%</span></div></div></div></div><div class="cmp"><div class="cmp-head"><h3>Average bike value</h3></div><div class="cmp-row"><div class="cell"><div class="l">Oct 2026 (to 5)</div><div class="v tnum">$3,329</div></div><div class="cell"><div class="l">Sep 2026</div><div class="v tnum" style="color:var(--muted)">$3,339</div><div class="s">vs prev <span class="delta flat">▼ -0.3%</span></div></div><div class="cell"><div class="l">Oct 2025</div><div class="v tnum" style="color:var(--muted)">$3,260</div><div class="s">vs last yr <span class="delta up">▲ +2.1%</span></div></div></div></div><div class="cmp"><div class="cmp-head"><h3>Parts &amp; accessories</h3></div><div class="cmp-row"><div class="cell"><div class="l">Oct 2026 (to 5)</div><div class="v tnum">$915</div></div><div class="cell"><div class="l">Sep 2026</div><div class="v tnum" style="color:var(--muted)">$6,856</div><div class="s">vs prev <span class="delta dn">▼ -86.7%</span></div></div><div class="cell"><div class="l">Oct 2025</div><div class="v tnum" style="color:var(--muted)">$8,271</div><div class="s">vs last yr <span class="delta dn">▼ -88.9%</span></div></div></div></div></div>
+    </section>
+
+    <section>
+      <div class="grid" style="grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)">
+        <div class="card">
+          <div class="cardhead">
+            <div>
+              <h3>Bike sales by model</h3>
+              <div class="csub">monthly units · top models stacked, the rest folded into Other</div>
+            </div>
+            <div class="seg mini" id="modelGrainSeg" inert="">
+              <button type="button" data-gv="month" class="on">Month</button>
+              <button type="button" data-gv="week">Week</button>
+            </div>
+          </div>
+          <div class="legend" id="modelLegend"><span class="lg" inert=""><span class="sw" style="background:#c98500"></span>SuperLite3</span><span class="lg" inert=""><span class="sw" style="background:#d55181"></span>Ascent3</span><span class="lg" inert=""><span class="sw" style="background:#008300"></span>Town'n Trail</span><span class="lg" inert=""><span class="sw" style="background:#9085e9"></span>SuperTrail</span><span class="lg" inert=""><span class="sw" style="background:#e66767"></span>Zoomin</span></div>
+          <svg class="ch" id="chartModels" style="max-height:250px" viewBox="0 0 760 240" role="img" aria-label="Bike units by model over time"><defs><linearGradient id="gr3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#008300" stop-opacity="1"></stop><stop offset="1" stop-color="#008300" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9085e9" stop-opacity="1"></stop><stop offset="1" stop-color="#9085e9" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr7" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e66767" stop-opacity="1"></stop><stop offset="1" stop-color="#e66767" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr8" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr9" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr10" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#008300" stop-opacity="1"></stop><stop offset="1" stop-color="#008300" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr11" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9085e9" stop-opacity="1"></stop><stop offset="1" stop-color="#9085e9" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr12" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e66767" stop-opacity="1"></stop><stop offset="1" stop-color="#e66767" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr13" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr14" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr15" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#008300" stop-opacity="1"></stop><stop offset="1" stop-color="#008300" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr16" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9085e9" stop-opacity="1"></stop><stop offset="1" stop-color="#9085e9" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr17" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e66767" stop-opacity="1"></stop><stop offset="1" stop-color="#e66767" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr18" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr19" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr20" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#008300" stop-opacity="1"></stop><stop offset="1" stop-color="#008300" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr21" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9085e9" stop-opacity="1"></stop><stop offset="1" stop-color="#9085e9" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr22" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e66767" stop-opacity="1"></stop><stop offset="1" stop-color="#e66767" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr23" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr24" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr25" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#008300" stop-opacity="1"></stop><stop offset="1" stop-color="#008300" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr26" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9085e9" stop-opacity="1"></stop><stop offset="1" stop-color="#9085e9" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr27" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e66767" stop-opacity="1"></stop><stop offset="1" stop-color="#e66767" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr28" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr29" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr30" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#008300" stop-opacity="1"></stop><stop offset="1" stop-color="#008300" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr31" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9085e9" stop-opacity="1"></stop><stop offset="1" stop-color="#9085e9" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr32" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e66767" stop-opacity="1"></stop><stop offset="1" stop-color="#e66767" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr33" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr34" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr35" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9085e9" stop-opacity="1"></stop><stop offset="1" stop-color="#9085e9" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr36" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e66767" stop-opacity="1"></stop><stop offset="1" stop-color="#e66767" stop-opacity="0.62"></stop></linearGradient></defs><line x1="46" x2="752" y1="216" y2="216" class="gl"></line><text x="39" y="219.5" text-anchor="end" class="axis">0</text><line x1="46" x2="752" y1="164" y2="164" class="gl"></line><text x="39" y="167.5" text-anchor="end" class="axis">13</text><line x1="46" x2="752" y1="112" y2="112" class="gl"></line><text x="39" y="115.5" text-anchor="end" class="axis">25</text><line x1="46" x2="752" y1="60" y2="60" class="gl"></line><text x="39" y="63.5" text-anchor="end" class="axis">38</text><line x1="46" x2="752" y1="8" y2="8" class="gl"></line><text x="39" y="11.5" text-anchor="end" class="axis">50</text><text x="96.4" y="232" text-anchor="middle" class="axis">Apr 26</text><text x="197.2" y="232" text-anchor="middle" class="axis">May 26</text><text x="298.1" y="232" text-anchor="middle" class="axis">Jun 26</text><text x="399" y="232" text-anchor="middle" class="axis">Jul 26</text><text x="499.8" y="232" text-anchor="middle" class="axis">Aug 26</text><text x="600.7" y="232" text-anchor="middle" class="axis">Sep 26</text><text x="701.5" y="232" text-anchor="middle" class="axis">Oct 26</text><rect x="84.4" y="182.7" width="24" height="33.2" rx="2" fill="url(#gr3)"></rect><rect x="84.4" y="153.6" width="24" height="27.1" rx="2" fill="url(#gr4)"></rect><rect x="84.4" y="95.3" width="24" height="56.2" rx="2" fill="url(#gr5)"></rect><rect x="84.4" y="82.8" width="24" height="10.4" rx="2" fill="url(#gr6)"></rect><rect x="84.4" y="74.5" width="24" height="6.3" rx="2" fill="url(#gr7)"></rect><rect x="185.2" y="153.6" width="24" height="62.4" rx="2" fill="url(#gr8)"></rect><rect x="185.2" y="112" width="24" height="39.6" rx="2" fill="url(#gr9)"></rect><rect x="185.2" y="87.0" width="24" height="22.9" rx="2" fill="url(#gr10)"></rect><rect x="185.2" y="66.2" width="24" height="18.8" rx="2" fill="url(#gr11)"></rect><rect x="185.2" y="53.7" width="24" height="10.4" rx="2" fill="url(#gr12)"></rect><rect x="286.1" y="178.5" width="24" height="37.4" rx="2" fill="url(#gr13)"></rect><rect x="286.1" y="157.7" width="24" height="18.8" rx="2" fill="url(#gr14)"></rect><rect x="286.1" y="136.9" width="24" height="18.8" rx="2" fill="url(#gr15)"></rect><rect x="286.1" y="111.9" width="24" height="22.9" rx="2" fill="url(#gr16)"></rect><rect x="286.1" y="107.8" width="24" height="2.1" rx="2" fill="url(#gr17)"></rect><rect x="387" y="170.2" width="24" height="45.7" rx="2" fill="url(#gr18)"></rect><rect x="387" y="136.9" width="24" height="31.2" rx="2" fill="url(#gr19)"></rect><rect x="387" y="116.1" width="24" height="18.8" rx="2" fill="url(#gr20)"></rect><rect x="387" y="91.2" width="24" height="22.9" rx="2" fill="url(#gr21)"></rect><rect x="387" y="82.8" width="24" height="6.3" rx="2" fill="url(#gr22)"></rect><rect x="487.8" y="170.2" width="24" height="45.7" rx="2" fill="url(#gr23)"></rect><rect x="487.8" y="141.1" width="24" height="27.1" rx="2" fill="url(#gr24)"></rect><rect x="487.8" y="120.3" width="24" height="18.8" rx="2" fill="url(#gr25)"></rect><rect x="487.8" y="99.5" width="24" height="18.8" rx="2" fill="url(#gr26)"></rect><rect x="487.8" y="95.3" width="24" height="2.1" rx="2" fill="url(#gr27)"></rect><rect x="588.7" y="153.6" width="24" height="62.4" rx="2" fill="url(#gr28)"></rect><rect x="588.7" y="124.4" width="24" height="27.1" rx="2" fill="url(#gr29)"></rect><rect x="588.7" y="95.3" width="24" height="27.1" rx="2" fill="url(#gr30)"></rect><rect x="588.7" y="66.2" width="24" height="27.1" rx="2" fill="url(#gr31)"></rect><rect x="588.7" y="49.5" width="24" height="14.6" rx="2" fill="url(#gr32)"></rect><rect x="689.5" y="207.6" width="24" height="8.3" rx="2" fill="url(#gr33)"></rect><rect x="689.5" y="195.2" width="24" height="10.4" rx="2" fill="url(#gr34)"></rect><rect x="689.5" y="191.0" width="24" height="2.1" rx="2" fill="url(#gr35)"></rect><rect x="689.5" y="186.8" width="24" height="2.1" rx="2" fill="url(#gr36)"></rect><rect x="46" y="8" width="100.8" height="208" fill="transparent"></rect><rect x="146.8" y="8" width="100.8" height="208" fill="transparent"></rect><rect x="247.7" y="8" width="100.8" height="208" fill="transparent"></rect><rect x="348.5" y="8" width="100.8" height="208" fill="transparent"></rect><rect x="449.4" y="8" width="100.8" height="208" fill="transparent"></rect><rect x="550.2" y="8" width="100.8" height="208" fill="transparent"></rect><rect x="651.1" y="8" width="100.8" height="208" fill="transparent"></rect></svg>
+        </div>
+        <div class="card">
+          <h3>Who buys</h3>
+          <div class="csub">revenue share by customer type · click a slice to cross-filter</div>
+          <div class="donut-wrap">
+            <svg id="ctDonut" width="190" height="190" viewBox="0 0 190 190" role="img" aria-label="Revenue by customer type"><path d="M95.0 6.0A89 89 0 1 1 7.0 108.6L40.4 103.4A55.1 55.1 0 1 0 95.0 39.8Z" fill="#c98500" stroke="#14140E" stroke-width="2" style="cursor: pointer;"></path><path d="M7.0 108.6A89 89 0 0 1 19.0 48.6L47.9 66.2A55.1 55.1 0 0 0 40.4 103.4Z" fill="#d55181" stroke="#14140E" stroke-width="2" style="cursor: pointer;"></path><path d="M19.0 48.6A89 89 0 0 1 40.0 24.9L60.9 51.5A55.1 55.1 0 0 0 47.9 66.2Z" fill="#008300" stroke="#14140E" stroke-width="2" style="cursor: pointer;"></path><path d="M40.0 24.9A89 89 0 0 1 65.9 10.8L76.9 42.8A55.1 55.1 0 0 0 60.9 51.5Z" fill="#9085e9" stroke="#14140E" stroke-width="2" style="cursor: pointer;"></path><path d="M65.9 10.8A89 89 0 0 1 85.1 6.5L88.8 40.1A55.1 55.1 0 0 0 76.9 42.8Z" fill="#e66767" stroke="#14140E" stroke-width="2" style="cursor: pointer;"></path><path d="M85.1 6.5A89 89 0 0 1 95.0 6.0L95.0 39.8A55.1 55.1 0 0 0 88.8 40.1Z" fill="#6E6D60" stroke="#14140E" stroke-width="2" style="cursor: pointer;"></path><text x="95" y="93" text-anchor="middle" font-weight="700" font-size="20" fill="#F4F3E6">$735.8K</text><text x="95" y="109" text-anchor="middle" class="axis">revenue</text></svg>
+            <div class="donut-legend" id="ctLegend"><div class="dl"><span class="sw" style="background:#c98500"></span><span class="nm">Franchisee</span><span class="vv">$533.8K <span style="color:var(--muted);font-weight:400">73%</span></span></div><div class="dl"><span class="sw" style="background:#d55181"></span><span class="nm">Stockist / Retailer</span><span class="vv">$82.2K <span style="color:var(--muted);font-weight:400">11%</span></span></div><div class="dl"><span class="sw" style="background:#008300"></span><span class="nm">Admin/Sales</span><span class="vv">$41.9K <span style="color:var(--muted);font-weight:400">6%</span></span></div><div class="dl"><span class="sw" style="background:#9085e9"></span><span class="nm">Associate</span><span class="vv">$38.9K <span style="color:var(--muted);font-weight:400">5%</span></span></div><div class="dl"><span class="sw" style="background:#e66767"></span><span class="nm">Franchise - Stocking Agent</span><span class="vv">$26.0K <span style="color:var(--muted);font-weight:400">4%</span></span></div><div class="dl"><span class="sw" style="background:#6E6D60"></span><span class="nm">Other</span><span class="vv">$13.0K <span style="color:var(--muted);font-weight:400">2%</span></span></div></div>
+          </div>
+          <div class="note" id="ctNote">Positive revenue only; discounts and credits net into each type's total.</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="grid" style="grid-template-columns:minmax(0,1fr) minmax(0,1fr)">
+        <div class="card">
+          <div class="cardhead">
+            <div>
+              <h3>Model leaderboard</h3>
+              <div class="csub" id="modelTblSub">bikes sold in the period · click a column to sort, a row to cross-filter</div>
+            </div>
+          </div>
+          <div class="tblwrap" style="max-height:420px;overflow-y:auto" tabindex="0" role="region" aria-label="Model leaderboard, scrollable table">
+            <table id="tblModels">
+              <thead><tr>
+                <th>#</th><th class="srt" data-k="m" inert="">Model<span class="ar">▼</span></th>
+                <th class="srt r on" data-k="u" inert="">Units<span class="ar">▼</span></th>
+                <th class="srt r" data-k="r" inert="">Revenue<span class="ar">▼</span></th>
+                <th class="srt r" data-k="g" inert="">Gross profit<span class="ar">▼</span></th>
+                <th class="srt r" data-k="gm" inert="">GP %<span class="ar">▼</span></th>
+              </tr></thead>
+              <tbody><tr class="click" data-m="SuperLite3" inert=""><td class="rank top1">1</td><td class="bar-cell"><div class="bg" style="width:100.0%"></div><span>SuperLite3</span></td><td class="r">71</td><td class="r">$271.3K</td><td class="r">$117.3K</td><td class="r">43.2%</td></tr><tr class="click" data-m="Ascent3" inert=""><td class="rank top2">2</td><td class="bar-cell"><div class="bg" style="width:66.2%"></div><span>Ascent3</span></td><td class="r">47</td><td class="r">$148.1K</td><td class="r">$59.9K</td><td class="r">40.5%</td></tr><tr class="click" data-m="Town'n Trail" inert=""><td class="rank top3">3</td><td class="bar-cell"><div class="bg" style="width:59.2%"></div><span>Town'n Trail</span></td><td class="r">42</td><td class="r">$106.5K</td><td class="r">$44.1K</td><td class="r">41.4%</td></tr><tr class="click" data-m="SuperTrail" inert=""><td class="rank">4</td><td class="bar-cell"><div class="bg" style="width:46.5%"></div><span>SuperTrail</span></td><td class="r">33</td><td class="r">$144.9K</td><td class="r">$57.1K</td><td class="r">39.4%</td></tr><tr class="click" data-m="Zoomin" inert=""><td class="rank">5</td><td class="bar-cell"><div class="bg" style="width:19.7%"></div><span>Zoomin</span></td><td class="r">14</td><td class="r">$23.7K</td><td class="r">$8,762</td><td class="r">37.0%</td></tr></tbody>
+            </table>
+          </div>
+          <div class="tfoot" id="modelFoot">5 models · <b>207</b> bikes · <b>$694.5K</b> revenue</div>
+        </div>
+        <div class="card">
+          <div class="cardhead">
+            <div>
+              <h3>Agent leaderboard</h3>
+              <div class="csub" id="agentTblSub">bike units by selling agent · click a row to cross-filter</div>
+            </div>
+          </div>
+          <div class="tblwrap" style="max-height:420px;overflow-y:auto" tabindex="0" role="region" aria-label="Agent leaderboard, scrollable table">
+            <table id="tblAgents">
+              <thead><tr>
+                <th>#</th><th class="srt" data-k="ag" inert="">Agent<span class="ar">▼</span></th>
+                <th>Status</th>
+                <th class="srt r on" data-k="u" inert="">Bikes<span class="ar">▼</span></th>
+                <th class="srt r" data-k="r" inert="">Revenue<span class="ar">▼</span></th>
+                <th class="srt r" data-k="pa" inert="">P&amp;A rev<span class="ar">▼</span></th>
+              </tr></thead>
+              <tbody><tr class="click" data-ag="Agent #22" inert=""><td class="rank top1">1</td><td class="bar-cell"><div class="bg" style="width:100.0%"></div><span>Agent #22</span></td><td><span class="st neutral"><span class="ic">◻</span>Inactive</span></td><td class="r">14</td><td class="r">$47.5K</td><td class="r">$2,431</td></tr><tr class="click" data-ag="Agent #24" inert=""><td class="rank top2">2</td><td class="bar-cell"><div class="bg" style="width:100.0%"></div><span>Agent #24</span></td><td><span class="st neutral"><span class="ic">◻</span>Inactive</span></td><td class="r">14</td><td class="r">$48.8K</td><td class="r">$1,372</td></tr><tr class="click" data-ag="Agent #11" inert=""><td class="rank top3">3</td><td class="bar-cell"><div class="bg" style="width:85.7%"></div><span>Agent #11</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">12</td><td class="r">$41.8K</td><td class="r">$1,593</td></tr><tr class="click" data-ag="MeloYelo Internal" inert=""><td class="rank">4</td><td class="bar-cell"><div class="bg" style="width:78.6%"></div><span>MeloYelo Internal</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">11</td><td class="r">$37.2K</td><td class="r">$188</td></tr><tr class="click" data-ag="Agent #21" inert=""><td class="rank">5</td><td class="bar-cell"><div class="bg" style="width:71.4%"></div><span>Agent #21</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">10</td><td class="r">$31.6K</td><td class="r">$1,761</td></tr><tr class="click" data-ag="Agent #28" inert=""><td class="rank">6</td><td class="bar-cell"><div class="bg" style="width:71.4%"></div><span>Agent #28</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">10</td><td class="r">$31.5K</td><td class="r">$1,275</td></tr><tr class="click" data-ag="Agent #09" inert=""><td class="rank">7</td><td class="bar-cell"><div class="bg" style="width:64.3%"></div><span>Agent #09</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">9</td><td class="r">$30.1K</td><td class="r">$1,185</td></tr><tr class="click" data-ag="Agent #18" inert=""><td class="rank">8</td><td class="bar-cell"><div class="bg" style="width:64.3%"></div><span>Agent #18</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">9</td><td class="r">$28.9K</td><td class="r">$1,645</td></tr><tr class="click" data-ag="Agent #03" inert=""><td class="rank">9</td><td class="bar-cell"><div class="bg" style="width:57.1%"></div><span>Agent #03</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">8</td><td class="r">$29.8K</td><td class="r">$2,833</td></tr><tr class="click" data-ag="Agent #23" inert=""><td class="rank">10</td><td class="bar-cell"><div class="bg" style="width:57.1%"></div><span>Agent #23</span></td><td><span class="st neutral"><span class="ic">◻</span>Inactive</span></td><td class="r">8</td><td class="r">$27.1K</td><td class="r">$664</td></tr><tr class="click" data-ag="Agent #02" inert=""><td class="rank">11</td><td class="bar-cell"><div class="bg" style="width:57.1%"></div><span>Agent #02</span></td><td><span class="st neutral"><span class="ic">◻</span>Inactive</span></td><td class="r">8</td><td class="r">$27.7K</td><td class="r">$1,135</td></tr><tr class="click" data-ag="Agent #12" inert=""><td class="rank">12</td><td class="bar-cell"><div class="bg" style="width:50.0%"></div><span>Agent #12</span></td><td><span class="st neutral"><span class="ic">◻</span>Inactive</span></td><td class="r">7</td><td class="r">$20.4K</td><td class="r">$822</td></tr><tr class="click" data-ag="Direct Sale" inert=""><td class="rank">13</td><td class="bar-cell"><div class="bg" style="width:42.9%"></div><span>Direct Sale</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">6</td><td class="r">$16.7K</td><td class="r">$4,399</td></tr><tr class="click" data-ag="Agent #17" inert=""><td class="rank">14</td><td class="bar-cell"><div class="bg" style="width:42.9%"></div><span>Agent #17</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">6</td><td class="r">$20.2K</td><td class="r">$1,235</td></tr><tr class="click" data-ag="Agent #29" inert=""><td class="rank">15</td><td class="bar-cell"><div class="bg" style="width:42.9%"></div><span>Agent #29</span></td><td><span class="st neutral"><span class="ic">◻</span>Inactive</span></td><td class="r">6</td><td class="r">$18.8K</td><td class="r">$570</td></tr><tr class="click" data-ag="Agent #14" inert=""><td class="rank">16</td><td class="bar-cell"><div class="bg" style="width:42.9%"></div><span>Agent #14</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">6</td><td class="r">$22.3K</td><td class="r">$631</td></tr><tr class="click" data-ag="Agent #04" inert=""><td class="rank">17</td><td class="bar-cell"><div class="bg" style="width:42.9%"></div><span>Agent #04</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">6</td><td class="r">$20.5K</td><td class="r">$195</td></tr><tr class="click" data-ag="Agent #26" inert=""><td class="rank">18</td><td class="bar-cell"><div class="bg" style="width:35.7%"></div><span>Agent #26</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">5</td><td class="r">$18.5K</td><td class="r">$830</td></tr><tr class="click" data-ag="Agent #20" inert=""><td class="rank">19</td><td class="bar-cell"><div class="bg" style="width:35.7%"></div><span>Agent #20</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">5</td><td class="r">$16.3K</td><td class="r">$1,335</td></tr><tr class="click" data-ag="Agent #06" inert=""><td class="rank">20</td><td class="bar-cell"><div class="bg" style="width:35.7%"></div><span>Agent #06</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">5</td><td class="r">$14.4K</td><td class="r">$614</td></tr><tr class="click" data-ag="Agent #31" inert=""><td class="rank">21</td><td class="bar-cell"><div class="bg" style="width:35.7%"></div><span>Agent #31</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">5</td><td class="r">$17.8K</td><td class="r">$889</td></tr><tr class="click" data-ag="Agent #27" inert=""><td class="rank">22</td><td class="bar-cell"><div class="bg" style="width:35.7%"></div><span>Agent #27</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">5</td><td class="r">$14.6K</td><td class="r">$1,072</td></tr><tr class="click" data-ag="Agent #35" inert=""><td class="rank">23</td><td class="bar-cell"><div class="bg" style="width:35.7%"></div><span>Agent #35</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">5</td><td class="r">$16.4K</td><td class="r">$549</td></tr><tr class="click" data-ag="Agent #08" inert=""><td class="rank">24</td><td class="bar-cell"><div class="bg" style="width:28.6%"></div><span>Agent #08</span></td><td><span class="st neutral"><span class="ic">◻</span>Inactive</span></td><td class="r">4</td><td class="r">$15.8K</td><td class="r">$959</td></tr><tr class="click" data-ag="Agent #25" inert=""><td class="rank">25</td><td class="bar-cell"><div class="bg" style="width:21.4%"></div><span>Agent #25</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">3</td><td class="r">$10.5K</td><td class="r">$2,602</td></tr><tr class="click" data-ag="Agent #16" inert=""><td class="rank">26</td><td class="bar-cell"><div class="bg" style="width:21.4%"></div><span>Agent #16</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">3</td><td class="r">$10.2K</td><td class="r">$621</td></tr><tr class="click" data-ag="Agent #32" inert=""><td class="rank">27</td><td class="bar-cell"><div class="bg" style="width:21.4%"></div><span>Agent #32</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">3</td><td class="r">$9,472</td><td class="r">$1,432</td></tr><tr class="click" data-ag="Agent #05" inert=""><td class="rank">28</td><td class="bar-cell"><div class="bg" style="width:14.3%"></div><span>Agent #05</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">2</td><td class="r">$6,305</td><td class="r">$1,063</td></tr><tr class="click" data-ag="Agent #13" inert=""><td class="rank">29</td><td class="bar-cell"><div class="bg" style="width:14.3%"></div><span>Agent #13</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">2</td><td class="r">$7,238</td><td class="r">$1,547</td></tr><tr class="click" data-ag="Agent #36" inert=""><td class="rank">30</td><td class="bar-cell"><div class="bg" style="width:14.3%"></div><span>Agent #36</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">2</td><td class="r">$7,071</td><td class="r">$573</td></tr><tr class="click" data-ag="Agent #33" inert=""><td class="rank">31</td><td class="bar-cell"><div class="bg" style="width:14.3%"></div><span>Agent #33</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">2</td><td class="r">$8,252</td><td class="r">$316</td></tr><tr class="click" data-ag="Agent #19" inert=""><td class="rank">32</td><td class="bar-cell"><div class="bg" style="width:7.1%"></div><span>Agent #19</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">1</td><td class="r">$2,479</td><td class="r">$266</td></tr><tr class="click" data-ag="Agent #01" inert=""><td class="rank">33</td><td class="bar-cell"><div class="bg" style="width:7.1%"></div><span>Agent #01</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">1</td><td class="r">$3,434</td><td class="r">$472</td></tr><tr class="click" data-ag="Agent #34" inert=""><td class="rank">34</td><td class="bar-cell"><div class="bg" style="width:7.1%"></div><span>Agent #34</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">1</td><td class="r">$3,863</td><td class="r">$790</td></tr><tr class="click" data-ag="Agent #30" inert=""><td class="rank">35</td><td class="bar-cell"><div class="bg" style="width:7.1%"></div><span>Agent #30</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">1</td><td class="r">$4,276</td><td class="r">$816</td></tr><tr class="click" data-ag="Agent #10" inert=""><td class="rank">36</td><td class="bar-cell"><div class="bg" style="width:7.1%"></div><span>Agent #10</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">1</td><td class="r">$2,506</td><td class="r">$159</td></tr><tr class="click" data-ag="Agent #07" inert=""><td class="rank">37</td><td class="bar-cell"><div class="bg" style="width:7.1%"></div><span>Agent #07</span></td><td><span class="st good"><span class="ic">✓</span>Active</span></td><td class="r">1</td><td class="r">$3,937</td><td class="r">$1,151</td></tr><tr class="click" data-ag="Agent #15" inert=""><td class="rank">38</td><td class="bar-cell"><div class="bg" style="width:0.0%"></div><span>Agent #15</span></td><td><span class="st neutral"><span class="ic">◻</span>Inactive</span></td><td class="r">0</td><td class="r">$0</td><td class="r">$181</td></tr></tbody>
+            </table>
+          </div>
+          <div class="tfoot" id="agentFoot">38 selling agents in the period</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="card">
+        <div class="cardhead">
+          <div>
+            <h3>Product groups</h3>
+            <div class="csub">everything invoiced in the period · bikes, parts, accessories, freight, discounts</div>
+          </div>
+        </div>
+        <div class="tblwrap" tabindex="0" role="region" aria-label="Product groups, scrollable table">
+          <table id="tblGroups">
+            <thead><tr>
+              <th>Group</th><th class="r">Units</th><th class="r">Revenue</th><th class="r">COGS</th>
+              <th class="r">Gross profit</th><th class="r">GP %</th><th class="r">Share of revenue</th>
+            </tr></thead>
+            <tbody><tr><td><b>Bikes</b></td><td class="r">202</td><td class="r">$680.2K</td><td class="r">$398.8K</td><td class="r">$281.4K</td><td class="r">41.4%</td><td class="r">92.4%</td></tr><tr><td><b>Parts</b></td><td class="r">664</td><td class="r">$30.3K</td><td class="r">$15.1K</td><td class="r">$15.1K</td><td class="r">50.0%</td><td class="r">4.1%</td></tr><tr><td><b>Special Bike Package</b></td><td class="r">5</td><td class="r">$14.3K</td><td class="r">$8,476</td><td class="r">$5,843</td><td class="r">40.8%</td><td class="r">1.9%</td></tr><tr><td><b>Accessories</b></td><td class="r">367</td><td class="r">$11.9K</td><td class="r">$5,945</td><td class="r">$5,945</td><td class="r">50.0%</td><td class="r">1.6%</td></tr><tr><td><b>Freight</b></td><td class="r">189</td><td class="r">$9,345</td><td class="r">$0</td><td class="r">$9,345</td><td class="r">100.0%</td><td class="r">1.3%</td></tr><tr><td><b>Clothing</b></td><td class="r">55</td><td class="r">$1,447</td><td class="r">$0</td><td class="r">$1,447</td><td class="r">100.0%</td><td class="r">0.2%</td></tr><tr><td><b>Other</b></td><td class="r">30</td><td class="r">$327</td><td class="r">$0</td><td class="r">$327</td><td class="r">100.0%</td><td class="r">0.0%</td></tr><tr><td><b>Discounts &amp; Promotions</b></td><td class="r">47</td><td class="r">-$12.1K</td><td class="r">$0</td><td class="r">-$12.1K</td><td class="r">-</td><td class="r">-1.6%</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shead"><h2>Reading of the period</h2><span class="sub">recomputed from whatever the filters show</span></div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" id="s1insights"><div class="insight"><div class="ico">🚲</div><div><div class="it">Best seller</div><div class="ib"><b>SuperLite3</b> leads the period with <b>71</b> bikes · 34.3% of everything sold.</div></div></div><div class="insight"><div class="ico">🏆</div><div><div class="it">Top agent</div><div class="ib"><b>Agent #22</b> moved <b>14</b> bikes; the direct channel took <b>6</b>.</div></div></div><div class="insight"><div class="ico">💰</div><div><div class="it">Margin</div><div class="ib">Gross profit is <b>$307.4K</b> on <b>$735.8K</b> · a blended <b>41.8%</b> across bikes, parts and freight.</div></div></div><div class="insight"><div class="ico">🔧</div><div><div class="it">Attach rate</div><div class="ib">Every bike sold pulls <b>$204</b> of parts &amp; accessories alongside it in this period.</div></div></div></div>
+    </section>
+  </div></div>
+</div>
+
+
+<div id="tab-riders" class="tab-pane" role="tabpanel" aria-labelledby="tabbtn-riders" hidden=""><h2 class="demo-sr">Riders &amp; leads</h2>
+  <div class="controls" inert="">
+    <div class="controls-inner">
+      <button type="button" class="ctuck" data-tuck="1" aria-label="Collapse or expand the filters"><span class="cv">▲</span><span class="cl">Filters</span></button>
+      <div class="cgroup">
+        <span class="clabel">Period</span>
+        <button type="button" class="preset" data-p2="30" inert="">30d</button>
+        <button type="button" class="preset" data-p2="90" inert="">90d</button>
+        <button type="button" class="preset active" data-p2="fytd" inert="">FYTD</button>
+        <button type="button" class="preset" data-p2="all" inert="">All time</button>
+        <input type="date" id="s2from" inert=""><span style="color:var(--muted);font-size:11px">to</span><input type="date" id="s2to" inert="">
+      </div>
+      <div class="sep"></div>
+      <div class="cgroup">
+        <span class="clabel">Agent</span>
+        <select id="s2agent" inert=""><option value="" selected="">All agents</option></select>
+        <span class="clabel" style="margin-left:8px">Source</span>
+        <select id="s2src" inert=""><option value="" selected="">All sources</option></select>
+      </div>
+      <div class="rangenote" id="s2note">Reporting <b>1 Apr 2026</b> → <b>28 Sep 2026</b> (181 days) · the rider community and the MTD / FYTD tiles always read to 28 Sep 2026; warranty registrations never count as leads.</div>
+    </div>
+  </div>
+
+  <div data-a11y-was="main"><div class="wrap">
+    <section>
+      <div class="grid" style="grid-template-columns:minmax(0,1fr) minmax(0,1.5fr)">
+        <div class="hero">
+          <div class="hl">Rider community</div>
+          <div class="hv tnum" id="riderHero">4,067</div>
+          <div class="hd" id="riderHeroSub">people riding a MeloYelo today · joined dates from the CRM stage history</div>
+          <div class="cmp-row" style="padding:12px 0 0;border-top:none" id="riderJoins"><div class="cell"><div class="l">New · MTD</div><div class="v tnum">12</div></div><div class="cell"><div class="l">New · prev month</div><div class="v tnum">19</div></div><div class="cell"><div class="l">New · FYTD</div><div class="v tnum">102</div></div><div class="cell" style="grid-column:1/-1"><div class="s" style="color:var(--muted)">organic joins · bulk warranty imports are riders too, but never count as "new"</div></div></div>
+        </div>
+        <div class="card">
+          <div class="cardhead">
+            <div>
+              <h3>Community over time</h3>
+              <div class="csub">every rider placed on the date they joined · bulk warranty imports appear as honest steps</div>
+            </div>
+            <div class="seg mini" id="riderViewSeg" inert="">
+              <button type="button" data-rv="cum" class="on">Community size</button>
+              <button type="button" data-rv="joins">New riders / month</button>
+            </div>
+          </div>
+          <svg class="ch" id="chartRiders" style="max-height:230px" viewBox="0 0 760 220" role="img" aria-label="Rider community over time"><defs><linearGradient id="gr37" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="0.32"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0"></stop></linearGradient></defs><line x1="52" x2="750" y1="196" y2="196" class="gl"></line><text x="45" y="199.5" text-anchor="end" class="axis">0</text><line x1="52" x2="750" y1="149.5" y2="149.5" class="gl"></line><text x="45" y="153" text-anchor="end" class="axis">1,250</text><line x1="52" x2="750" y1="103" y2="103" class="gl"></line><text x="45" y="106.5" text-anchor="end" class="axis">2,500</text><line x1="52" x2="750" y1="56.5" y2="56.5" class="gl"></line><text x="45" y="60" text-anchor="end" class="axis">3,750</text><line x1="52" x2="750" y1="10" y2="10" class="gl"></line><text x="45" y="13.5" text-anchor="end" class="axis">5,000</text><text x="110.1" y="212" text-anchor="middle" class="axis">Apr 26</text><text x="226.5" y="212" text-anchor="middle" class="axis">May 26</text><text x="342.8" y="212" text-anchor="middle" class="axis">Jun 26</text><text x="459.1" y="212" text-anchor="middle" class="axis">Jul 26</text><text x="575.5" y="212" text-anchor="middle" class="axis">Aug 26</text><text x="691.8" y="212" text-anchor="middle" class="axis">Sep 26</text><path d="M110.2 196 L110.2 75.7L226.5 48.8L342.8 47.9L459.2 46.7L575.5 45.6L691.8 44.7 L691.8 196Z" fill="url(#gr37)"></path><path d="M110.2 75.7L226.5 48.8L342.8 47.9L459.2 46.7L575.5 45.6L691.8 44.7" fill="none" stroke="#c98500" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path><circle cx="691.8" cy="44.7" r="4.5" fill="#c98500" stroke="#14140E" stroke-width="2"></circle><text x="685.8" y="34.7" text-anchor="end" class="axis" font-weight="700">4,067 riders</text><rect x="52" y="10" width="116.3" height="186" fill="transparent"></rect><rect x="168.3" y="10" width="116.3" height="186" fill="transparent"></rect><rect x="284.6" y="10" width="116.3" height="186" fill="transparent"></rect><rect x="401" y="10" width="116.3" height="186" fill="transparent"></rect><rect x="517.3" y="10" width="116.3" height="186" fill="transparent"></rect><rect x="633.6" y="10" width="116.3" height="186" fill="transparent"></rect></svg>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+        <div class="card">
+          <h3>Riders by source</h3>
+          <div class="csub">how each rider reached MeloYelo</div>
+          <div class="donut-wrap">
+            <svg id="srcDonut" width="170" height="170" viewBox="0 0 170 170" role="img" aria-label="Riders by source"><path d="M85.0 6.0A79 79 0 0 1 91.2 163.7L88.8 133.8A48.9 48.9 0 0 0 85.0 36.0Z" fill="#c98500" stroke="#14140E" stroke-width="2" style="cursor: pointer;"></path><path d="M91.2 163.7A79 79 0 0 1 33.5 25.0L53.1 47.8A48.9 48.9 0 0 0 88.8 133.8Z" fill="#d55181" stroke="#14140E" stroke-width="2" style="cursor: pointer;"></path><path d="M33.5 25.0A79 79 0 0 1 65.6 8.4L73.0 37.5A48.9 48.9 0 0 0 53.1 47.8Z" fill="#008300" stroke="#14140E" stroke-width="2" style="cursor: pointer;"></path><path d="M65.6 8.4A79 79 0 0 1 81.4 6.0L82.8 36.0A48.9 48.9 0 0 0 73.0 37.5Z" fill="#9085e9" stroke="#14140E" stroke-width="2" style="cursor: pointer;"></path><path d="M81.4 6.0A79 79 0 0 1 85.0 6.0L85.0 36.0A48.9 48.9 0 0 0 82.8 36.0Z" fill="#e66767" stroke="#14140E" stroke-width="2" style="cursor: pointer;"></path><text x="85" y="83" text-anchor="middle" font-weight="700" font-size="20" fill="#F4F3E6">4,067</text><text x="85" y="99" text-anchor="middle" class="axis">riders</text></svg>
+            <div class="donut-legend" id="srcLegend"><div class="dl"><span class="sw" style="background:#c98500"></span><span class="nm">Warranty Registration</span><span class="vv">1,982 <span style="color:var(--muted);font-weight:400">49%</span></span></div><div class="dl"><span class="sw" style="background:#d55181"></span><span class="nm">Unattributed</span><span class="vv">1,626 <span style="color:var(--muted);font-weight:400">40%</span></span></div><div class="dl"><span class="sw" style="background:#008300"></span><span class="nm">Website Form</span><span class="vv">299 <span style="color:var(--muted);font-weight:400">7%</span></span></div><div class="dl"><span class="sw" style="background:#9085e9"></span><span class="nm">AgentForm</span><span class="vv">131 <span style="color:var(--muted);font-weight:400">3%</span></span></div><div class="dl"><span class="sw" style="background:#e66767"></span><span class="nm">Agent</span><span class="vv">29 <span style="color:var(--muted);font-weight:400">1%</span></span></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Riders by agent</h3>
+          <div class="csub" id="riderAgentSub">top agents by riders in their patch</div>
+          <svg class="ch" id="chartRiderAgents" viewBox="0 0 360 268" role="img" aria-label="Riders by agent"><defs><linearGradient id="gr38" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr39" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr40" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr41" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr42" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr43" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr44" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr45" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr46" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr47" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient></defs><text x="120" y="20.5" text-anchor="end" class="axis">Agent #22</text><rect x="128" y="8" width="186" height="18" rx="4" fill="url(#gr38)"></rect><text x="320" y="20.5" class="axis" font-weight="700">300</text><text x="120" y="46.5" text-anchor="end" class="axis">Agent #09</text><rect x="128" y="34" width="141.9" height="18" rx="4" fill="url(#gr39)"></rect><text x="275.9" y="46.5" class="axis" font-weight="700">229</text><text x="120" y="72.5" text-anchor="end" class="axis">Agent #03</text><rect x="128" y="60" width="131.4" height="18" rx="4" fill="url(#gr40)"></rect><text x="265.4" y="72.5" class="axis" font-weight="700">212</text><text x="120" y="98.5" text-anchor="end" class="axis">Agent #21</text><rect x="128" y="86" width="111.6" height="18" rx="4" fill="url(#gr41)"></rect><text x="245.6" y="98.5" class="axis" font-weight="700">180</text><text x="120" y="124.5" text-anchor="end" class="axis">Agent #13</text><rect x="128" y="112" width="109.1" height="18" rx="4" fill="url(#gr42)"></rect><text x="243.1" y="124.5" class="axis" font-weight="700">176</text><text x="120" y="150.5" text-anchor="end" class="axis">Agent #28</text><rect x="128" y="138" width="106.0" height="18" rx="4" fill="url(#gr43)"></rect><text x="240.0" y="150.5" class="axis" font-weight="700">171</text><text x="120" y="176.5" text-anchor="end" class="axis">Agent #25</text><rect x="128" y="164" width="104.7" height="18" rx="4" fill="url(#gr44)"></rect><text x="238.7" y="176.5" class="axis" font-weight="700">169</text><text x="120" y="202.5" text-anchor="end" class="axis">Agent #18</text><rect x="128" y="190" width="96.1" height="18" rx="4" fill="url(#gr45)"></rect><text x="230.1" y="202.5" class="axis" font-weight="700">155</text><text x="120" y="228.5" text-anchor="end" class="axis">Agent #31</text><rect x="128" y="216" width="95.4" height="18" rx="4" fill="url(#gr46)"></rect><text x="229.4" y="228.5" class="axis" font-weight="700">154</text><text x="120" y="254.5" text-anchor="end" class="axis">Agent #11</text><rect x="128" y="242" width="95.4" height="18" rx="4" fill="url(#gr47)"></rect><text x="229.4" y="254.5" class="axis" font-weight="700">154</text></svg>
+        </div>
+        <div class="card">
+          <h3>Riders by region</h3>
+          <div class="csub">by NZ postcode area (approximate)</div>
+          <svg class="ch" id="chartRiderRegions" viewBox="0 0 360 268" role="img" aria-label="Riders by region"><defs><linearGradient id="gr48" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr49" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr50" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr51" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr52" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr53" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr54" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr55" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr56" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr57" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient></defs><text x="120" y="20.5" text-anchor="end" class="axis">Canterbury</text><rect x="128" y="8" width="186" height="18" rx="4" fill="url(#gr48)"></rect><text x="320" y="20.5" class="axis" font-weight="700">840</text><text x="120" y="46.5" text-anchor="end" class="axis">Hawke's Bay</text><rect x="128" y="34" width="148.5" height="18" rx="4" fill="url(#gr49)"></rect><text x="282.5" y="46.5" class="axis" font-weight="700">671</text><text x="120" y="72.5" text-anchor="end" class="axis">Waikato</text><rect x="128" y="60" width="131.7" height="18" rx="4" fill="url(#gr50)"></rect><text x="265.7" y="72.5" class="axis" font-weight="700">595</text><text x="120" y="98.5" text-anchor="end" class="axis">Auckland</text><rect x="128" y="86" width="77.7" height="18" rx="4" fill="url(#gr51)"></rect><text x="211.7" y="98.5" class="axis" font-weight="700">351</text><text x="120" y="124.5" text-anchor="end" class="axis">Wellington</text><rect x="128" y="112" width="67.9" height="18" rx="4" fill="url(#gr52)"></rect><text x="201.9" y="124.5" class="axis" font-weight="700">307</text><text x="120" y="150.5" text-anchor="end" class="axis">Nelson-Marlborough</text><rect x="128" y="138" width="50.0" height="18" rx="4" fill="url(#gr53)"></rect><text x="184.0" y="150.5" class="axis" font-weight="700">226</text><text x="120" y="176.5" text-anchor="end" class="axis">Otago</text><rect x="128" y="164" width="48.9" height="18" rx="4" fill="url(#gr54)"></rect><text x="182.9" y="176.5" class="axis" font-weight="700">221</text><text x="120" y="202.5" text-anchor="end" class="axis">Bay of Plenty</text><rect x="128" y="190" width="48.4" height="18" rx="4" fill="url(#gr55)"></rect><text x="182.4" y="202.5" class="axis" font-weight="700">219</text><text x="120" y="228.5" text-anchor="end" class="axis">Southland</text><rect x="128" y="216" width="34.1" height="18" rx="4" fill="url(#gr56)"></rect><text x="168.1" y="228.5" class="axis" font-weight="700">154</text><text x="120" y="254.5" text-anchor="end" class="axis">Northland</text><rect x="128" y="242" width="31.2" height="18" rx="4" fill="url(#gr57)"></rect><text x="165.2" y="254.5" class="axis" font-weight="700">141</text></svg>
+        </div>
+        <div class="card">
+          <h3>What the community rides</h3>
+          <div class="csub">bike models registered by riders</div>
+          <svg class="ch" id="chartRiderModels" viewBox="0 0 360 268" role="img" aria-label="Riders by bike model"><defs><linearGradient id="gr58" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr59" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr60" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr61" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr62" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr63" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr64" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr65" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr66" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr67" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient></defs><text x="120" y="20.5" text-anchor="end" class="axis">SuperLite</text><rect x="128" y="8" width="186" height="18" rx="4" fill="url(#gr58)"></rect><text x="320" y="20.5" class="axis" font-weight="700">961</text><text x="120" y="46.5" text-anchor="end" class="axis">Ascent MD</text><rect x="128" y="34" width="135.4" height="18" rx="4" fill="url(#gr59)"></rect><text x="269.4" y="46.5" class="axis" font-weight="700">700</text><text x="120" y="72.5" text-anchor="end" class="axis">Ascent</text><rect x="128" y="60" width="124.0" height="18" rx="4" fill="url(#gr60)"></rect><text x="258.0" y="72.5" class="axis" font-weight="700">641</text><text x="120" y="98.5" text-anchor="end" class="axis">Tranzit</text><rect x="128" y="86" width="83.4" height="18" rx="4" fill="url(#gr61)"></rect><text x="217.4" y="98.5" class="axis" font-weight="700">431</text><text x="120" y="124.5" text-anchor="end" class="axis">Town'n Trail</text><rect x="128" y="112" width="81.2" height="18" rx="4" fill="url(#gr62)"></rect><text x="215.2" y="124.5" class="axis" font-weight="700">420</text><text x="120" y="150.5" text-anchor="end" class="axis">Town n Trail</text><rect x="128" y="138" width="56.7" height="18" rx="4" fill="url(#gr63)"></rect><text x="190.7" y="150.5" class="axis" font-weight="700">293</text><text x="120" y="176.5" text-anchor="end" class="axis">Townee</text><rect x="128" y="164" width="39.0" height="18" rx="4" fill="url(#gr64)"></rect><text x="173.0" y="176.5" class="axis" font-weight="700">202</text><text x="120" y="202.5" text-anchor="end" class="axis">Traverse</text><rect x="128" y="190" width="27.8" height="18" rx="4" fill="url(#gr65)"></rect><text x="161.8" y="202.5" class="axis" font-weight="700">144</text><text x="120" y="228.5" text-anchor="end" class="axis">Townee 2.0</text><rect x="128" y="216" width="20.9" height="18" rx="4" fill="url(#gr66)"></rect><text x="154.9" y="228.5" class="axis" font-weight="700">108</text><text x="120" y="254.5" text-anchor="end" class="axis">Ascent3</text><rect x="128" y="242" width="13.7" height="18" rx="4" fill="url(#gr67)"></rect><text x="147.7" y="254.5" class="axis" font-weight="700">71</text></svg>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shead">
+        <h2>Lead generation</h2>
+        <span class="sub">test-ride pipeline · warranty registrations excluded, every count is distinct people</span>
+      </div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" id="leadCards"><div class="cmp"><div class="cmp-head"><h3>Test-ride requests</h3><span class="tag">distinct people</span></div><div class="cmp-row"><div class="cell"><div class="l">Prev month</div><div class="v tnum">36</div></div><div class="cell"><div class="l">MTD</div><div class="v tnum">39</div></div><div class="cell"><div class="l">FYTD</div><div class="v tnum">189</div></div></div></div><div class="cmp"><div class="cmp-head"><h3>Test rides booked</h3><span class="tag">distinct people</span></div><div class="cmp-row"><div class="cell"><div class="l">Prev month</div><div class="v tnum">23</div></div><div class="cell"><div class="l">MTD</div><div class="v tnum">20</div></div><div class="cell"><div class="l">FYTD</div><div class="v tnum">120</div></div></div></div><div class="cmp"><div class="cmp-head"><h3>Test rides completed</h3><span class="tag">distinct people</span></div><div class="cmp-row"><div class="cell"><div class="l">Prev month</div><div class="v tnum">14</div></div><div class="cell"><div class="l">MTD</div><div class="v tnum">7</div></div><div class="cell"><div class="l">FYTD</div><div class="v tnum">74</div></div></div></div></div>
+    </section>
+
+    <section>
+      <div class="grid" style="grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)">
+        <div class="card">
+          <div class="cardhead">
+            <div>
+              <h3>Pipeline funnel</h3>
+              <div class="csub" id="funnelSub">people who requested 1 Apr 2026 → 28 Sep 2026, by the furthest stage reached so far</div>
+            </div>
+          </div>
+          <div class="funnel" id="leadFunnel"><div class="frow"><div class="fl">Test Ride Request</div><div class="fbar"><i style="width:100.0%;background-color:#9ec5f4"></i></div><div class="fv"><b>189</b></div></div><div class="frow"><div class="fl">Made contact</div><div class="fbar"><i style="width:84.1%;background-color:#6da7ec"></i></div><div class="fv"><b>159</b> <span class="cv">84% of prev</span></div></div><div class="frow"><div class="fl">Test Ride Booked</div><div class="fbar"><i style="width:65.6%;background-color:#4a90e8"></i></div><div class="fv"><b>124</b> <span class="cv">78% of prev</span></div></div><div class="frow"><div class="fl">Test Ride Completed</div><div class="fbar"><i style="width:41.3%;background-color:#3987e5"></i></div><div class="fv"><b>78</b> <span class="cv">63% of prev</span></div></div><div class="frow"><div class="fl">Offer Accepted</div><div class="fbar"><i style="width:21.2%;background-color:#2a78d6"></i></div><div class="fv"><b>40</b> <span class="cv">51% of prev</span></div></div><div class="frow"><div class="fl">MY Customer</div><div class="fbar"><i style="width:15.9%;background-color:#1c5cab"></i></div><div class="fv"><b>30</b> <span class="cv">75% of prev</span></div></div></div>
+          <div class="note" id="funnelNote">End to end, <b>15.9%</b> of the people who asked for a test ride in this window have become MY Customers so far. Late-window leads may still convert · the funnel reads their journey to date, not just events inside the window.</div>
+        </div>
+        <div class="card">
+          <div class="cardhead">
+            <div>
+              <h3>Requests over time</h3>
+              <div class="csub">test-ride requests by source</div>
+            </div>
+            <div class="seg mini" id="reqGrainSeg" inert="">
+              <button type="button" data-gv="week">Week</button>
+              <button type="button" data-gv="month" class="on">Month</button>
+            </div>
+          </div>
+          <div class="legend" id="reqLegend"><span class="lg" inert=""><span class="sw" style="background:#c98500"></span>Website Form</span><span class="lg" inert=""><span class="sw" style="background:#d55181"></span>AgentForm</span><span class="lg" inert=""><span class="sw" style="background:#008300"></span>Agent</span></div>
+          <svg class="ch" id="chartReq" style="max-height:250px" viewBox="0 0 560 240" role="img" aria-label="Test-ride requests over time"><defs><linearGradient id="gr68" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr69" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr70" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr71" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr72" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#008300" stop-opacity="1"></stop><stop offset="1" stop-color="#008300" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr73" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr74" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr75" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#008300" stop-opacity="1"></stop><stop offset="1" stop-color="#008300" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr76" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr77" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr78" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr79" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr80" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#008300" stop-opacity="1"></stop><stop offset="1" stop-color="#008300" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr81" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr82" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr83" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#008300" stop-opacity="1"></stop><stop offset="1" stop-color="#008300" stop-opacity="0.62"></stop></linearGradient></defs><line x1="46" x2="552" y1="216" y2="216" class="gl"></line><text x="39" y="219.5" text-anchor="end" class="axis">0</text><line x1="46" x2="552" y1="164" y2="164" class="gl"></line><text x="39" y="167.5" text-anchor="end" class="axis">13</text><line x1="46" x2="552" y1="112" y2="112" class="gl"></line><text x="39" y="115.5" text-anchor="end" class="axis">25</text><line x1="46" x2="552" y1="60" y2="60" class="gl"></line><text x="39" y="63.5" text-anchor="end" class="axis">38</text><line x1="46" x2="552" y1="8" y2="8" class="gl"></line><text x="39" y="11.5" text-anchor="end" class="axis">50</text><text x="88.1" y="232" text-anchor="middle" class="axis">Apr 26</text><text x="172.5" y="232" text-anchor="middle" class="axis">May 26</text><text x="256.8" y="232" text-anchor="middle" class="axis">Jun 26</text><text x="341.1" y="232" text-anchor="middle" class="axis">Jul 26</text><text x="425.5" y="232" text-anchor="middle" class="axis">Aug 26</text><text x="509.8" y="232" text-anchor="middle" class="axis">Sep 26</text><rect x="76.1" y="132.8" width="24" height="83.2" rx="2" fill="url(#gr68)"></rect><rect x="76.1" y="74.5" width="24" height="56.2" rx="2" fill="url(#gr69)"></rect><rect x="160.5" y="153.6" width="24" height="62.4" rx="2" fill="url(#gr70)"></rect><rect x="160.5" y="99.5" width="24" height="52.0" rx="2" fill="url(#gr71)"></rect><rect x="160.5" y="91.1" width="24" height="6.3" rx="2" fill="url(#gr72)"></rect><rect x="244.8" y="141.1" width="24" height="74.8" rx="2" fill="url(#gr73)"></rect><rect x="244.8" y="107.8" width="24" height="31.2" rx="2" fill="url(#gr74)"></rect><rect x="244.8" y="99.5" width="24" height="6.3" rx="2" fill="url(#gr75)"></rect><rect x="329.1" y="149.4" width="24" height="66.5" rx="2" fill="url(#gr76)"></rect><rect x="329.1" y="124.4" width="24" height="22.9" rx="2" fill="url(#gr77)"></rect><rect x="413.5" y="124.4" width="24" height="91.5" rx="2" fill="url(#gr78)"></rect><rect x="413.5" y="74.5" width="24" height="47.9" rx="2" fill="url(#gr79)"></rect><rect x="413.5" y="66.2" width="24" height="6.3" rx="2" fill="url(#gr80)"></rect><rect x="497.8" y="107.8" width="24" height="108.1" rx="2" fill="url(#gr81)"></rect><rect x="497.8" y="66.2" width="24" height="39.6" rx="2" fill="url(#gr82)"></rect><rect x="497.8" y="53.7" width="24" height="10.4" rx="2" fill="url(#gr83)"></rect><rect x="46" y="8" width="84.3" height="208" fill="transparent"></rect><rect x="130.3" y="8" width="84.3" height="208" fill="transparent"></rect><rect x="214.6" y="8" width="84.3" height="208" fill="transparent"></rect><rect x="299" y="8" width="84.3" height="208" fill="transparent"></rect><rect x="383.3" y="8" width="84.3" height="208" fill="transparent"></rect><rect x="467.6" y="8" width="84.3" height="208" fill="transparent"></rect></svg>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="grid" style="grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)">
+        <div class="card">
+          <div class="cardhead">
+            <div>
+              <h3>Speed to lead by agent</h3>
+              <div class="csub">median time from request to first contact · fastest first, needs 3+ timed leads</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:22px;align-items:baseline;flex-wrap:wrap;margin-bottom:8px">
+            <div><div class="clabel">Team median</div><div class="stl-big" id="stlMedian">20H 0M</div></div>
+            <div><div class="clabel">Team average</div><div class="stl-big" id="stlMean" style="font-size:24px">1D 11H 59M</div></div>
+            <div><div class="clabel">Timed leads</div><div class="stl-big" id="stlCount" style="font-size:24px">164</div></div>
+          </div>
+          <svg class="ch" id="chartStl" viewBox="0 0 640 320" role="img" aria-label="Speed to lead by agent"><defs><linearGradient id="gr84" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr85" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr86" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr87" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr88" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr89" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr90" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr91" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr92" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr93" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr94" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr95" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient></defs><text x="142" y="20.5" text-anchor="end" class="axis">Agent #03</text><rect x="150" y="8" width="240.1" height="18" rx="4" fill="url(#gr84)"></rect><text x="396.1" y="20.5" class="axis" font-weight="700">9H 23M</text><text x="142" y="46.5" text-anchor="end" class="axis">Agent #14</text><rect x="150" y="34" width="243.5" height="18" rx="4" fill="url(#gr85)"></rect><text x="399.5" y="46.5" class="axis" font-weight="700">9H 31M</text><text x="142" y="72.5" text-anchor="end" class="axis">Agent #13</text><rect x="150" y="60" width="261.0" height="18" rx="4" fill="url(#gr86)"></rect><text x="417.0" y="72.5" class="axis" font-weight="700">10H 12M</text><text x="142" y="98.5" text-anchor="end" class="axis">Agent #02</text><rect x="150" y="86" width="263.5" height="18" rx="4" fill="url(#gr87)"></rect><text x="419.5" y="98.5" class="axis" font-weight="700">10H 18M</text><text x="142" y="124.5" text-anchor="end" class="axis">Agent #21</text><rect x="150" y="112" width="284.2" height="18" rx="4" fill="url(#gr88)"></rect><text x="440.2" y="124.5" class="axis" font-weight="700">11H 7M</text><text x="142" y="150.5" text-anchor="end" class="axis">Agent #29</text><rect x="150" y="138" width="295.5" height="18" rx="4" fill="url(#gr89)"></rect><text x="451.5" y="150.5" class="axis" font-weight="700">11H 33M</text><text x="142" y="176.5" text-anchor="end" class="axis">Agent #10</text><rect x="150" y="164" width="296.8" height="18" rx="4" fill="url(#gr90)"></rect><text x="452.8" y="176.5" class="axis" font-weight="700">11H 36M</text><text x="142" y="202.5" text-anchor="end" class="axis">Agent #27</text><rect x="150" y="190" width="300.4" height="18" rx="4" fill="url(#gr91)"></rect><text x="456.4" y="202.5" class="axis" font-weight="700">11H 45M</text><text x="142" y="228.5" text-anchor="end" class="axis">Agent #30</text><rect x="150" y="216" width="419.9" height="18" rx="4" fill="url(#gr92)"></rect><text x="575.9" y="228.5" class="axis" font-weight="700">16H 25M</text><text x="142" y="254.5" text-anchor="end" class="axis">Agent #12</text><rect x="150" y="242" width="423.7" height="18" rx="4" fill="url(#gr93)"></rect><text x="579.7" y="254.5" class="axis" font-weight="700">16H 34M</text><text x="142" y="280.5" text-anchor="end" class="axis">Agent #32</text><rect x="150" y="268" width="427.3" height="18" rx="4" fill="url(#gr94)"></rect><text x="583.3" y="280.5" class="axis" font-weight="700">16H 42M</text><text x="142" y="306.5" text-anchor="end" class="axis">Agent #28</text><rect x="150" y="294" width="444" height="18" rx="4" fill="url(#gr95)"></rect><text x="600" y="306.5" class="axis" font-weight="700">17H 21M</text></svg>
+          <div class="note">Formatted as days · hours · minutes, e.g. <b>2D 12H 10M</b>. Median resists the one lead that sat for a month; the tooltip carries the average and the count.</div>
+        </div>
+        <div class="card">
+          <div class="cardhead">
+            <div>
+              <h3>Leads by region</h3>
+              <div class="csub">test-ride requests by NZ postcode area (approximate)</div>
+            </div>
+          </div>
+          <svg class="ch" id="chartLeadRegions" viewBox="0 0 560 320" role="img" aria-label="Leads by region"><defs><linearGradient id="gr96" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr97" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr98" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr99" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr100" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr101" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr102" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr103" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr104" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr105" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr106" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient><linearGradient id="gr107" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#c98500" stop-opacity="0.55"></stop><stop offset="1" stop-color="#c98500" stop-opacity="1"></stop></linearGradient></defs><text x="142" y="20.5" text-anchor="end" class="axis">Canterbury</text><rect x="150" y="8" width="364" height="18" rx="4" fill="url(#gr96)"></rect><text x="520" y="20.5" class="axis" font-weight="700">40</text><text x="142" y="46.5" text-anchor="end" class="axis">Hawke's Bay</text><rect x="150" y="34" width="291.2" height="18" rx="4" fill="url(#gr97)"></rect><text x="447.2" y="46.5" class="axis" font-weight="700">32</text><text x="142" y="72.5" text-anchor="end" class="axis">Waikato</text><rect x="150" y="60" width="245.7" height="18" rx="4" fill="url(#gr98)"></rect><text x="401.7" y="72.5" class="axis" font-weight="700">27</text><text x="142" y="98.5" text-anchor="end" class="axis">Auckland</text><rect x="150" y="86" width="154.7" height="18" rx="4" fill="url(#gr99)"></rect><text x="310.7" y="98.5" class="axis" font-weight="700">17</text><text x="142" y="124.5" text-anchor="end" class="axis">Nelson-Marlborough</text><rect x="150" y="112" width="118.3" height="18" rx="4" fill="url(#gr100)"></rect><text x="274.3" y="124.5" class="axis" font-weight="700">13</text><text x="142" y="150.5" text-anchor="end" class="axis">Wellington</text><rect x="150" y="138" width="109.2" height="18" rx="4" fill="url(#gr101)"></rect><text x="265.2" y="150.5" class="axis" font-weight="700">12</text><text x="142" y="176.5" text-anchor="end" class="axis">Northland</text><rect x="150" y="164" width="109.2" height="18" rx="4" fill="url(#gr102)"></rect><text x="265.2" y="176.5" class="axis" font-weight="700">12</text><text x="142" y="202.5" text-anchor="end" class="axis">Bay of Plenty</text><rect x="150" y="190" width="91" height="18" rx="4" fill="url(#gr103)"></rect><text x="247" y="202.5" class="axis" font-weight="700">10</text><text x="142" y="228.5" text-anchor="end" class="axis">Southland</text><rect x="150" y="216" width="81.9" height="18" rx="4" fill="url(#gr104)"></rect><text x="237.9" y="228.5" class="axis" font-weight="700">9</text><text x="142" y="254.5" text-anchor="end" class="axis">Manawatu-Whanganui</text><rect x="150" y="242" width="45.5" height="18" rx="4" fill="url(#gr105)"></rect><text x="201.5" y="254.5" class="axis" font-weight="700">5</text><text x="142" y="280.5" text-anchor="end" class="axis">Gisborne</text><rect x="150" y="268" width="36.4" height="18" rx="4" fill="url(#gr106)"></rect><text x="192.4" y="280.5" class="axis" font-weight="700">4</text><text x="142" y="306.5" text-anchor="end" class="axis">Taranaki</text><rect x="150" y="294" width="27.3" height="18" rx="4" fill="url(#gr107)"></rect><text x="183.3" y="306.5" class="axis" font-weight="700">3</text></svg>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="card">
+        <div class="cardhead">
+          <div>
+            <h3>Where every lead stands now</h3>
+            <div class="csub" id="stageNowSub">current stage of the 189 people whose test-ride request falls in the period</div>
+          </div>
+        </div>
+        <svg class="ch" id="chartStageNow" viewBox="0 0 1140 120" role="img" aria-label="Current stage distribution"><defs><linearGradient id="gr108" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ec5f4" stop-opacity="1"></stop><stop offset="1" stop-color="#9ec5f4" stop-opacity="0.68"></stop></linearGradient><linearGradient id="gr109" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6da7ec" stop-opacity="1"></stop><stop offset="1" stop-color="#6da7ec" stop-opacity="0.68"></stop></linearGradient><linearGradient id="gr110" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6B6A5E" stop-opacity="1"></stop><stop offset="1" stop-color="#6B6A5E" stop-opacity="0.68"></stop></linearGradient><linearGradient id="gr111" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a90e8" stop-opacity="1"></stop><stop offset="1" stop-color="#4a90e8" stop-opacity="0.68"></stop></linearGradient><linearGradient id="gr112" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3987e5" stop-opacity="1"></stop><stop offset="1" stop-color="#3987e5" stop-opacity="0.68"></stop></linearGradient><linearGradient id="gr113" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#57564C" stop-opacity="1"></stop><stop offset="1" stop-color="#57564C" stop-opacity="0.68"></stop></linearGradient><linearGradient id="gr114" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a78d6" stop-opacity="1"></stop><stop offset="1" stop-color="#2a78d6" stop-opacity="0.68"></stop></linearGradient><linearGradient id="gr115" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7E7D6E" stop-opacity="1"></stop><stop offset="1" stop-color="#7E7D6E" stop-opacity="0.68"></stop></linearGradient><linearGradient id="gr116" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c5cab" stop-opacity="1"></stop><stop offset="1" stop-color="#1c5cab" stop-opacity="0.68"></stop></linearGradient></defs><rect x="8" y="30" width="176.4" height="46" rx="4" fill="url(#gr108)"></rect><text x="97.2" y="57" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">16%</text><rect x="186.4" y="30" width="116.9" height="46" rx="4" fill="url(#gr109)"></rect><text x="245.8" y="57" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">11%</text><rect x="305.3" y="30" width="87.2" height="46" rx="4" fill="url(#gr110)"></rect><text x="349.9" y="57" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">8%</text><rect x="394.5" y="30" width="212.0" height="46" rx="4" fill="url(#gr111)"></rect><text x="501.6" y="57" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">19%</text><rect x="608.6" y="30" width="158.5" height="46" rx="4" fill="url(#gr112)"></rect><text x="688.9" y="57" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">14%</text><rect x="769.2" y="30" width="57.4" height="46" rx="4" fill="url(#gr113)"></rect><text x="798.9" y="57" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">5%</text><rect x="828.6" y="30" width="57.4" height="46" rx="4" fill="url(#gr114)"></rect><text x="858.4" y="57" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">5%</text><rect x="888.1" y="30" width="63.4" height="46" rx="4" fill="url(#gr115)"></rect><text x="920.8" y="57" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">6%</text><rect x="953.5" y="30" width="176.4" height="46" rx="4" fill="url(#gr116)"></rect><text x="1042.7" y="57" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">16%</text></svg>
+        <div class="legend" id="stageNowLegend" style="margin-top:8px;margin-bottom:0"><span class="lg" inert=""><span class="sw" style="background:#9ec5f4"></span>Lead <span style="color:var(--muted)">30</span></span><span class="lg" inert=""><span class="sw" style="background:#6da7ec"></span>Made contact <span style="color:var(--muted)">20</span></span><span class="lg" inert=""><span class="sw" style="background:#6B6A5E"></span>Contact Failed <span style="color:var(--muted)">15</span></span><span class="lg" inert=""><span class="sw" style="background:#4a90e8"></span>Test Ride Booked <span style="color:var(--muted)">36</span></span><span class="lg" inert=""><span class="sw" style="background:#3987e5"></span>Test Ride Completed <span style="color:var(--muted)">27</span></span><span class="lg" inert=""><span class="sw" style="background:#57564C"></span>Test Ride Declined <span style="color:var(--muted)">10</span></span><span class="lg" inert=""><span class="sw" style="background:#2a78d6"></span>Offer Accepted <span style="color:var(--muted)">10</span></span><span class="lg" inert=""><span class="sw" style="background:#7E7D6E"></span>Offer Declined <span style="color:var(--muted)">11</span></span><span class="lg" inert=""><span class="sw" style="background:#1c5cab"></span>MY Customer <span style="color:var(--muted)">30</span></span></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shead"><h2>Reading of the pipeline</h2><span class="sub">recomputed from whatever the filters show</span></div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" id="s2insights"><div class="insight"><div class="ico">🎯</div><div><div class="it">Conversion</div><div class="ib"><b>189</b> test-ride requests in the window; <b>74</b> rides completed and <b>102</b> became customers (54.0%).</div></div></div><div class="insight"><div class="ico">⏱️</div><div><div class="it">Speed to lead</div><div class="ib">Median first contact takes <b>20H 0M</b>. Leads chased inside a day book far more test rides · the per-agent chart shows who is quickest.</div></div></div><div class="insight"><div class="ico">🧭</div><div><div class="it">Attribution gap</div><div class="ib"><b>40.0%</b> of riders carry no source. Most are warranty-import history · new joins are tagged, so this gap closes on its own.</div></div></div></div>
+    </section>
+  </div></div>
+</div>
+
+
+<div id="tab-inventory" class="tab-pane" role="tabpanel" aria-labelledby="tabbtn-inventory" hidden=""><h2 class="demo-sr">Inventory &amp; production</h2>
+  <div data-a11y-was="main"><div class="wrap">
+    <section>
+      <div class="kpis" id="invKpis"><div class="kpi" style="--accent:#c98500"><div class="kl">Variants in stock</div><div class="kv tnum" style="font-size:23px">18 / 18</div><div class="kd">current range, Unleashed</div></div><div class="kpi" style="--accent:#c98500"><div class="kl">Bikes available now</div><div class="kv tnum" style="font-size:23px">448</div><div class="kd">sum across all variants</div></div><div class="kpi" style="--accent:#d03b3b"><div class="kl">Low stock</div><div class="kv tnum" style="font-size:23px">5</div><div class="kd">variants under 15 units</div></div><div class="kpi" style="--accent:#3987e5"><div class="kl">Bikes in production</div><div class="kv tnum" style="font-size:23px">400</div><div class="kd">on the way from factory</div></div><div class="kpi" style="--accent:#ec835a"><div class="kl">Production orders</div><div class="kv tnum" style="font-size:23px">5</div><div class="kd">1 running late</div></div><div class="kpi" style="--accent:#3987e5"><div class="kl">Next shipment</div><div class="kv tnum" style="font-size:23px">8 Sep 2026</div><div class="kd">estimated shipping date</div></div></div>
+    </section>
+
+    <section>
+      <div class="grid" style="grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)">
+        <div class="card">
+          <div class="cardhead">
+            <div>
+              <h3>Available now</h3>
+              <div class="csub">current-range variants in the Unleashed warehouse · longest bar first</div>
+            </div>
+            <div class="seg mini" id="invGroupSeg" inert="">
+              <button type="button" data-iv="variant" class="on">By variant</button>
+              <button type="button" data-iv="model">By model</button>
+            </div>
+          </div>
+          <svg class="ch" id="chartStock" viewBox="0 0 640 476" role="img" aria-label="Stock by variant"><defs><linearGradient id="gr117" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0ca30c" stop-opacity="0.55"></stop><stop offset="1" stop-color="#0ca30c" stop-opacity="1"></stop></linearGradient><linearGradient id="gr118" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0ca30c" stop-opacity="0.55"></stop><stop offset="1" stop-color="#0ca30c" stop-opacity="1"></stop></linearGradient><linearGradient id="gr119" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0ca30c" stop-opacity="0.55"></stop><stop offset="1" stop-color="#0ca30c" stop-opacity="1"></stop></linearGradient><linearGradient id="gr120" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0ca30c" stop-opacity="0.55"></stop><stop offset="1" stop-color="#0ca30c" stop-opacity="1"></stop></linearGradient><linearGradient id="gr121" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0ca30c" stop-opacity="0.55"></stop><stop offset="1" stop-color="#0ca30c" stop-opacity="1"></stop></linearGradient><linearGradient id="gr122" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0ca30c" stop-opacity="0.55"></stop><stop offset="1" stop-color="#0ca30c" stop-opacity="1"></stop></linearGradient><linearGradient id="gr123" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fab219" stop-opacity="0.55"></stop><stop offset="1" stop-color="#fab219" stop-opacity="1"></stop></linearGradient><linearGradient id="gr124" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fab219" stop-opacity="0.55"></stop><stop offset="1" stop-color="#fab219" stop-opacity="1"></stop></linearGradient><linearGradient id="gr125" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fab219" stop-opacity="0.55"></stop><stop offset="1" stop-color="#fab219" stop-opacity="1"></stop></linearGradient><linearGradient id="gr126" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fab219" stop-opacity="0.55"></stop><stop offset="1" stop-color="#fab219" stop-opacity="1"></stop></linearGradient><linearGradient id="gr127" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fab219" stop-opacity="0.55"></stop><stop offset="1" stop-color="#fab219" stop-opacity="1"></stop></linearGradient><linearGradient id="gr128" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fab219" stop-opacity="0.55"></stop><stop offset="1" stop-color="#fab219" stop-opacity="1"></stop></linearGradient><linearGradient id="gr129" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fab219" stop-opacity="0.55"></stop><stop offset="1" stop-color="#fab219" stop-opacity="1"></stop></linearGradient><linearGradient id="gr130" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d03b3b" stop-opacity="0.55"></stop><stop offset="1" stop-color="#d03b3b" stop-opacity="1"></stop></linearGradient><linearGradient id="gr131" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d03b3b" stop-opacity="0.55"></stop><stop offset="1" stop-color="#d03b3b" stop-opacity="1"></stop></linearGradient><linearGradient id="gr132" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d03b3b" stop-opacity="0.55"></stop><stop offset="1" stop-color="#d03b3b" stop-opacity="1"></stop></linearGradient><linearGradient id="gr133" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d03b3b" stop-opacity="0.55"></stop><stop offset="1" stop-color="#d03b3b" stop-opacity="1"></stop></linearGradient><linearGradient id="gr134" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d03b3b" stop-opacity="0.55"></stop><stop offset="1" stop-color="#d03b3b" stop-opacity="1"></stop></linearGradient></defs><text x="208" y="20.5" text-anchor="end" class="axis">Town'n Trail 3, Small, Coral</text><rect x="216" y="8" width="378" height="18" rx="4" fill="url(#gr117)"></rect><text x="600" y="20.5" class="axis" font-weight="700">66</text><text x="208" y="46.5" text-anchor="end" class="axis">SuperLite3, Large, Blaze Bron…</text><rect x="216" y="34" width="269.1" height="18" rx="4" fill="url(#gr118)"></rect><text x="491.1" y="46.5" class="axis" font-weight="700">47</text><text x="208" y="72.5" text-anchor="end" class="axis">Town'n Trail 3, Small, Electr…</text><rect x="216" y="60" width="240.5" height="18" rx="4" fill="url(#gr119)"></rect><text x="462.5" y="72.5" class="axis" font-weight="700">42</text><text x="208" y="98.5" text-anchor="end" class="axis">Zoomin, Seashell</text><rect x="216" y="86" width="223.3" height="18" rx="4" fill="url(#gr120)"></rect><text x="445.3" y="98.5" class="axis" font-weight="700">39</text><text x="208" y="124.5" text-anchor="end" class="axis">Ascent3, Large, Sunshine Yell…</text><rect x="216" y="112" width="154.6" height="18" rx="4" fill="url(#gr121)"></rect><text x="376.6" y="124.5" class="axis" font-weight="700">27</text><text x="208" y="150.5" text-anchor="end" class="axis">Zoomin, Teal</text><rect x="216" y="138" width="154.6" height="18" rx="4" fill="url(#gr122)"></rect><text x="376.6" y="150.5" class="axis" font-weight="700">27</text><text x="208" y="176.5" text-anchor="end" class="axis">SuperLite3, Small, Blaze Bron…</text><rect x="216" y="164" width="137.4" height="18" rx="4" fill="url(#gr123)"></rect><text x="359.4" y="176.5" class="axis" font-weight="700">24</text><text x="208" y="202.5" text-anchor="end" class="axis">Ascent3, Large, Moonlight Blue</text><rect x="216" y="190" width="137.4" height="18" rx="4" fill="url(#gr124)"></rect><text x="359.4" y="202.5" class="axis" font-weight="700">24</text><text x="208" y="228.5" text-anchor="end" class="axis">Ascent3, Small, Sunshine Yell…</text><rect x="216" y="216" width="131.7" height="18" rx="4" fill="url(#gr125)"></rect><text x="353.7" y="228.5" class="axis" font-weight="700">23</text><text x="208" y="254.5" text-anchor="end" class="axis">SuperLite3, Large, Haze Purple</text><rect x="216" y="242" width="126" height="18" rx="4" fill="url(#gr126)"></rect><text x="348" y="254.5" class="axis" font-weight="700">22</text><text x="208" y="280.5" text-anchor="end" class="axis">Town'n Trail 3, Large, Electr…</text><rect x="216" y="268" width="120.2" height="18" rx="4" fill="url(#gr127)"></rect><text x="342.2" y="280.5" class="axis" font-weight="700">21</text><text x="208" y="306.5" text-anchor="end" class="axis">SuperLite3, Small, Haze Purple</text><rect x="216" y="294" width="103.0" height="18" rx="4" fill="url(#gr128)"></rect><text x="325.0" y="306.5" class="axis" font-weight="700">18</text><text x="208" y="332.5" text-anchor="end" class="axis">Ascent3, Small, Forest Green</text><rect x="216" y="320" width="91.6" height="18" rx="4" fill="url(#gr129)"></rect><text x="313.6" y="332.5" class="axis" font-weight="700">16</text><text x="208" y="358.5" text-anchor="end" class="axis">SuperTrail, Large, Champagne</text><rect x="216" y="346" width="74.4" height="18" rx="4" fill="url(#gr130)"></rect><text x="296.4" y="358.5" class="axis" font-weight="700">13</text><text x="208" y="384.5" text-anchor="end" class="axis">SuperTrail, Large, Gunmetal G…</text><rect x="216" y="372" width="68.7" height="18" rx="4" fill="url(#gr131)"></rect><text x="290.7" y="384.5" class="axis" font-weight="700">12</text><text x="208" y="410.5" text-anchor="end" class="axis">Town'n Trail 3, Large, Coral</text><rect x="216" y="398" width="57.2" height="18" rx="4" fill="url(#gr132)"></rect><text x="279.2" y="410.5" class="axis" font-weight="700">10</text><text x="208" y="436.5" text-anchor="end" class="axis">SuperTrail, Large, Sage</text><rect x="216" y="424" width="57.2" height="18" rx="4" fill="url(#gr133)"></rect><text x="279.2" y="436.5" class="axis" font-weight="700">10</text><text x="208" y="462.5" text-anchor="end" class="axis">Town'n Trail 3, Large, Jade</text><rect x="216" y="450" width="40.0" height="18" rx="4" fill="url(#gr134)"></rect><text x="262.0" y="462.5" class="axis" font-weight="700">7</text></svg>
+          <div class="note">Low-stock thresholds: <span class="st bad"><span class="ic">●</span>under 15</span> <span class="st warn"><span class="ic">▲</span>15–24</span> <span class="st good"><span class="ic">✓</span>25+</span></div>
+        </div>
+        <div class="card">
+          <div class="cardhead">
+            <div>
+              <h3>Runway by model</h3>
+              <div class="csub">months of stock left at the recent selling pace, and what production adds</div>
+            </div>
+          </div>
+          <div class="tblwrap" tabindex="0" role="region" aria-label="Runway by model, scrollable table">
+            <table id="tblRunway">
+              <thead><tr>
+                <th>Model</th><th class="r">In stock</th><th class="r">Sold / month</th>
+                <th class="r">Months cover</th><th class="r">Incoming</th><th>Status</th>
+              </tr></thead>
+              <tbody><tr><td><b>Town'n Trail</b></td><td class="r">146</td><td class="r">6.8</td><td class="r">21.4 mo</td><td class="r">+60</td><td><span class="st good"><span class="ic">✓</span>Covered</span></td></tr><tr><td><b>SuperLite3</b></td><td class="r">111</td><td class="r">11.8</td><td class="r">9.4 mo</td><td class="r">+100</td><td><span class="st good"><span class="ic">✓</span>Covered</span></td></tr><tr><td><b>Ascent3</b></td><td class="r">90</td><td class="r">7.2</td><td class="r">12.6 mo</td><td class="r">+80</td><td><span class="st good"><span class="ic">✓</span>Covered</span></td></tr><tr><td><b>Zoomin</b></td><td class="r">66</td><td class="r">2.3</td><td class="r">28.3 mo</td><td class="r">-</td><td><span class="st good"><span class="ic">✓</span>Covered</span></td></tr><tr><td><b>SuperTrail</b></td><td class="r">35</td><td class="r">5.2</td><td class="r">6.8 mo</td><td class="r">+40</td><td><span class="st good"><span class="ic">✓</span>Covered</span></td></tr><tr><td><b>OffRode</b></td><td class="r">0</td><td class="r">-</td><td class="r">-</td><td class="r">+120</td><td><span class="st neutral"><span class="ic">●</span>Incoming</span></td></tr></tbody>
+            </table>
+          </div>
+          <div class="note" id="runwayNote">Selling pace = bike units invoiced in the last 180 days ÷ 6, matched by model name. Town'n Trail generations share a name, so their pace is combined. Incoming adds every production order that matches the model.</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="card">
+        <div class="cardhead">
+          <div>
+            <h3>On the way from factory</h3>
+            <div class="csub" id="onwaySub">production orders from the Lark base · soonest shipping first · factory updates through 2 Oct 2026</div>
+          </div>
+        </div>
+        <div class="tblwrap" tabindex="0" role="region" aria-label="On the way from factory, scrollable table">
+          <table id="tblOnway">
+            <thead><tr>
+              <th>PO</th><th>Product / model</th><th class="r">Qty</th><th>Stage</th>
+              <th>Est. production</th><th>Est. shipping</th><th>Timeliness</th><th>Next action</th>
+            </tr></thead>
+            <tbody><tr><td>PI41_80pcs AS3</td><td><b>Ascent3</b></td><td class="r">80</td><td><span class="st good"><span class="ic">🚢</span>Shipped</span></td><td>17 Aug 2026</td><td>8 Sep 2026</td><td><span class="st good"><span class="ic">✓</span>On track</span></td><td style="max-width:340px">Bikes are packed and on the water.</td></tr><tr><td>PI42_100pcs Superlite3</td><td><b>SuperLite3</b></td><td class="r">100</td><td><span class="st warn"><span class="ic">🔧</span>Packed</span></td><td>28 Aug 2026</td><td>14 Oct 2026</td><td><span class="st good"><span class="ic">✓</span>On track</span></td><td style="max-width:340px">Packed; waiting on the next container.</td></tr><tr><td>PI43_60pcs TNT3</td><td><b>Town'n Trail</b></td><td class="r">60</td><td><span class="st neutral"><span class="ic">⚙</span>Assembly</span></td><td>12 Sep 2026</td><td>27 Oct 2026</td><td><span class="st good"><span class="ic">✓</span>On track</span></td><td style="max-width:340px">Frames done, assembly under way.</td></tr><tr><td>PI44_40pcs Supertrail</td><td><b>SuperTrail</b></td><td class="r">40</td><td><span class="st warn"><span class="ic">🔧</span>Inspection</span></td><td>20 Sep 2026</td><td>3 Nov 2026</td><td><span class="st bad"><span class="ic">●</span>Overdue</span></td><td style="max-width:340px">Inspection found a paint issue; respray booked.</td></tr><tr><td>PI45_120pcs OffRode</td><td><b>OffRode</b></td><td class="r">120</td><td><span class="st neutral"><span class="ic">⚙</span>Material Preparation</span></td><td>24 Oct 2026</td><td>1 Dec 2026</td><td><span class="st good"><span class="ic">✓</span>On track</span></td><td style="max-width:340px">Waiting on accessories confirmation.</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shead"><h2>Reading of the stockroom</h2><span class="sub">stock, pace and production combined</span></div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" id="s3insights"><div class="insight"><div class="ico">📦</div><div><div class="it">Pipeline vs shelf</div><div class="ib"><b>400</b> bikes are in production against <b>448</b> on the shelf · the fleet roughly grows 89% when the containers land.</div></div></div><div class="insight"><div class="ico">⚠️</div><div><div class="it">Low stock</div><div class="ib"><b>Town'n Trail 3, Large, Jade</b> (7), <b>Town'n Trail 3, Large, Coral</b> (10), <b>SuperTrail, Large, Gunmetal Grey</b> (12), <b>SuperTrail, Large, Champagne</b> (13), <b>SuperTrail, Large, Sage</b> (10) · check whether an incoming order covers these colours before they run out.</div></div></div><div class="insight"><div class="ico">🚢</div><div><div class="it">On the water</div><div class="ib"><b>80</b> bikes across 1 orders are already shipped · plan floor space and agent allocations now.</div></div></div></div>
+    </section>
+  </div></div>
+</div>
+
+
+<div id="tab-marketing" class="tab-pane" role="tabpanel" aria-labelledby="tabbtn-marketing" hidden="">
+  <div data-a11y-was="main"><div class="wrap">
+    <section>
+      <div class="shead">
+        <h2>Email · Campaign Monitor</h2>
+        <span class="sub" id="emailSub">live from the Campaign Monitor API · unique opens and clicks per campaign</span>
+      </div>
+      <div class="kpis" id="emailKpis"><div class="kpi" style="--accent:#c98500"><div class="kl">Campaigns sent</div><div class="kv tnum">371</div><div class="kd">full Campaign Monitor history</div></div><div class="kpi" style="--accent:#d55181"><div class="kl">Emails delivered</div><div class="kv tnum">2.32M</div><div class="kd">every send, all campaigns</div></div><div class="kpi" style="--accent:#008300"><div class="kl">Unique open rate</div><div class="kv tnum">38.5%</div><div class="kd">893.1K people opened</div></div><div class="kpi" style="--accent:#9085e9"><div class="kl">Click rate</div><div class="kv tnum">3.3%</div><div class="kd">77.4K unique clicks</div></div></div>
+      <div class="grid" style="grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);margin-top:16px">
+        <div class="card">
+          <div class="cardhead">
+            <div>
+              <h3>Campaign performance</h3>
+              <div class="csub">most recent sends first · open and click rates are unique people ÷ delivered</div>
+            </div>
+          </div>
+          <div class="tblwrap" style="max-height:380px;overflow-y:auto" tabindex="0" role="region" aria-label="Campaign performance, scrollable table">
+            <table id="tblEmail">
+              <thead><tr><th>#</th><th>Campaign</th><th>Sent</th><th class="r">Recipients</th><th class="r">Open rate</th><th class="r">Click rate</th></tr></thead>
+              <tbody><tr><td class="rank">1</td><td>October 2026 EDM to agents</td><td>1 Oct 2026</td><td class="r">22</td><td class="r">59.1%</td><td class="r">0.0%</td></tr><tr><td class="rank">2</td><td>Spring riding guide EDM</td><td>27 Sep 2026</td><td class="r">21,168</td><td class="r">32.4%</td><td class="r">1.1%</td></tr><tr><td class="rank">3</td><td>Customer survey results</td><td>21 Sep 2026</td><td class="r">18,417</td><td class="r">27.1%</td><td class="r">1.7%</td></tr><tr><td class="rank">4</td><td>Test ride weekend reminder</td><td>15 Sep 2026</td><td class="r">21,894</td><td class="r">31.7%</td><td class="r">2.5%</td></tr><tr><td class="rank">5</td><td>$50 Accessory discount code - final batch</td><td>8 Sep 2026</td><td class="r">21,757</td><td class="r">32.0%</td><td class="r">1.6%</td></tr><tr><td class="rank">6</td><td>September 2026 EDM to agents</td><td>1 Sep 2026</td><td class="r">26</td><td class="r">61.5%</td><td class="r">0.0%</td></tr><tr><td class="rank">7</td><td>$50 Accessory discount code - fourth batch</td><td>28 Aug 2026</td><td class="r">1</td><td class="r">0.0%</td><td class="r">0.0%</td></tr><tr><td class="rank">8</td><td>Supergold campaign EDM</td><td>19 Aug 2026</td><td class="r">20,809</td><td class="r">29.2%</td><td class="r">1.5%</td></tr><tr><td class="rank">9</td><td>Customer survey reminder, August 2026</td><td>12 Aug 2026</td><td class="r">24,020</td><td class="r">32.2%</td><td class="r">1.2%</td></tr><tr><td class="rank">10</td><td>$50 Accessory discount code - third batch</td><td>6 Aug 2026</td><td class="r">3</td><td class="r">66.7%</td><td class="r">0.0%</td></tr><tr><td class="rank">11</td><td>August 2026 EDM to agents</td><td>3 Aug 2026</td><td class="r">19</td><td class="r">73.7%</td><td class="r">0.0%</td></tr><tr><td class="rank">12</td><td>SuperTrail champagne - main audience reminder</td><td>29 Jul 2026</td><td class="r">24,616</td><td class="r">29.4%</td><td class="r">1.4%</td></tr><tr><td class="rank">13</td><td>$50 Accessory discount code - second batch</td><td>22 Jul 2026</td><td class="r">1</td><td class="r">0.0%</td><td class="r">0.0%</td></tr><tr><td class="rank">14</td><td>Finance offer EDM</td><td>15 Jul 2026</td><td class="r">23,877</td><td class="r">28.7%</td><td class="r">1.1%</td></tr><tr><td class="rank">15</td><td>Customer survey, July 2026</td><td>8 Jul 2026</td><td class="r">20,006</td><td class="r">31.4%</td><td class="r">2.5%</td></tr><tr><td class="rank">16</td><td>July 2026 EDM to agents</td><td>1 Jul 2026</td><td class="r">26</td><td class="r">69.2%</td><td class="r">0.0%</td></tr><tr><td class="rank">17</td><td>SuperTrail champagne - test ride, no booking</td><td>24 Jun 2026</td><td class="r">20,647</td><td class="r">26.1%</td><td class="r">1.3%</td></tr><tr><td class="rank">18</td><td>SuperTrail champagne - MY Customers 12m+</td><td>24 Jun 2026</td><td class="r">21,842</td><td class="r">27.5%</td><td class="r">1.4%</td></tr><tr><td class="rank">19</td><td>$50 Accessory discount code</td><td>17 Jun 2026</td><td class="r">3</td><td class="r">33.3%</td><td class="r">0.0%</td></tr><tr><td class="rank">20</td><td>Why riders choose an e-bike EDM</td><td>10 Jun 2026</td><td class="r">18,726</td><td class="r">31.2%</td><td class="r">1.5%</td></tr><tr><td class="rank">21</td><td>June 2026 EDM to agents</td><td>1 Jun 2026</td><td class="r">25</td><td class="r">68.0%</td><td class="r">0.0%</td></tr><tr><td class="rank">22</td><td>Winter servicing reminder</td><td>26 May 2026</td><td class="r">23,726</td><td class="r">30.1%</td><td class="r">2.5%</td></tr><tr><td class="rank">23</td><td>New colourways announcement</td><td>19 May 2026</td><td class="r">20,504</td><td class="r">29.7%</td><td class="r">2.3%</td></tr><tr><td class="rank">24</td><td>Mid-year sale EDM</td><td>12 May 2026</td><td class="r">23,361</td><td class="r">33.5%</td><td class="r">1.6%</td></tr><tr><td class="rank">25</td><td>May 2026 EDM to agents</td><td>1 May 2026</td><td class="r">29</td><td class="r">72.4%</td><td class="r">0.0%</td></tr></tbody>
+            </table>
+          </div>
+          <div class="tfoot" id="emailFoot">371 campaigns pulled live · sends through <b>1 Oct 2026</b> · showing the 25 most recent.</div>
+        </div>
+        <div class="card" id="emailNextCard"><h3>Already live · what comes next</h3><div class="csub">the pull now reads real unique opens and clicks per campaign</div><div class="note" style="margin-top:4px">• engagement by audience segment (agents vs riders vs prospects)<br>• clicked-link breakdown per campaign<br>• list growth and unsubscribe trend<br>• email → test-ride-request attribution by matching CRM ids</div></div>
+      </div>
+    </section>
+
+    <section id="metaSection">
+      <div class="shead">
+        <h2>Meta Ads</h2>
+        <span class="sub" id="metaSub">live via Windsor.ai · 5 Sep 2026 to 4 Oct 2026 · data through 4 Oct 2026</span>
+        <span class="spacer"></span>
+        <div class="seg mini" id="metaRangeSeg" inert="">
+          <button type="button" data-mr="30" class="on">30d</button>
+          <button type="button" data-mr="90">90d</button>
+          <button type="button" data-mr="365">12m</button>
+          <button type="button" data-mr="all">All</button>
+        </div>
+      </div>
+      <div class="kpis" id="metaKpis"><div class="kpi" style="--accent:#c98500"><div class="kl">Spend</div><div class="kv tnum">$2,073</div><div class="kd">NZD, selected range</div></div><div class="kpi" style="--accent:#d55181"><div class="kl">Impressions</div><div class="kv tnum">196.3K</div><div class="kd">$10.56 CPM</div></div><div class="kpi" style="--accent:#008300"><div class="kl">Link clicks</div><div class="kv tnum">3,845</div><div class="kd">5,522 clicks incl. engagement</div></div><div class="kpi" style="--accent:#9085e9"><div class="kl">CTR</div><div class="kv tnum">1.96%</div><div class="kd">link clicks over impressions</div></div><div class="kpi" style="--accent:#e66767"><div class="kl">Leads</div><div class="kv tnum">192</div><div class="kd">Meta form + pixel leads</div></div><div class="kpi" style="--accent:#3987e5"><div class="kl">Cost per lead</div><div class="kv tnum">$10.80</div><div class="kd">spend over leads</div></div></div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(340px,1fr));margin-top:16px">
+        <div class="card">
+          <h3>Click funnel</h3>
+          <div class="csub" id="metaFunnelSub">from impressions to leads, 5 Sep 2026 to 4 Oct 2026</div>
+          <div class="funnel" id="metaFunnel"><div class="frow"><div class="fl">Impressions</div><div class="fbar"><i style="width:100.0%;background-color:#6da7ec"></i></div><div class="fv"><b>196.3K</b></div></div><div class="frow"><div class="fl">Link clicks</div><div class="fbar"><i style="width:2.0%;background-color:#4a90e8"></i></div><div class="fv"><b>3,845</b> <span class="cv">2.0% of prev</span></div></div><div class="frow"><div class="fl">Landing views</div><div class="fbar"><i style="width:1.4%;background-color:#3987e5"></i></div><div class="fv"><b>2,662</b> <span class="cv">69.2% of prev</span></div></div><div class="frow"><div class="fl">Leads</div><div class="fbar"><i style="width:1.2%;background-color:#2a78d6"></i></div><div class="fv"><b>192</b> <span class="cv">7.2% of prev</span></div></div></div>
+          <div class="note">Leads are Meta form/pixel leads. Bookings close offline in the CRM, so read this beside the test-ride pipeline on the Riders &amp; Leads tab.</div>
+        </div>
+        <div class="card">
+          <div class="cardhead"><div>
+            <h3>Leads over time</h3>
+            <div class="csub" id="metaLeadsSub">form leads per day</div>
+          </div></div>
+          <svg class="ch" id="chartMetaLeads" style="max-height:230px" viewBox="0 0 560 220" role="img" aria-label="Meta leads over time"><defs><linearGradient id="gr135" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr136" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr137" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr138" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr139" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr140" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr141" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr142" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr143" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr144" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr145" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr146" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr147" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr148" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr149" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr150" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr151" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr152" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr153" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr154" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr155" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr156" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr157" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr158" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr159" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr160" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr161" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr162" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr163" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr164" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c98500" stop-opacity="1"></stop><stop offset="1" stop-color="#c98500" stop-opacity="0.62"></stop></linearGradient></defs><line x1="46" x2="552" y1="196" y2="196" class="gl"></line><text x="39" y="199.5" text-anchor="end" class="axis">0</text><line x1="46" x2="552" y1="149" y2="149" class="gl"></line><text x="39" y="152.5" text-anchor="end" class="axis">5</text><line x1="46" x2="552" y1="102" y2="102" class="gl"></line><text x="39" y="105.5" text-anchor="end" class="axis">10</text><line x1="46" x2="552" y1="55" y2="55" class="gl"></line><text x="39" y="58.5" text-anchor="end" class="axis">15</text><line x1="46" x2="552" y1="8" y2="8" class="gl"></line><text x="39" y="11.5" text-anchor="end" class="axis">20</text><text x="54.4" y="212" text-anchor="middle" class="axis">5 Sep</text><text x="138.7" y="212" text-anchor="middle" class="axis">10 Sep</text><text x="223.1" y="212" text-anchor="middle" class="axis">15 Sep</text><text x="307.4" y="212" text-anchor="middle" class="axis">20 Sep</text><text x="391.7" y="212" text-anchor="middle" class="axis">25 Sep</text><text x="476.1" y="212" text-anchor="middle" class="axis">30 Sep</text><rect x="49.2" y="139.6" width="10.4" height="56.4" rx="2" fill="url(#gr135)"></rect><rect x="66.0" y="158.4" width="10.4" height="37.6" rx="2" fill="url(#gr136)"></rect><rect x="82.9" y="167.8" width="10.4" height="28.2" rx="2" fill="url(#gr137)"></rect><rect x="99.8" y="55" width="10.4" height="141" rx="2" fill="url(#gr138)"></rect><rect x="116.6" y="83.2" width="10.4" height="112.8" rx="2" fill="url(#gr139)"></rect><rect x="133.5" y="158.4" width="10.4" height="37.6" rx="2" fill="url(#gr140)"></rect><rect x="150.4" y="158.4" width="10.4" height="37.6" rx="2" fill="url(#gr141)"></rect><rect x="167.2" y="120.8" width="10.4" height="75.2" rx="2" fill="url(#gr142)"></rect><rect x="184.1" y="120.8" width="10.4" height="75.2" rx="2" fill="url(#gr143)"></rect><rect x="201.0" y="111.4" width="10.4" height="84.6" rx="2" fill="url(#gr144)"></rect><rect x="217.8" y="167.8" width="10.4" height="28.2" rx="2" fill="url(#gr145)"></rect><rect x="234.7" y="45.5" width="10.4" height="150.4" rx="2" fill="url(#gr146)"></rect><rect x="251.6" y="139.6" width="10.4" height="56.4" rx="2" fill="url(#gr147)"></rect><rect x="268.4" y="149" width="10.4" height="47" rx="2" fill="url(#gr148)"></rect><rect x="285.3" y="167.8" width="10.4" height="28.2" rx="2" fill="url(#gr149)"></rect><rect x="302.2" y="167.8" width="10.4" height="28.2" rx="2" fill="url(#gr150)"></rect><rect x="319.0" y="120.8" width="10.4" height="75.2" rx="2" fill="url(#gr151)"></rect><rect x="335.9" y="111.4" width="10.4" height="84.6" rx="2" fill="url(#gr152)"></rect><rect x="352.8" y="186.6" width="10.4" height="9.4" rx="2" fill="url(#gr153)"></rect><rect x="369.6" y="102" width="10.4" height="94" rx="2" fill="url(#gr154)"></rect><rect x="386.5" y="177.2" width="10.4" height="18.8" rx="2" fill="url(#gr155)"></rect><rect x="403.4" y="111.4" width="10.4" height="84.6" rx="2" fill="url(#gr156)"></rect><rect x="420.2" y="149" width="10.4" height="47" rx="2" fill="url(#gr157)"></rect><rect x="437.1" y="167.8" width="10.4" height="28.2" rx="2" fill="url(#gr158)"></rect><rect x="454.0" y="120.8" width="10.4" height="75.2" rx="2" fill="url(#gr159)"></rect><rect x="470.8" y="177.2" width="10.4" height="18.8" rx="2" fill="url(#gr160)"></rect><rect x="487.7" y="102" width="10.4" height="94" rx="2" fill="url(#gr161)"></rect><rect x="504.6" y="158.4" width="10.4" height="37.6" rx="2" fill="url(#gr162)"></rect><rect x="521.4" y="130.2" width="10.4" height="65.8" rx="2" fill="url(#gr163)"></rect><rect x="538.3" y="149" width="10.4" height="47" rx="2" fill="url(#gr164)"></rect><rect x="46" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="62.8" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="79.7" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="96.6" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="113.4" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="130.3" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="147.2" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="164.0" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="180.9" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="197.8" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="214.6" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="231.5" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="248.4" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="265.2" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="282.1" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="299" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="315.8" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="332.7" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="349.6" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="366.4" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="383.3" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="400.2" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="417.0" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="433.9" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="450.8" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="467.6" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="484.5" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="501.4" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="518.2" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="535.1" y="8" width="16.8" height="188" fill="transparent"></rect></svg>
+        </div>
+        <div class="card">
+          <div class="cardhead"><div>
+            <h3>Spend over time</h3>
+            <div class="csub" id="metaSpendSub">ad spend per day, NZD</div>
+          </div></div>
+          <svg class="ch" id="chartMetaSpend" style="max-height:230px" viewBox="0 0 560 220" role="img" aria-label="Meta spend over time"><defs><linearGradient id="gr165" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr166" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr167" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr168" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr169" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr170" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr171" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr172" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr173" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr174" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr175" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr176" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr177" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr178" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr179" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr180" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr181" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr182" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr183" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr184" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr185" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr186" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr187" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr188" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr189" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr190" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr191" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr192" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr193" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient><linearGradient id="gr194" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d55181" stop-opacity="1"></stop><stop offset="1" stop-color="#d55181" stop-opacity="0.62"></stop></linearGradient></defs><line x1="46" x2="552" y1="196" y2="196" class="gl"></line><text x="39" y="199.5" text-anchor="end" class="axis">$0</text><line x1="46" x2="552" y1="149" y2="149" class="gl"></line><text x="39" y="152.5" text-anchor="end" class="axis">$25</text><line x1="46" x2="552" y1="102" y2="102" class="gl"></line><text x="39" y="105.5" text-anchor="end" class="axis">$50</text><line x1="46" x2="552" y1="55" y2="55" class="gl"></line><text x="39" y="58.5" text-anchor="end" class="axis">$75</text><line x1="46" x2="552" y1="8" y2="8" class="gl"></line><text x="39" y="11.5" text-anchor="end" class="axis">$100</text><text x="54.4" y="212" text-anchor="middle" class="axis">5 Sep</text><text x="138.7" y="212" text-anchor="middle" class="axis">10 Sep</text><text x="223.1" y="212" text-anchor="middle" class="axis">15 Sep</text><text x="307.4" y="212" text-anchor="middle" class="axis">20 Sep</text><text x="391.7" y="212" text-anchor="middle" class="axis">25 Sep</text><text x="476.1" y="212" text-anchor="middle" class="axis">30 Sep</text><rect x="49.2" y="113.0" width="10.4" height="82.9" rx="2" fill="url(#gr165)"></rect><rect x="66.0" y="115.3" width="10.4" height="80.6" rx="2" fill="url(#gr166)"></rect><rect x="82.9" y="101.0" width="10.4" height="94.9" rx="2" fill="url(#gr167)"></rect><rect x="99.8" y="48.8" width="10.4" height="147.1" rx="2" fill="url(#gr168)"></rect><rect x="116.6" y="47.3" width="10.4" height="148.6" rx="2" fill="url(#gr169)"></rect><rect x="133.5" y="84.3" width="10.4" height="111.6" rx="2" fill="url(#gr170)"></rect><rect x="150.4" y="75.8" width="10.4" height="120.1" rx="2" fill="url(#gr171)"></rect><rect x="167.2" y="74.9" width="10.4" height="121.0" rx="2" fill="url(#gr172)"></rect><rect x="184.1" y="78.0" width="10.4" height="117.9" rx="2" fill="url(#gr173)"></rect><rect x="201.0" y="55.7" width="10.4" height="140.2" rx="2" fill="url(#gr174)"></rect><rect x="217.8" y="59.3" width="10.4" height="136.6" rx="2" fill="url(#gr175)"></rect><rect x="234.7" y="53.0" width="10.4" height="142.9" rx="2" fill="url(#gr176)"></rect><rect x="251.6" y="91.2" width="10.4" height="104.7" rx="2" fill="url(#gr177)"></rect><rect x="268.4" y="76.2" width="10.4" height="119.7" rx="2" fill="url(#gr178)"></rect><rect x="285.3" y="85.5" width="10.4" height="110.4" rx="2" fill="url(#gr179)"></rect><rect x="302.2" y="69.0" width="10.4" height="126.9" rx="2" fill="url(#gr180)"></rect><rect x="319.0" y="44.7" width="10.4" height="151.2" rx="2" fill="url(#gr181)"></rect><rect x="335.9" y="65.1" width="10.4" height="130.8" rx="2" fill="url(#gr182)"></rect><rect x="352.8" y="52.8" width="10.4" height="143.1" rx="2" fill="url(#gr183)"></rect><rect x="369.6" y="54.4" width="10.4" height="141.5" rx="2" fill="url(#gr184)"></rect><rect x="386.5" y="105.9" width="10.4" height="90.0" rx="2" fill="url(#gr185)"></rect><rect x="403.4" y="38.2" width="10.4" height="157.7" rx="2" fill="url(#gr186)"></rect><rect x="420.2" y="51.8" width="10.4" height="144.1" rx="2" fill="url(#gr187)"></rect><rect x="437.1" y="46.1" width="10.4" height="149.8" rx="2" fill="url(#gr188)"></rect><rect x="454.0" y="52.7" width="10.4" height="143.2" rx="2" fill="url(#gr189)"></rect><rect x="470.8" y="74.7" width="10.4" height="121.2" rx="2" fill="url(#gr190)"></rect><rect x="487.7" y="11.8" width="10.4" height="184.1" rx="2" fill="url(#gr191)"></rect><rect x="504.6" y="39.9" width="10.4" height="156.0" rx="2" fill="url(#gr192)"></rect><rect x="521.4" y="61.9" width="10.4" height="134.0" rx="2" fill="url(#gr193)"></rect><rect x="538.3" y="53.4" width="10.4" height="142.5" rx="2" fill="url(#gr194)"></rect><rect x="46" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="62.8" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="79.7" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="96.6" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="113.4" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="130.3" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="147.2" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="164.0" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="180.9" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="197.8" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="214.6" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="231.5" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="248.4" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="265.2" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="282.1" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="299" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="315.8" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="332.7" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="349.6" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="366.4" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="383.3" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="400.2" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="417.0" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="433.9" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="450.8" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="467.6" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="484.5" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="501.4" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="518.2" y="8" width="16.8" height="188" fill="transparent"></rect><rect x="535.1" y="8" width="16.8" height="188" fill="transparent"></rect></svg>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="cardhead"><div>
+          <h3>Campaigns</h3>
+          <div class="csub">biggest spenders first, selected range</div>
+        </div></div>
+        <div class="tblwrap" style="max-height:380px;overflow-y:auto" tabindex="0" role="region" aria-label="Campaigns, scrollable table">
+          <table id="tblMetaCamps">
+            <thead><tr>
+              <th>#</th><th>Campaign</th><th class="r">Spend</th><th class="r">Impressions</th>
+              <th class="r">Link clicks</th><th class="r">CTR</th><th class="r">Leads</th><th class="r">Cost / lead</th>
+            </tr></thead>
+            <tbody><tr><td class="rank top1">1</td><td>2609 September Campaign</td><td class="r">$596</td><td class="r">59.8K</td><td class="r">1,438</td><td class="r">2.40%</td><td class="r">16</td><td class="r">$37.23</td></tr><tr><td class="rank top2">2</td><td>2607-find-your-perfect-e-bike - Version B - Incentive</td><td class="r">$524</td><td class="r">48.0K</td><td class="r">568</td><td class="r">1.18%</td><td class="r">117</td><td class="r">$4.48</td></tr><tr><td class="rank top3">3</td><td>2609 - Supergold-always-on</td><td class="r">$327</td><td class="r">31.1K</td><td class="r">1,134</td><td class="r">3.65%</td><td class="r">7</td><td class="r">$46.71</td></tr><tr><td class="rank">4</td><td>2607-find-your-perfect-e-bike - Version A - No Incentive</td><td class="r">$276</td><td class="r">24.8K</td><td class="r">265</td><td class="r">1.07%</td><td class="r">47</td><td class="r">$5.87</td></tr><tr><td class="rank">5</td><td>2609_RideGuide_Recruitment_Auckland/Franklin (leads)</td><td class="r">$140</td><td class="r">12.6K</td><td class="r">304</td><td class="r">2.41%</td><td class="r">5</td><td class="r">$28.10</td></tr><tr><td class="rank">6</td><td>2609-event-promo-christchurch-supporting-awareness</td><td class="r">$94</td><td class="r">8,844</td><td class="r">0</td><td class="r">0.00%</td><td class="r">0</td><td class="r">-</td></tr><tr><td class="rank">7</td><td>2609_RideGuide_Recruitment_Napier/Hastings</td><td class="r">$71</td><td class="r">6,666</td><td class="r">121</td><td class="r">1.82%</td><td class="r">0</td><td class="r">-</td></tr><tr><td class="rank">8</td><td>2610-event-promo-north-shore</td><td class="r">$45</td><td class="r">4,453</td><td class="r">15</td><td class="r">0.34%</td><td class="r">0</td><td class="r">-</td></tr></tbody>
+          </table>
+        </div>
+        <div class="tfoot" id="metaCampFoot">Totals across ALL 8 campaigns in range: <b>$2,073</b> spend · <b>192</b> leads · <b>$10.80</b> per lead</div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shead">
+        <h2>Paid &amp; site channels</h2>
+        <span class="sub">designed and wired · each pane lights up the day its connector lands in the export job</span>
+      </div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(340px,1fr))" id="channelPanes"><div class="card"><h3>🔎 Google Ads</h3><div class="csub">account (ID removed) · MeloYelo E-Bikes</div><div class="empty" style="text-align:left"><b>Designed &amp; wired · awaiting the connector</b>• clicks, impressions, CTR, conversions, cost, cost / conversion<br>• campaign and search-term tables<br>• clicks &amp; conversions trended over time<br>• cost by day-of-week to time the budget<div style="margin-top:9px;color:var(--ink2)">Wire: Windsor.ai Google Ads connector for account <code>(ID removed)</code> → <code>google_ads.rows</code>.</div></div></div><div class="card"><h3>🌐 Site analytics (GA4)</h3><div class="csub">replaces the Website Visitors, Engagement Rate, and Device pages of the old report</div><div class="empty" style="text-align:left"><b>Designed &amp; wired · awaiting the connector</b>• active users FYTD vs same time last year, by channel<br>• engagement rate and engaged sessions over time<br>• landing-page table with engagement per page<br>• device split and NZ region map<div style="margin-top:9px;color:var(--ink2)">Wire: Windsor.ai GA4 connector → <code>ga4.rows</code>.</div></div></div></div>
+    </section>
+
+    <section>
+      <div class="shead"><h2>Reading of the channels</h2><span class="sub">what the data already says</span></div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))" id="s4insights"><div class="insight"><div class="ico">📬</div><div><div class="it">Database reach</div><div class="ib">The biggest sends hit <b>22</b> inboxes · that is the effective size of the marketing database today.</div></div></div><div class="insight"><div class="ico">🖱️</div><div><div class="it">Email engagement</div><div class="ib">Across the whole history: <b>2.32M</b> emails delivered, <b>38.5%</b> uniquely opened, <b>3.3%</b> clicked · strong numbers for a database this size.</div></div></div><div class="insight"><div class="ico">📣</div><div><div class="it">Meta lead engine</div><div class="ib">Last 30 days: <b>$2,073</b> spent, <b>192</b> Meta leads at <b>$10.80</b> each. The CRM funnel on the Riders tab shows how many become test rides.</div></div></div><div class="insight"><div class="ico">🔌</div><div><div class="it">One job, four connectors</div><div class="ib">Sales, riders, leads and inventory are already live on this dashboard. Meta, Google Ads, GA4 and Campaign Monitor slot into the same export job · no dashboard changes needed.</div></div></div></div>
+    </section>
+  </div></div>
+</div>
+
+</main>
+
+
+
+
+
+
+
+
+<style>
+.demo-wordmark{font:600 11px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.75;white-space:nowrap}
+.demo-badge{position:fixed;left:0;bottom:12px;z-index:99999;pointer-events:none;writing-mode:vertical-rl;transform:rotate(180deg);font:700 9px/1 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.09em;text-transform:uppercase;color:#fff;background:rgba(17,18,20,.9);border:1px solid rgba(255,255,255,.28);border-right:0;border-radius:6px 0 0 6px;padding:9px 2px;box-shadow:0 1px 6px rgba(0,0,0,.25)}
+</style>
+<aside class="demo-badge" data-a11y-was="div" aria-label="Demo notice">Demo — sample data</aside>
+<script>
+(function(){var t=[].slice.call(document.querySelectorAll("#tabs [role=tab]"));if(!t.length)return;
+function key(b){return b.getAttribute("data-tab")||b.getAttribute("data-v")||b.getAttribute("aria-controls")}
+var sub=document.querySelector("#none");
+function show(b,f){t.forEach(function(x){var on=x===b,p=document.getElementById(x.getAttribute("aria-controls"));x.setAttribute("aria-selected",on?"true":"false");x.setAttribute("tabindex",on?"0":"-1");x.classList.toggle("on",on);if(p)p.hidden=!on});if(sub&&b.getAttribute("data-sub"))sub.textContent=b.getAttribute("data-sub");if(f)b.focus()}
+t.forEach(function(b,i){b.addEventListener("click",function(){show(b);try{history.replaceState(null,"","#"+key(b))}catch(e){}});b.addEventListener("keydown",function(e){var k=e.key==="ArrowRight"?1:e.key==="ArrowLeft"?-1:0;if(k){e.preventDefault();show(t[(i+k+t.length)%t.length],true)}})});
+var h=location.hash.slice(1);t.forEach(function(b){if(h&&key(b)===h)show(b)})})();
+</script>
+</body></html>

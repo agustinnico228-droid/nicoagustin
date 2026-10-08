@@ -1,0 +1,48 @@
+{
+  "name": "nicoagustin-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3002",
+    "build": "next build",
+    "start": "next start -p 3002",
+    "lint": "eslint",
+    "typecheck": "next typegen && tsc --noEmit",
+    "check:push": "node scripts/prepush-check.mjs",
+    "resume": "node scripts/resume/build.mjs",
+    "screens": "node scripts/screenshots.mjs",
+    "a11y": "node scripts/a11y.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs",
+    "test:apps-script": "node tests/e2e/apps-script.test.mjs",
+    "test:contact": "node tests/e2e/contact.test.mjs",
+    "test:dialog": "node tests/e2e/dialog.test.mjs"
+  },
+  "dependencies": {
+    "@gsap/react": "2.1.2",
+    "@react-three/drei": "10.7.9",
+    "@react-three/fiber": "9.8.1",
+    "gsap": "3.15.0",
+    "lenis": "1.3.26",
+    "next": "16.3.8",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "three": "0.186.1",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "0.186.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.8",
+    "lighthouse": "13.5.0",
+    "playwright": "1.63.0",
+    "sharp": "0.35.5",
+    "tailwindcss": "^4",
+    "typescript": "6.0.3"
+  },
+  "packageManager": "pnpm@12.9.1"
+}

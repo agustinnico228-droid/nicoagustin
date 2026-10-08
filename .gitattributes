@@ -1,0 +1,16 @@
+# Normalise line endings in the repo (LF), regardless of OS
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.mp4 binary
+*.webm binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
+*.ttf binary
+# Windows batch files keep CRLF line endings
+*.bat text eol=crlf
