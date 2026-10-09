@@ -20,7 +20,10 @@ On Windows, double-click `run-local.bat` to build and start the site.
 | `pnpm build` | Production build (`CIRCLE_NODE_TOTAL=3 pnpm build` on low-memory machines) |
 | `pnpm check:push` | Pre-push privacy and secrets check (run before every push) |
 | `pnpm resume` | Rebuilds `public/resume.pdf` from the site's data |
-| `pnpm screens` / `pnpm a11y` / `pnpm lighthouse` | Layout, accessibility and performance checks (Playwright, axe, Lighthouse) |
+| `pnpm screens` / `pnpm a11y` / `pnpm lighthouse` | Layout, accessibility and performance checks (Playwright, axe, Lighthouse); `BASE_URL` picks the site |
+| `pnpm test:contact` / `pnpm test:dialog` / `pnpm test:apps-script` | End-to-end tests of the contact form, the "Let's talk" pop-up (both build the site against a local fake webhook) and the Apps Script |
+| `pnpm poster` | Regenerates the hero's static poster images (`public/media/hero-poster-*.svg`) |
+| `pnpm check:copy` | Checks the case-study copy against the reference portfolio's wording (needs Python) |
 
 ## Content
 All facts live in `lib/site.ts` and `content/projects.ts`. The dashboard demos under `public/demos/` run on **sample data** and are labelled "Demo — sample data".

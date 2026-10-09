@@ -190,6 +190,11 @@ async function main() {
         await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
         const hasForm = await form(page).count();
         const fallback = page.locator("[data-contact-fallback]");
+        // The Contact section uses content-visibility: auto, so it has no rendered text until it is near the viewport.
+        if (await fallback.count()) {
+          await fallback.first().scrollIntoViewIfNeeded();
+          await page.waitForFunction(() => (document.querySelector("[data-contact-fallback]")?.innerText ?? "").trim().length > 0, null, { timeout: 5000 });
+        }
         const text = (await fallback.count()) ? await fallback.innerText() : "";
         const mailto = await fallback.locator(`a[href="mailto:${EMAIL}"]`).count();
         check("renders “Email me instead” with a mailto link and no form", hasForm === 0 && /email me instead/i.test(text) && mailto === 1, `form=${hasForm} mailto=${mailto} text=${text.slice(0, 200)}`);
@@ -234,6 +239,9 @@ async function main() {
       const { context, page } = await newWatchedPage(browser, problems);
       await page.goto(`${BASE}/`, { waitUntil: "networkidle" });
       const hint = page.locator("#cf-message-hint");
+      // Scroll to the form like a visitor (content-visibility: auto skips rendering it while off-screen).
+      await form(page).scrollIntoViewIfNeeded();
+      await page.waitForFunction(() => (document.querySelector("#cf-message-hint")?.innerText ?? "").trim().length > 0, null, { timeout: 5000 });
       check("letters: the section form starts with an empty box and no type chosen", (await box(page).inputValue()) === "" && (await checkedType(page).count()) === 0);
       check("letters: before a letter, the hint asks for 10+ characters", (await hint.innerText()) === HINT.plain, await hint.innerText());
       check("letters: privacy line under the form", (await form(page).getByText(PRIVACY, { exact: true }).count()) === 1);

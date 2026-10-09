@@ -49,3 +49,9 @@ A log of design and engineering decisions, newest at the bottom.
 - **Keyboard legends** use IBM Plex Mono 600 (added to next/font; it is not preloaded and downloads only when the 3D scene draws its legends).
 - **Copy originality:** after the rewrite, the closest sentence to Ehjay's text scores 0.72 (a list of HydRate's treatments, proper nouns) and only two sentences score ≥ 0.6, both proper-noun lists (was 116 sentences ≥ 0.6, max 1.00).
 - **Apps Script limits** (20 emails per clock hour, a 10-email quota floor, 10-minute duplicate check, one request at a time) take effect only after the script is installed or updated (Manage deployments → Edit → New version).
+
+### 2026-10-09 (10:18–): finishing pass
+- **End-to-end suites run for the first time** (they need two local production builds, which take about 30 s each with `CIRCLE_NODE_TOTAL=3`): contact form 69/69, "Let's talk" pop-up 15/15 (including axe with the pop-up open in both themes at 1440 and 390, focus trap and return, phone full screen, 44 px targets, no-JS fallback), Apps Script 88/88. Two contact checks failed at first only because they read text from the Contact section right after load: with `content-visibility: auto` an off-screen section has no rendered text yet. The checks now scroll to the form like a visitor and wait for it to render; the site was not changed.
+- **run-local.bat verified end to end** (build, start on 3002, 200). It now runs `pnpm exec next start -p %PORT%` instead of `pnpm start -p %PORT%`, which passed the port twice (`-p 3002 -p 3002`) because the `start` script already sets it.
+- **Removed `@gsap/react`**: approved but never imported (GSAP is used directly, and only for the desktop hover preview).
+- **Maintenance scripts moved into the repo:** `scripts/hero-poster.mjs` (regenerates the poster SVGs byte for byte) and `scripts/originality-check.py` (the copy-similarity check used for the rewrite; current maximum 0.72, a proper-noun list).

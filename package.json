@@ -15,10 +15,11 @@
     "lighthouse": "node scripts/lighthouse.mjs",
     "test:apps-script": "node tests/e2e/apps-script.test.mjs",
     "test:contact": "node tests/e2e/contact.test.mjs",
-    "test:dialog": "node tests/e2e/dialog.test.mjs"
+    "test:dialog": "node tests/e2e/dialog.test.mjs",
+    "poster": "node scripts/hero-poster.mjs",
+    "check:copy": "python scripts/originality-check.py"
   },
   "dependencies": {
-    "@gsap/react": "2.1.2",
     "@react-three/drei": "10.7.9",
     "@react-three/fiber": "9.8.1",
     "gsap": "3.15.0",

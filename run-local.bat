@@ -134,7 +134,7 @@ echo   Starting the site at %URL%
 echo   It opens in your browser when it's ready. To stop it, close this window or press Ctrl+C.
 echo.
 start "" /b powershell -NoProfile -ExecutionPolicy Bypass -Command "$u = '%URL%'; for ($i = 0; $i -lt 120; $i++) { try { if ((Invoke-WebRequest -Uri $u -UseBasicParsing -TimeoutSec 2).StatusCode -eq 200) { if ($env:RUN_LOCAL_NO_BROWSER) { Write-Host ('  [ok] ' + $u + ' answers 200') } else { Start-Process $u }; exit 0 } } catch {}; Start-Sleep -Milliseconds 500 }; Write-Host ('  [!] ' + $u + ' did not answer within 60 seconds. Look for errors above.')"
-call pnpm start -p %PORT%
+call pnpm exec next start -p %PORT%
 if errorlevel 1 (
   echo.
   echo   [X] The site stopped with an error. The messages above say why.

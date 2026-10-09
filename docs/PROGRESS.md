@@ -14,6 +14,9 @@ Resume point for a fresh session: read `CLAUDE.md`, then this file.
 - [x] 04:03 Résumés rebuilt with the live URL (public `public/resume.pdf`; private `nicofiles\nico-agustin-resume-full.pdf` + PNG previews in `nicofiles\`).
 - [x] Final commit, push and production deploy.
 
+## Finishing pass (10:18–)
+- [x] End-to-end suites: contact 69/69, pop-up 15/15, Apps Script 88/88; local production build passes with CIRCLE_NODE_TOTAL=3; run-local.bat verified (and its start command fixed); unused @gsap/react removed; poster and copy-check scripts added to the repo.
+
 ## Next (needs Nico)
 - Connect the contact form: follow `docs/CONTACT-SETUP.md` (Apps Script as agustinnico228@gmail.com, then `CONTACT_WEBHOOK_URL` in Vercel, then redeploy).
 - Answer the open questions in `docs/INTAKE.md` (campaign role, "What I learned", years, LinkedIn URL, full-time, …).
