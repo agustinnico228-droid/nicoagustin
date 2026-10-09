@@ -11,7 +11,7 @@ Next.js 16 has breaking changes: read the relevant guide in `node_modules/next/d
 ## Non-negotiable rules
 - **Facts only.** Every fact lives in `lib/site.ts` or `content/projects.ts`. Unknown facts are left out (never placeholders) and listed in `docs/INTAKE.md`.
 - **Never publish** Nico's phone number or street address (city only). The résumé generator reads the phone from his CV at run time for the private PDF only; it never enters the repo.
-- **No customer or lead data** anywhere. The dashboard demos run on sample data and are labelled "Demo — sample data". The Sabbath CRM walkthrough video stays out.
+- **No customer or lead data** anywhere. The dashboard demos run on sample data and are labelled "Demo — sample data". The Sabbath portal walkthrough is shown only because it was recorded on the demo build with sample data (its title card says so); Nico asked for it on 2026-10-09. Never add a recording or screenshot of the live CRM (the app on port 3000 may show real customer data).
 - **The reporting app's own brand** (from the dashboards' original files) never appears anywhere. "Agora Data Driven", Nico's employer, is fine. `pnpm check:push` enforces it.
 - **Personal files** live in `C:\Users\Client\LPT\nicofiles\` (outside the repo, never committed). Teardowns of the reference sites live in `C:\Users\Client\LPT\nico-teardowns\` (outside the repo, never committed).
 - **Ehjay Lorenzo's portfolio** (`C:\Users\Client\LPT\assets`) is read-and-copy only: never edit, build, commit or deploy anything there, and never touch the `ehjay-lorenzo` Vercel project.

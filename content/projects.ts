@@ -5,14 +5,16 @@ import type { Project } from "./types";
  * Ehjay Lorenzo's privacy-reviewed portfolio (C:\Users\Client\LPT\assets: content/data/projects.ts,
  * content/work/*.mdx, content/media/demos.json, docs/ASSETS.md). The wording here is Nico's own.
  *
- * Privacy (never relax): no customer or lead data anywhere; dashboard demos are sample data and say so;
- * the Sabbath CRM demo video stays out; the reporting app's own brand never appears.
+ * Privacy (never relax): no customer or lead data anywhere; dashboard demos are sample data and say so; the Sabbath
+ * portal walkthrough is shown only because it was recorded on the demo build with sample data (its title card says
+ * so; Nico asked for it on 2026-10-09); the reporting app's own brand never appears.
  * Unknown facts are omitted (never placeholders) and listed in docs/INTAKE.md.
  *
- * Prose (summary, lede, problem, architecture, sections) is written in Nico's voice. "I" is used only for what Nico
- * built as the developer. His part in the Rooming House Expert campaign is not recorded, so that page describes the
- * campaign, not his role. Whether the websites (03–05) were built at Agora Data Driven or freelance is not recorded
- * either, so no page says which. `learned` is unknown for every project and stays undefined.
+ * Prose is written in Nico's voice. Answers of 2026-10-09: he set up and created the Rooming House Expert campaign;
+ * the Agora Data Driven role was full-time; projects 03–06 were built between July 2025 and October 2026 (shown as
+ * 2025–2026); Sabbath isn't live yet and is hosted on GitHub; HydRate Medbar was built in Visual Studio. Whether
+ * 03–06 were Agora Data Driven or freelance work is still not recorded, so no page says which. The problem, result
+ * and "What I learned" lines added that day were drafted from the project files and live sites at Nico's request.
  */
 
 const demoPreview = (slug: string, client: string, tab: string) => ({
@@ -81,6 +83,15 @@ export const projects: Project[] = [
           "These pages load no React, no Vue and no charting package. Each dashboard is one HTML file with its own CSS and JavaScript, which fetches one JSON file and renders the SVG charts itself.",
         ],
       },
+      {
+        heading: "The result",
+        body: [
+          "All five clients got a single page in their portal. It refreshes from that client's sources on demand, compares every KPI with a benchmark period and writes its own plain-language reading of the period.",
+        ],
+      },
+    ],
+    learned: [
+      "Rebuilding figures that clients already knew from Looker taught me to leave a note in the code wherever a number matches the old report and wherever it deliberately differs, so a changed figure always comes with its reason.",
     ],
     demos: [
       { slug: "rooming-house-expert", client: "Rooming House Expert", title: "Lead magnet, email, demographics, Meta funnel", src: "/demos/rooming-house-expert/index.html", preview: demoPreview("rooming-house-expert", "Rooming House Expert", "Meta funnel tab") },
@@ -101,8 +112,8 @@ export const projects: Project[] = [
     title: "Rooming House Expert lead campaign",
     kind: "Meta lead campaign · real results",
     year: "2026",
-    summary: "Rooming House Expert swapped a free conversion guide for a lead on Meta, then offered a strategy call. One month brought 257 leads at A$25.01 apiece.",
-    lede: "The offer on Meta was a free guide. Anyone who filled in the form was then invited to book a free strategy call with Rooming House Expert.",
+    summary: "A Meta lead campaign I set up: a free conversion guide in exchange for a lead, then a strategy call. 257 leads in one month at A$25.01 each.",
+    lede: "I set up and created this Meta campaign for Rooming House Expert. The offer was a free guide, and anyone who filled in the form was invited to book a free strategy call.",
     problem: [
       "Gathering leads was the point. The draw was a free guide, the Ultimate Rooming House Conversion Guide.",
       "The download only opened the door; once the form was in, people were invited to a free strategy call.",
@@ -125,8 +136,9 @@ export const projects: Project[] = [
         ],
       },
     ],
-    techs: [],
+    techs: ["meta-ads"],
     stack: ["Meta Ads Manager", "Meta instant forms", "Excel reporting"],
+    role: "Set up and created the campaign in Meta Ads Manager",
     client: { name: "Rooming House Expert", url: "https://www.roominghouse.expert/" },
     kpis: {
       title: "Campaign results",
@@ -152,6 +164,9 @@ export const projects: Project[] = [
         "What could improve: just 0.82% of impressions turned into a link click, which suggests the creative's opening hook could work harder.",
       ],
     },
+    learned: [
+      "A healthy cost per lead can still hide a weak first impression. At A$25.01 a lead the volume was strong, yet only 0.82% of impressions became link clicks, which pointed to the ad's opening hook, not the budget, as the next thing to improve.",
+    ],
     disclosures: ["The client approved these results for publication. Names of the campaign, its ad sets and its ads are left out."],
   },
   {
@@ -159,12 +174,16 @@ export const projects: Project[] = [
     index: "03",
     title: "Sabbath Spa & Wellness Hub",
     kind: "Website + operations portal (CRM)",
+    year: "2025–2026",
     summary: "A spa's site and portal, where guests book sessions, sign waivers, take out memberships and order café food to the room, and staff run a back office.",
     lede: "The spa has two branches, and I built a single Next.js app that serves guests through a portal and staff through a back office they sign in to.",
     techs: ["nextjs", "react", "typescript", "tailwind", "supabase", "zod", "resend"],
-    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Supabase (database + auth)", "React Hook Form + Zod", "Resend"],
+    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Supabase (database + auth)", "React Hook Form + Zod", "Resend", "GitHub (hosting)"],
     role: "Fullstack developer",
     client: { name: "Sabbath Spa & Wellness Hub" },
+    problem: [
+      "With two branches and a nail brand sharing one back office, the spa needed bookings, waivers, memberships, in-room café orders, payments and staff schedules in a single system that guests and staff could both use.",
+    ],
     cover: { src: "/media/poster/sabbath-spa/website.jpg", width: 1280, height: 580, alt: "Photos of the spa's rooms in a collage behind the headline 'Embrace the Gift of Rest' on the Sabbath Spa & Wellness Hub home page" },
     architecture: {
       body: [
@@ -202,6 +221,15 @@ export const projects: Project[] = [
           "Audit logs.",
         ],
       },
+      {
+        heading: "The result",
+        body: [
+          "One Next.js app with two entrances. On the guest side, people reserve a session, fill in the waiver, take a membership and have café orders brought to their room. Staff get a POS overview per branch, a daily therapist timeline, the bookings ledger with CSV export, client profiles with visit history and waiver details, membership tiers with remaining sessions, a staff roster, a payments ledger behind a manager PIN, and an audit trail of every create, edit and delete.",
+        ],
+      },
+    ],
+    learned: [
+      "Putting each client's waiver details and visit history on one profile taught me that a back office earns staff's trust when the record they need is a single click from the booking.",
     ],
     videos: [
       {
@@ -213,18 +241,28 @@ export const projects: Project[] = [
         description: "A short screen capture. It starts on 'Embrace the Gift of Rest' and its tilted photo collage, plays the logo loader, then moves through the welcome, a row listing the services and a carousel of massages before ending at the footer.",
         durationSec: 19.3,
       },
+      {
+        src: "/media/video/sabbath-spa/crm-demo.mp4",
+        poster: "/media/poster/sabbath-spa/crm-demo.jpg",
+        width: 1280,
+        height: 720,
+        title: "Operations portal walkthrough (demo build, sample data)",
+        description: "A captioned product walkthrough recorded on the portal's demo build with sample data, as its title card says: the portal home, the POS overview for each branch, the daily therapist schedule, the bookings ledger with CSV export, the client directory and a client profile with waiver details and visit history, membership tiers with remaining sessions, the staff roster, the payments ledger behind a manager PIN, digital waivers and the audit trail.",
+        durationSec: 136.6,
+      },
     ],
     gallery: [
       { src: "/media/img/sabbath-spa/crm-portal-home.jpg", width: 1740, height: 908, alt: "Five cards (Book a Session, Digital Waiver, Membership, Sabasu, Staff Portal) sit below the Sabbath logo on the front screen of the Digital Operations Portal.", caption: "From the portal's first screen, a guest can book, sign a waiver, sign up for membership or order to their room, and staff can head to their own side." },
       { src: "/media/img/sabbath-spa/crm-bookings-ledger.jpg", width: 1900, height: 858, alt: "Staff back office open on the Bookings Ledger, showing a sidebar, tabs for each branch and each category, a search box and the column headings. Anything identifying, from customer rows to the logged-in user, is blurred.", caption: "The bookings ledger, seen from the staff side, with customer rows and the logged-in user blurred out." },
     ],
-    disclosures: ["The back-office screenshot has customer data blurred, and the portal's walkthrough video is not included at all, since customer records show up in it."],
+    disclosures: ["The portal walkthrough was recorded on the demo build with sample data, as its title card says. In the ledger screenshot, every customer row is blurred out. The site isn't live yet."],
   },
   {
     slug: "rooming-house-expert",
     index: "04",
     title: "Rooming House Expert",
     kind: "Website",
+    year: "2025–2026",
     summary: "React site for a father-and-son team in Victoria, Australia, who take existing homes and turn them into compliant rooming houses.",
     lede: "I built this site in React, and it has two jobs: make an unusual investment easy to grasp, and move visitors toward a call.",
     techs: ["react", "react-router", "vite"],
@@ -232,6 +270,9 @@ export const projects: Project[] = [
     role: "Fullstack developer",
     client: { name: "Rooming House Expert", url: "https://www.roominghouse.expert/" },
     live: { href: "https://www.roominghouse.expert/", label: "Visit the live site" },
+    problem: [
+      "Rooming House Expert sells a service most owners have never considered: turning an ordinary home into a compliant, higher-yield rooming house. The site had to make that idea clear, earn trust and turn interest into booked calls.",
+    ],
     cover: { src: "/media/poster/rooming-house-expert/website.jpg", width: 1280, height: 588, alt: "A brick house behind the headline 'The Future of Investing' on the Rooming House Expert home page" },
     architecture: {
       body: ["It's a single-page app written in React. Vite does the build, and moving between pages goes through React Router."],
@@ -256,6 +297,15 @@ export const projects: Project[] = [
         heading: "Navigation",
         body: ["Home, Properties, Services, Shop and Learn More make up the header menu, and Book a Call Now never leaves it."],
       },
+      {
+        heading: "The result",
+        body: [
+          "It runs live at roominghouse.expert. Book a Call Now stays in the header and closes the home page as well, around the founders' story, the featured properties, a newsletter sign-up and a chat button on every screen.",
+        ],
+      },
+    ],
+    learned: [
+      "Repeating one action, Book a Call Now, in the header and again at the end of the page taught me to build each section of a service site toward a single next step.",
     ],
     videos: [
       {
@@ -275,6 +325,7 @@ export const projects: Project[] = [
     index: "05",
     title: "HydRate Medbar",
     kind: "Website",
+    year: "2025–2026",
     summary: "Website for a Long Island City, New York studio offering medical aesthetics and IV hydration, with its treatments, gift vouchers and booking.",
     lede: "Long Island City, New York, is home to HydRate Medbar, a studio for medical aesthetics and IV hydration. I built its website.",
     sections: [
@@ -292,11 +343,29 @@ export const projects: Project[] = [
         heading: "Navigation",
         body: ["The menu has links to Services and Gift Vouchers as well as About Us and the Blog. Book Now is always one tap away."],
       },
+      {
+        heading: "The result",
+        body: [
+          "The site is live at hydratemedbar.com: the treatments (Botox & Fillers, IV Drip Therapy, Laser Hair Removal and Microneedling among them), gift vouchers, a blog, and Book Now buttons that open the studio's booking page on Timely.",
+        ],
+      },
     ],
-    techs: [],
-    stack: [],
+    learned: [
+      "Sending Book Now to the studio's existing Timely page, instead of building a booking system, taught me to plug into the tools a client already runs on.",
+    ],
+    techs: ["react", "react-router", "vite"],
+    stack: ["React", "React Router", "Vite", "Lenis (smooth scrolling)", "Visual Studio"],
     role: "Fullstack developer",
     client: { name: "HydRate Medbar" },
+    live: { href: "https://www.hydratemedbar.com/", label: "Visit the live site" },
+    problem: [
+      "A medical aesthetics and IV hydration studio has to feel calm and clinical at the same time, explain its treatments clearly and get visitors to book.",
+    ],
+    architecture: {
+      body: ["A single-page React app built with Vite, with React Router for the pages. I built it in Visual Studio."],
+      bullets: ["Lenis smooths the scrolling.", "Book Now opens the studio's booking page on Timely."],
+      diagram: "spa",
+    },
     cover: { src: "/media/poster/hydrate-medbar/website.jpg", width: 1280, height: 586, alt: "A silhouette at sunset behind the headline 'Elevated Beauty & Wellness' on the HydRate Medbar home page" },
     videos: [
       {
@@ -316,12 +385,16 @@ export const projects: Project[] = [
     index: "06",
     title: "Latte with Lata",
     kind: "Website · team build",
+    year: "2025–2026",
     summary: "A team-built static site on GitHub Pages for “a cafe with a microphone”, covering the café's story, the menu and its recorded episodes.",
     lede: "Built by hand as a team: a static website for a café where conversations at the corner table get recorded and released.",
     techs: ["html-css", "javascript", "gsap", "github-pages"],
     stack: ["HTML, CSS, JavaScript modules", "GSAP (ScrollTrigger, SplitText)", "Splide", "GitHub Pages"],
     role: "Fullstack developer (team build)",
     live: { href: "https://addbp.github.io/latewlatta01/", label: "View the site" },
+    problem: [
+      "A café that is also a podcast needs one site for two audiences: people coming in for coffee, who want the menu and the story, and listeners, who want the latest episodes.",
+    ],
     cover: { src: "/media/poster/latte-with-lata/website.jpg", width: 1280, height: 612, alt: "A dark photo of coffee behind the words 'LATTE WITH LATA' on the site's first screen" },
     architecture: {
       body: ["There's no framework. We wrote every file ourselves, and the result is hosted on GitHub Pages."],
@@ -348,6 +421,15 @@ export const projects: Project[] = [
           "The footer gives opening hours and links to every section, and says where the podcast can be heard: Spotify, Apple Podcasts, YouTube and RSS.",
         ],
       },
+      {
+        heading: "The result",
+        body: [
+          "The team's site went up on GitHub Pages with an animated title, the café's story, the menu with Book a Table, recent episodes showing guest, date and running time, a page for the host, and the podcast's channels in the footer.",
+        ],
+      },
+    ],
+    learned: [
+      "Splitting the CSS into tokens, a base layer and one stylesheet per section let each of us work on a different section without breaking anyone else's styles.",
     ],
     videos: [
       {

@@ -17,6 +17,10 @@ Resume point for a fresh session: read `CLAUDE.md`, then this file.
 ## Finishing pass (10:18–)
 - [x] End-to-end suites: contact 69/69, pop-up 15/15, Apps Script 88/88; local production build passes with CIRCLE_NODE_TOTAL=3; run-local.bat verified (and its start command fixed); unused @gsap/react removed; poster and copy-check scripts added to the repo.
 
+## 2026-10-09, 11:05– (Nico's answers)
+- [x] Contact form connected (webhook in Vercel + .env.local), probe checks passed, one live test message sent through the pop-up.
+- [x] Intake answers applied: campaign role + 257 back in the hero, full-time, LinkedIn, years 2025–2026, Sabbath hosting + portal walkthrough (demo build, sample data), HydRate live link + stack, drafted problem/result/lessons; résumés rebuilt.
+
 ## Next (needs Nico)
 - Connect the contact form: follow `docs/CONTACT-SETUP.md` (Apps Script as agustinnico228@gmail.com, then `CONTACT_WEBHOOK_URL` in Vercel, then redeploy).
 - Answer the open questions in `docs/INTAKE.md` (campaign role, "What I learned", years, LinkedIn URL, full-time, …).

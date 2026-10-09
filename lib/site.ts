@@ -21,9 +21,8 @@ export const profile = {
   email: "agustinnico228@gmail.com",
   languages: ["English", "Filipino"],
   links: {
-    // LinkedIn's own PDF export (Profile.pdf) prints the profile URL as /in/nico-agustin-02a64b2b1.
-    // The brief wrote it without the first hyphen; see docs/INTAKE.md.
-    linkedin: "https://www.linkedin.com/in/nico-agustin-02a64b2b1",
+    // Confirmed by Nico (2026-10-09). The "?isSelfProfile=true" he pasted only appears when viewing your own profile.
+    linkedin: "https://www.linkedin.com/in/nico-agustin-02a64b2b1/",
     github: "https://github.com/agustinnico228-droid",
     resume: "/resume.pdf",
   },
@@ -39,9 +38,9 @@ export const profile = {
 /** Hero stat strip: real numbers only. */
 export const stats = [
   { value: "5", label: "live dashboard demos, one reporting system" },
-  { value: "4", label: "websites and portals built, incl. a spa CRM" },
+  { value: "257", label: "leads in one month from a Meta campaign I set up" },
   { value: "7", label: "certificates, incl. an Omdena AI challenge" },
-  { value: "1 yr", label: "as a fullstack developer at Agora Data Driven" },
+  { value: "1 yr", label: "full-time at Agora Data Driven" },
 ] as const;
 
 export type ExperienceItem = {
@@ -68,7 +67,7 @@ export const experience: ExperienceItem[] = [
   {
     role: "Fullstack Web Developer",
     org: "Agora Data Driven",
-    dates: "Sept 2025 – Sept 2026",
+    dates: "Sept 2025 – Sept 2026 · Full-time",
     start: "2025-09",
     end: "2026-09",
     points: ["Built the client reporting dashboards: one reporting system for five client businesses."],
