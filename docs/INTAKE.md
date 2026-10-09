@@ -62,9 +62,12 @@
 - **Omdena:** Fullstack Engineer (unchanged).
 - **Testimonial:** none, by request.
 
+## Answered later on 2026-10-09
+- **Agora Data Driven or freelance:** Sabbath, Rooming House Expert, HydRate Medbar and Latte with Lata were work from Nico's tenure at Agora Data Driven; the pages say so.
+- **Omdena stack:** VS Code, JavaScript, HTML and CSS ("and more" is not listed until named).
+- **Excel certification:** the only year on the CV is in the title, "(Office 2019)", which the card shows as written; no separate date or link.
+- **On-screen wording:** quoted verbatim from the live sites.
+
 ## Open questions
 1. **Review the drafted lines.** The problem, result and "What I learned" lines added on 2026-10-09 were written from the files and live sites, not in your own words. Edit any that don't match your experience.
-2. **Microsoft Office Specialist: Excel Associate (Office 2019).** Neither CV gives a date or a verification link, so the card shows neither. Send the date or credential ID if you have them.
-3. **Agora Data Driven or freelance?** For Sabbath, Rooming House Expert, HydRate Medbar and Latte with Lata: built at Agora Data Driven or freelance? No page says which yet.
-4. **Omdena prototype: tech stack.** What was it built with? The page shows the challenge brief and your role only.
-5. **On-screen wording.** Two quotes from client sites are paraphrased (the Rooming House Expert closing call to action and HydRate Medbar's menu). Say if you want them verbatim.
+2. **Excel certification year.** If you earned it in a year other than the one in its title ("Office 2019" is the Office version), send the year and it will be added as the date.

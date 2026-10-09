@@ -66,3 +66,9 @@ A log of design and engineering decisions, newest at the bottom.
 - **HydRate Medbar** is linked to www.hydratemedbar.com (Nico gave it with his answers; the live site matches the recording: Long Island City, the same treatments, gift vouchers, Book Now). Its stack comes from the live site's code (React, React Router, Vite, Lenis; Book Now opens the studio's Timely page) plus "Visual Studio", which Nico named.
 - **Problem / result / "What I learned"** for the six web and campaign projects were drafted from the evidence Nico pointed to (the saved dashboards and Ehjay's notes on them, the campaign report's own assessment, the Sabbath screenshots and walkthrough captions, the live sites) and are flagged in INTAKE for his review. The copy check still tops out at 0.72 (a list of treatment names).
 - **Excel certification:** neither CV has a date or a verification link, so the card stays without them. **Testimonial:** none, at Nico's request.
+
+### 2026-10-09: last intake answers
+- **Websites 03–06 are Agora Data Driven work** (Nico: done during his tenure there): each case study's eyebrow names Agora Data Driven, the Agora experience entry lists them, and the résumé adds them to the Agora lines.
+- **Omdena:** VS Code, JavaScript, HTML and CSS, as Nico listed them ("and more" is not added until named); the JavaScript and HTML & CSS keys now highlight it.
+- **Excel certification:** the CV's only year is in its title, "(Office 2019)", which the card already shows as written; no separate date is invented.
+- **Quotes verbatim:** the Rooming House Expert closing line ("Think your property might work as a Rooming House? Let's find out, fast.") and HydRate Medbar's menu labels, both read from the live sites' code.

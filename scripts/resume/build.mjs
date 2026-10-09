@@ -190,6 +190,7 @@ function buildBlocks({ phone }) {
       "Built the client reporting dashboards: one reporting system for five client businesses, with KPI cards, charts, tables, the ads that ran and written insights.",
       "Front end in HTML, CSS and vanilla JavaScript with inline SVG charts, no framework and no chart library.",
       "Data from a Python export and from Windsor.ai (Meta Ads, Shopify), ActiveCampaign, Campaign Monitor and Klaviyo.",
+      "Built client websites and an operations portal: Sabbath Spa & Wellness Hub (Next.js, Supabase), Rooming House Expert and HydRate Medbar (React, Vite) and Latte with Lata (team build).",
     ],
   };
   section("Experience");

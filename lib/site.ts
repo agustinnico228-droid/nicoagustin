@@ -70,7 +70,10 @@ export const experience: ExperienceItem[] = [
     dates: "Sept 2025 – Sept 2026 · Full-time",
     start: "2025-09",
     end: "2026-09",
-    points: ["Built the client reporting dashboards: one reporting system for five client businesses."],
+    points: [
+      "Built the client reporting dashboards: one reporting system for five client businesses.",
+      "Built client websites and an operations portal: Sabbath Spa & Wellness Hub, Rooming House Expert, HydRate Medbar and Latte with Lata (team build).",
+    ],
     kind: "dev",
   },
   {

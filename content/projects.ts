@@ -12,9 +12,9 @@ import type { Project } from "./types";
  *
  * Prose is written in Nico's voice. Answers of 2026-10-09: he set up and created the Rooming House Expert campaign;
  * the Agora Data Driven role was full-time; projects 03–06 were built between July 2025 and October 2026 (shown as
- * 2025–2026); Sabbath isn't live yet and is hosted on GitHub; HydRate Medbar was built in Visual Studio. Whether
- * 03–06 were Agora Data Driven or freelance work is still not recorded, so no page says which. The problem, result
- * and "What I learned" lines added that day were drafted from the project files and live sites at Nico's request.
+ * 2025–2026) during his tenure at Agora Data Driven; Sabbath isn't live yet and is hosted on GitHub; HydRate Medbar
+ * was built in Visual Studio; the Omdena work used VS Code with JavaScript, HTML and CSS. The problem, result and
+ * "What I learned" lines added that day were drafted from the project files and live sites at Nico's request.
  */
 
 const demoPreview = (slug: string, client: string, tab: string) => ({
@@ -175,6 +175,7 @@ export const projects: Project[] = [
     title: "Sabbath Spa & Wellness Hub",
     kind: "Website + operations portal (CRM)",
     year: "2025–2026",
+    context: "Agora Data Driven",
     summary: "A spa's site and portal, where guests book sessions, sign waivers, take out memberships and order café food to the room, and staff run a back office.",
     lede: "The spa has two branches, and I built a single Next.js app that serves guests through a portal and staff through a back office they sign in to.",
     techs: ["nextjs", "react", "typescript", "tailwind", "supabase", "zod", "resend"],
@@ -263,6 +264,7 @@ export const projects: Project[] = [
     title: "Rooming House Expert",
     kind: "Website",
     year: "2025–2026",
+    context: "Agora Data Driven",
     summary: "React site for a father-and-son team in Victoria, Australia, who take existing homes and turn them into compliant rooming houses.",
     lede: "I built this site in React, and it has two jobs: make an unusual investment easy to grasp, and move visitors toward a call.",
     techs: ["react", "react-router", "vite"],
@@ -289,7 +291,7 @@ export const projects: Project[] = [
           "“Trust Built on Family Values”, where the founders tell their story.",
           "A track-record section headed “Redefining the Standard of Living”.",
           "A statement of the company's philosophy, followed by Featured Properties.",
-          "Near the end, a question asks whether your property could work as a rooming house, with Book a Call Now as the answer.",
+          "Near the end comes the line “Think your property might work as a Rooming House? Let’s find out, fast.”, answered with Book a Call Now.",
           "A form to subscribe to the newsletter, plus a chat button that follows you on every screen.",
         ],
       },
@@ -326,6 +328,7 @@ export const projects: Project[] = [
     title: "HydRate Medbar",
     kind: "Website",
     year: "2025–2026",
+    context: "Agora Data Driven",
     summary: "Website for a Long Island City, New York studio offering medical aesthetics and IV hydration, with its treatments, gift vouchers and booking.",
     lede: "Long Island City, New York, is home to HydRate Medbar, a studio for medical aesthetics and IV hydration. I built its website.",
     sections: [
@@ -341,7 +344,7 @@ export const projects: Project[] = [
       },
       {
         heading: "Navigation",
-        body: ["The menu has links to Services and Gift Vouchers as well as About Us and the Blog. Book Now is always one tap away."],
+        body: ["The menu reads Services, Gift Vouchers, About Us and Blog, and Book Now is always one tap away."],
       },
       {
         heading: "The result",
@@ -386,6 +389,7 @@ export const projects: Project[] = [
     title: "Latte with Lata",
     kind: "Website · team build",
     year: "2025–2026",
+    context: "Agora Data Driven",
     summary: "A team-built static site on GitHub Pages for “a cafe with a microphone”, covering the café's story, the menu and its recorded episodes.",
     lede: "Built by hand as a team: a static website for a café where conversations at the corner table get recorded and released.",
     techs: ["html-css", "javascript", "gsap", "github-pages"],
@@ -457,8 +461,8 @@ export const projects: Project[] = [
       "Many citizens of Bhutan, especially in rural areas, still struggle with fragmented government workflows, language barriers and digital platforms that are hard to use.",
       "Recent progress in conversational AI, agent-based systems and NLP for low-resource languages suggests a new route. The challenge set out to test it with a voice-enabled, multilingual, agent-based public-service assistant prototype.",
     ],
-    techs: [],
-    stack: ["Conversational AI", "Dzongkha–English NLP", "Multi-agent workflow automation"],
+    techs: ["javascript", "html-css"],
+    stack: ["JavaScript", "HTML & CSS", "VS Code", "Conversational AI", "Dzongkha–English NLP", "Multi-agent workflow automation"],
     role: "Fullstack Engineer",
     architecture: {
       body: ["The challenge brief combines three ingredients and asks whether, together, they can realistically simplify access to public services:"],
@@ -478,7 +482,7 @@ export const projects: Project[] = [
       },
       {
         heading: "My part",
-        body: ["I took part as a Fullstack Engineer and received a Certificate of Achievement dated July 27, 2026."],
+        body: ["I took part as a Fullstack Engineer, working in VS Code with JavaScript, HTML and CSS, and received a Certificate of Achievement dated July 27, 2026."],
       },
     ],
     verify: { href: "https://confirm.omdena.com/INxnf_n", label: "Verify the certificate" },
